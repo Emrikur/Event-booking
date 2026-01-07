@@ -1,0 +1,111 @@
+:root {
+  --font-heading: "Poppins", sans-serif;
+  --font-body: "Inter", sans-serif;
+
+  --primary-default: #636ff1;
+  --primary-hover: #4f46e5;
+  --primary-active: #4338ca;
+
+  --secondary-default: #ec4899;
+  --secondary-hover: #db2777;
+  --secondary-active: #be185d;
+
+  --outline-default: #e5e7eb;
+  --outline-hover: #f3f4f6;
+  --outline-active: #f3f4f6;
+
+  --gradient-one: linear-gradient(135deg, #667eea, #764ba2);
+  --gradient-two: linear-gradient(135deg, #f857a6, #ff5858);
+
+  --bg-one: #f9fafb;
+  --bg-two: #ffffff;
+
+  --text-dark: #1f2937;
+  --text-light: #9fafb8;
+  --text-muted: #6b7280;
+
+  --event-card-bg: #f3f4f6;
+}
+
+#root {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-family: var(--font-body);
+  line-height: 1.5;
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--bg-one);
+  color: var(--text-dark);
+}
+
+html,
+body {
+  height: 100%;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-headings);
+  font-weight: 700;
+  line-height: 1.5;
+  margin-bottom: 0.5rem;
+}
+
+h1 {
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
+}
+
+h2 {
+  font-size: clamp(1.3rem, 4vw, 2rem);
+}
+
+h3 {
+  font-size: clamp(1rem, 2.5vw, 1.35rem);
+}
+
+p {
+  font-size: clamp(0.9rem, 0.5vw + 0.7rem, 1rem);
+  margin-bottom: 1rem;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+ul {
+  list-style: none;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+.layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.layout__content {
+  flex: 1;
+}
