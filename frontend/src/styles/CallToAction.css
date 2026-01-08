@@ -1,0 +1,24 @@
+.cta {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: var(--text-light);
+  padding: clamp(3rem, 5vw, 5rem) 1.2rem;
+}
+
+.cta__container {
+  max-width: 75rem;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1.5rem;
+}
+
+.cta__button {
+  background-color: var(--bg-one);
+  color: var(--primary-default);
+  padding: 0.9rem 2rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+}
