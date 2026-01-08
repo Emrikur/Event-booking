@@ -1,5 +1,6 @@
 import { Search, TicketCheck, Sparkles } from "lucide-react";
-import "./HowItWorks.css";
+
+import "../styles/HowItWorks.css";
 
 function HowItWorks() {
   return (
