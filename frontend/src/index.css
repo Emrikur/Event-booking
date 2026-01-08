@@ -54,7 +54,7 @@ html {
 }
 
 body {
-  background-color: var(--bg-two);
+  background-color: var(--bg-one);
   color: var(--text-dark);
 }
 
@@ -103,7 +103,7 @@ img {
   display: block;
 }
 
-footer{
+footer {
   margin-top: auto;
   background-color: #1f2937;
   color: var(--text-light);
