@@ -30,6 +30,10 @@
   margin-bottom: 0.5rem;
 }
 
+.how-it-works__subtitle {
+  color: var(--text-muted);
+}
+
 .how-it-works__step-text {
   text-align: center;
   flex-grow: 1;
@@ -44,6 +48,6 @@
   justify-content: center;
   border-radius: 8px;
   margin-bottom: 1rem;
-  color: var(--bg-two);
+  color: var(--text-light);
   flex-shrink: 0;
 }
