@@ -1,4 +1,4 @@
-import "../styles/AboutStats.css";
+import "../styles/about/AboutStats.css";
 
 export default function AboutStats() {
   return (

@@ -1,4 +1,4 @@
-import "../styles/AboutMission.css";
+import "../styles/about/AboutMission.css";
 
 function AboutMission() {
   return (
