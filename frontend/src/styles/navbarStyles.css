@@ -1,26 +1,33 @@
 .navbar {
   align-items: center;
   display: flex;
-  justify-content: space-between;
-
-  background-color: #f9fafb;
+  justify-content: center;
+  background-color: #f9fafb6e;
   height: 80px;
-  margin: auto;
-  padding: 1.2rem 1.2rem;
-  width: 100%;
-  max-width: 1200px;
+  margin: 0 auto;
+  width: 80%;
 }
 
 .logo {
-  background-color: gray;
-  height: 50px;
-  width: 100px;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  padding-top: 15px;
+  width: 25%;
 }
 
 ul {
   align-items: center;
   display: flex;
   justify-content: center;
+  text-align: center;
+}
+
+.menu {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  width: 50%;
 }
 
 ul li {
@@ -28,8 +35,11 @@ ul li {
   margin: 0 1rem;
 }
 
-.menu {
-  display: block;
+.button-section {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  width: 25%;
 }
 
 .createEvent {
@@ -41,11 +51,85 @@ ul li {
   margin: 20px;
   font-size: 1rem;
   height: 45px;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 1.2rem;
+  white-space: nowrap;
 }
 
 @media (max-width: 596px) {
   ul {
     display: none;
+  }
+
+  .menu {
+    position: absolute;
+  }
+
+  .navbar {
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .logo {
+    width: 38%;
+    padding-top: 15px;
+    margin: 10px;
+  }
+
+  .hamburger-menu {
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 25%;
+  }
+
+  .bar {
+    width: 25px;
+    height: 3px;
+    background-color: #333;
+  }
+
+  .floatMenu {
+    display: block;
+    position: absolute;
+    top: 40px;
+    background-color: #0f0f0ff2;
+    width: 90vw;
+    margin: auto;
+    text-align: center;
+    padding: 1rem 0;
+    z-index: 1000;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 0 0 10px 10px;
+    animation: slideDown 0.3s ease-in-out;
+  }
+
+  .floatMenu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .floatMenu li {
+    margin: 0.5rem 0;
+  }
+
+  .floatMenu a {
+    text-decoration: none;
+    color: #ffffff;
+    font-size: 1.2rem;
+    font-weight: 500;
+  }
+
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 }
