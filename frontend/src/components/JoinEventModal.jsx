@@ -60,6 +60,8 @@ function JoinEventModal({ event, onClose }) {
     //TODO: Send booking data to backend?
     //TODO: Show confirmation message efter closing modal
     //TODO: StatusMessages and isSubmitting
+    // TODO: Implement backend logic to decrement event capacity on registration
+
     onClose();
   }
 
