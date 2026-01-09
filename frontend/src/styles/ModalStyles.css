@@ -162,3 +162,23 @@ input[type="time"]::-webkit-datetime-edit {
 .modal__button--primary:hover {
   background-color: var(--primary-hover);
 }
+
+.modal__input--error {
+  border-color: #ef4444;
+}
+
+.modal__error {
+  display: block;
+  color: #ef4444;
+  font-size: 0.875rem;
+  padding-left: 0.25rem;
+}
+
+.modal__error--submit {
+  padding: 0.75rem;
+  background-color: #fee2e2;
+
+  border-radius: 8px;
+  text-align: center;
+  margin-bottom: 1rem;
+}
