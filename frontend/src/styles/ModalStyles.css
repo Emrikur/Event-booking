@@ -28,6 +28,10 @@
   padding: 2rem 1.2rem 0 1.2rem;
 }
 
+.modal__title {
+  color: var(--text-dark);
+}
+
 .modal__close {
   position: absolute;
   top: 1.2rem;
@@ -71,9 +75,6 @@
 
 /* Form */
 .modal__form {
-  /* display: flex;
-  flex-direction: column;
-  gap: 0.5rem; */
   padding: 0 1.2rem 1.5rem 1.2rem;
 }
 
@@ -90,7 +91,6 @@
   font-size: 0.875rem;
   display: flex;
   align-items: center;
-  /* margin-bottom: 0.5rem; */
 }
 
 .modal__required {
@@ -111,6 +111,17 @@
 
 .modal__input::placeholder,
 .modal__textarea::placeholder {
+  font-size: 0.875rem;
+  font-family: var(--font-body);
+}
+
+input[type="date"]::-webkit-datetime-edit {
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  font-family: var(--font-body);
+}
+input[type="time"]::-webkit-datetime-edit {
+  color: var(--text-muted);
   font-size: 0.875rem;
   font-family: var(--font-body);
 }

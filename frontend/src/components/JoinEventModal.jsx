@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 
-import { X, CalendarClock, MapPin, Wallet, Asterisk } from "lucide-react";
+import ModalWrapper from "./ModalWrapper";
 
-import "../styles/JoinEventModal.css";
+import { CalendarClock, MapPin, Wallet, Asterisk } from "lucide-react";
+
+import "../styles/ModalStyles.css";
 
 function JoinEventModal({ event, onClose }) {
   const [fullName, setFullName] = useState("");
@@ -76,131 +78,121 @@ function JoinEventModal({ event, onClose }) {
   }
 
   return (
-    <div className="modal-overlay" onClick={handleCancel}>
-      <div className="modal" onClick={(e) => e.stopPropagation()}>
-        <div className="modal__header">
-          <button className="modal__close" onClick={onClose}>
-            {" "}
-            <X size={20} />
-          </button>
-          <h2 className="modal__title">Join Event</h2>
-          <p className="modal__subtitle">
-            Please fill in your details to reserve your spot
-          </p>
-          <div className="modal__divider"></div>
-        </div>
+    <ModalWrapper
+      title="Join Event"
+      subtitle="Please fill in your details to reserve your spot"
+      onClose={handleCancel}
+    >
+      <div className="modal__event-summary">
+        <h3 className="modal__event-title">{event.title}</h3>
+        <div className="modal__event-info">
+          <div className="modal__event-item">
+            <span className="modal__event-icon">
+              <CalendarClock size={20} />
+            </span>
+            <p className="modal__event-text">
+              {event.date} @{event.time}
+            </p>
+          </div>
 
-        <div className="modal__event-summary">
-          <h3 className="modal__event-title">{event.title}</h3>
-          <div className="modal__event-info">
-            <div className="modal__event-item">
-              <span className="modal__event-icon">
-                <CalendarClock size={20} />
-              </span>
-              <p className="modal__event-text">
-                {event.date} @{event.time}
-              </p>
-            </div>
+          <div className="modal__event-item">
+            <span className="modal__event-icon">
+              <MapPin size={20} />
+            </span>
+            <p className="modal__event-text">{event.location}</p>
+          </div>
 
-            <div className="modal__event-item">
-              <span className="modal__event-icon">
-                <MapPin size={20} />
-              </span>
-              <p className="modal__event-text">{event.location}</p>
-            </div>
-
-            <div className="modal__event-item">
-              <span className="modal__event-icon">
-                <Wallet size={20} />
-              </span>
-              <p className="modal__event-text">{event.price}</p>
-            </div>
+          <div className="modal__event-item">
+            <span className="modal__event-icon">
+              <Wallet size={20} />
+            </span>
+            <p className="modal__event-text">{event.price}</p>
           </div>
         </div>
-
-        <form className="modal__form" onSubmit={handleSubmit}>
-          <div className="modal__form-group">
-            <label htmlFor="fullName" className="modal__label">
-              Full Name{" "}
-              <span className="modal__required">
-                <Asterisk size={20} />
-              </span>
-            </label>
-            <input
-              value={fullName}
-              onChange={(e) => setFullName(e.target.value)}
-              type="text"
-              id="fullName"
-              className="modal__input"
-              placeholder="Enter your full name"
-              required
-            />
-          </div>
-
-          <div className="modal__form-group">
-            <label htmlFor="email" className="modal__label">
-              Email Address{" "}
-              <span className="modal__required">
-                <Asterisk size={20} />
-              </span>
-            </label>
-            <input
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              type="email"
-              id="email"
-              className="modal__input"
-              placeholder="your.email@example.com"
-              required
-            />
-          </div>
-
-          <div className="modal__form-group">
-            <label htmlFor="phone" className="modal__label">
-              Phone Number
-            </label>
-            <input
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              type="tel"
-              id="phone"
-              className="modal__input"
-              placeholder="+46 70 123 45 67"
-            />
-          </div>
-
-          <div className="modal__form-group">
-            <label htmlFor="notes" className="modal__label">
-              Additional Information (Optional)
-            </label>
-            <textarea
-              value={notes}
-              onChange={(e) => setNotes(e.target.value)}
-              id="notes"
-              className="modal__textarea"
-              rows="4"
-              placeholder="Any special requirements or questions..."
-            ></textarea>
-          </div>
-
-          <div className="modal__actions">
-            <button
-              onClick={handleCancel}
-              type="button"
-              className="modal__button modal__button--secondary"
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              className="modal__button modal__button--primary"
-            >
-              Book Now
-            </button>
-          </div>
-        </form>
       </div>
-    </div>
+
+      <form className="modal__form" onSubmit={handleSubmit}>
+        <div className="modal__form-group">
+          <label htmlFor="fullName" className="modal__label">
+            Full Name{" "}
+            <span className="modal__required">
+              <Asterisk size={20} />
+            </span>
+          </label>
+          <input
+            value={fullName}
+            onChange={(e) => setFullName(e.target.value)}
+            type="text"
+            id="fullName"
+            className="modal__input"
+            placeholder="Enter your full name"
+            required
+          />
+        </div>
+
+        <div className="modal__form-group">
+          <label htmlFor="email" className="modal__label">
+            Email Address{" "}
+            <span className="modal__required">
+              <Asterisk size={20} />
+            </span>
+          </label>
+          <input
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            type="email"
+            id="email"
+            className="modal__input"
+            placeholder="your.email@example.com"
+            required
+          />
+        </div>
+
+        <div className="modal__form-group">
+          <label htmlFor="phone" className="modal__label">
+            Phone Number
+          </label>
+          <input
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+            type="tel"
+            id="phone"
+            className="modal__input"
+            placeholder="+46 70 123 45 67"
+          />
+        </div>
+
+        <div className="modal__form-group">
+          <label htmlFor="notes" className="modal__label">
+            Additional Information (Optional)
+          </label>
+          <textarea
+            value={notes}
+            onChange={(e) => setNotes(e.target.value)}
+            id="notes"
+            className="modal__textarea"
+            rows="4"
+            placeholder="Any special requirements or questions..."
+          ></textarea>
+        </div>
+
+        <div className="modal__actions">
+          <button
+            onClick={handleCancel}
+            type="button"
+            className="modal__button modal__button--secondary"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            className="modal__button modal__button--primary"
+          >
+            Book Now
+          </button>
+        </div>
+      </form>
+    </ModalWrapper>
   );
 }
 
