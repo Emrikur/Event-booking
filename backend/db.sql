@@ -1,0 +1,11 @@
+DROP TABLE IF EXISTS bookings CASCADE;
+
+CREATE TABLE bookings (
+  id SERIAL PRIMARY KEY,
+  event_id VARCHAR(255) NOT NULL,
+  full_name VARCHAR(255) NOT NULL,
+  email VARCHAR(255) NOT NULL,
+  phone VARCHAR(50),
+  notes TEXT,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { createBooking } from "../services/api";
 
 import ModalWrapper from "./ModalWrapper";
 
@@ -12,18 +13,10 @@ function JoinEventModal({ event, onClose }) {
   const [phone, setPhone] = useState("");
   const [notes, setNotes] = useState("");
 
-  const [statusMessage, setStatusMessage] = useState(""); // "success", "error", "invalid-email"
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  // const [statusMessage, setStatusMessage] = useState("");
 
-  // Hämtas som prop från EventDetailsPage
-  // const event = {
-  //   id: 1,
-  //   title: "Morning Yoga in the Park",
-  //   date: "June 20, 2025",
-  //   time: "07:00",
-  //   location: "Slottsskogen Park, Gothenburg",
-  //   price: "Free",
-  // };
+  const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Prevent scroll if modal is open
   useEffect(() => {
@@ -38,33 +31,70 @@ function JoinEventModal({ event, onClose }) {
    * Auto-clear status message after 5 seconds
    * Cleanup prevents memory leaks if component unmounts
    */
-  useEffect(() => {
-    if (statusMessage) {
-      const timer = setTimeout(() => {
-        setStatusMessage("");
-      }, 5000);
+  // useEffect(() => {
+  //   if (Object.keys(errors).length > 0) {
+  //     const timer = setTimeout(() => {
+  //       setErrors({});
+  //     }, 5000);
 
-      return () => clearTimeout(timer);
-    }
-  }, [statusMessage]);
+  //     return () => clearTimeout(timer);
+  //   }
+  // }, [errors]);
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
+    setIsSubmitting(true);
 
-    console.log("Booking Details:", fullName, email, phone, notes);
+    const newErrors = {};
 
-    // Clear UI after submit
-    setFullName("");
-    setEmail("");
-    setPhone("");
-    setNotes("");
+    // Validate required fields
+    if (!fullName.trim()) {
+      newErrors.fullName = "Full name is required";
+    }
 
-    //TODO: Send booking data to backend?
-    //TODO: Show confirmation message efter closing modal
-    //TODO: StatusMessages and isSubmitting
-    // TODO: Implement backend logic to decrement event capacity on registration
+    if (!email.trim()) {
+      newErrors.email = "Email is required";
+    } else {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/;
+      if (!emailRegex.test(email)) {
+        newErrors.email = "Please enter a valid email address";
+      }
+    }
 
-    onClose();
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      setIsSubmitting(false);
+      return;
+    }
+
+    try {
+      const bookingData = {
+        event_id: event.id,
+        full_name: fullName,
+        email: email,
+        phone: phone || null,
+        notes: notes || null,
+      };
+
+      const response = await createBooking(bookingData);
+      console.log("Booking successful:", response);
+
+      setFullName("");
+      setEmail("");
+      setPhone("");
+      setNotes("");
+      setErrors({});
+
+      onClose();
+
+      //TODO: Implement success modal
+      // onSuccess();
+    } catch (error) {
+      console.error("Error submitting booking:", error);
+      setErrors({ submit: "Something went wrong. Please try again." });
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   function handleCancel() {
@@ -126,8 +156,10 @@ function JoinEventModal({ event, onClose }) {
             id="fullName"
             className="modal__input"
             placeholder="Enter your full name"
-            required
           />
+          {errors.fullName && (
+            <span className="modal__error">{errors.fullName}</span>
+          )}
         </div>
 
         <div className="modal__form-group">
@@ -140,12 +172,12 @@ function JoinEventModal({ event, onClose }) {
           <input
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            type="email"
+            type="text"
             id="email"
             className="modal__input"
             placeholder="your.email@example.com"
-            required
           />
+          {errors.email && <span className="modal__error">{errors.email}</span>}
         </div>
 
         <div className="modal__form-group">
@@ -164,7 +196,7 @@ function JoinEventModal({ event, onClose }) {
 
         <div className="modal__form-group">
           <label htmlFor="notes" className="modal__label">
-            Additional Information (Optional)
+            Additional Information (optional)
           </label>
           <textarea
             value={notes}
@@ -176,6 +208,11 @@ function JoinEventModal({ event, onClose }) {
           ></textarea>
         </div>
 
+        {errors.submit && (
+          <div className="modal__error modal__error--submit">
+            {errors.submit}
+          </div>
+        )}
         <div className="modal__actions">
           <button
             onClick={handleCancel}
@@ -186,9 +223,10 @@ function JoinEventModal({ event, onClose }) {
           </button>
           <button
             type="submit"
+            disabled={isSubmitting}
             className="modal__button modal__button--primary"
           >
-            Book Now
+            {isSubmitting ? "Booking..." : "Book Now"}
           </button>
         </div>
       </form>
