@@ -9,7 +9,11 @@ function HomePage() {
       <Hero />
       <SearchBar />
       <HowItWorks />
-      <CallToAction />
+      <CallToAction
+        title="Want to Host an Event?"
+        subtitle="Join thousands of hosts creating amazing experiences."
+        buttonText="Start Hosting"
+      />
     </>
   );
 }
