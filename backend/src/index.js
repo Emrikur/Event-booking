@@ -43,10 +43,12 @@ app.post("/api/bookings", async (request, response) => {
       });
     }
 
-    const result = await client.query(
+    await client.query(
       "INSERT INTO bookings (event_id, full_name, email, phone, notes) VALUES ($1, $2, $3, $4, $5) RETURNING *",
       [event_id, full_name, email, phone, notes]
     );
+
+    //TODO: Uppdatera spots_left i Sanity
 
     response.status(201).json({ message: "Booking created successfully" });
   } catch (error) {
