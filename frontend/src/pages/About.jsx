@@ -1,7 +1,14 @@
-const About = () => {
+import AboutHero from '../components/AboutHero';
+import AboutMission from '../components/AboutMission';
+import AboutStats from '../components/AboutStats';
+
+function About() {
   return (
     <>
-      <h1>About Us</h1>
+    <AboutHero/>
+    <AboutMission/>
+    <AboutStats/>
+
     </>
   );
 };

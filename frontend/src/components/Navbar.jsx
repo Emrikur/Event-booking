@@ -2,10 +2,21 @@ import "../styles/navbarStyles.css";
 import { Link } from "react-router-dom";
 
 const Navbar = () => {
+  const showMenu = () => {
+    const menu = document.querySelector(".menu ul");
+    menu.classList.toggle("floatMenu");
+  };
+
   return (
     <nav className="navbar">
-      <p className="logo">EventBook</p>
-
+      <div className="hamburger-menu" onClick={showMenu}>
+        <div className="bar"></div>
+        <div className="bar"></div>
+        <div className="bar"></div>
+      </div>
+      <div className="logo">
+        <p style={{ fontSize: "20px" }}>EventHub</p>
+      </div>
       <div className="menu">
         <ul>
           <li>
@@ -20,7 +31,9 @@ const Navbar = () => {
         </ul>
       </div>
 
-      <button className="createEvent">Create Event</button>
+      <div className="button-section">
+        <button className="createEvent">Create Event</button>
+      </div>
     </nav>
   );
 };
