@@ -1,4 +1,8 @@
+import { useState } from "react";
 import { useParams } from "react-router-dom";
+
+import JoinEventModal from "../components/JoinEventModal";
+
 import {
   CalendarClock,
   MapPin,
@@ -10,6 +14,8 @@ import {
 import "../styles/EventDetailsPage.css";
 
 function EventDetailsPage() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const { id } = useParams();
 
   const mockEvent = {
@@ -39,9 +45,6 @@ function EventDetailsPage() {
       eventsHosted: 50,
     },
   };
-
-  console.log("whatToBring:", mockEvent.whatToBring);
-  console.log("whatToBring length:", mockEvent.whatToBring.length);
 
   return (
     <section className="event-detail">
@@ -147,7 +150,12 @@ function EventDetailsPage() {
             <div className="booking__price-amount">{mockEvent.price}</div>
           </div>
 
-          <button className="booking__button">Join Event</button>
+          <button
+            className="booking__button"
+            onClick={() => setIsModalOpen(true)}
+          >
+            Join Event
+          </button>
 
           <div className="booking__divider"></div>
 
@@ -167,6 +175,14 @@ function EventDetailsPage() {
           </div>
         </aside>
       </div>
+
+      {/* Join Event Modal */}
+      {isModalOpen && (
+        <JoinEventModal
+          event={mockEvent}
+          onClose={() => setIsModalOpen(false)}
+        />
+      )}
     </section>
   );
 }
