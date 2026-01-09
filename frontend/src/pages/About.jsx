@@ -2,6 +2,7 @@ import AboutHero from "../components/AboutHero";
 import AboutMission from "../components/AboutMission";
 import AboutStats from "../components/AboutStats";
 import AboutValues from "../components/AboutValues";
+import AboutTeam from "../components/AboutTeam";
 import CallToAction from "../components/CallToAction";
 
 function About() {
@@ -11,6 +12,7 @@ function About() {
       <AboutMission />
       <AboutStats />
       <AboutValues />
+      <AboutTeam />
       <CallToAction
         title="Ready to Get Started?"
         subtitle="Join thousands of hosts and attendees creating unforgettable moments every day"
