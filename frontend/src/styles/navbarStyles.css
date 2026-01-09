@@ -16,7 +16,7 @@
   width: 25%;
 }
 
-ul {
+.menu ul {
   align-items: center;
   display: flex;
   justify-content: center;
@@ -30,7 +30,7 @@ ul {
   width: 50%;
 }
 
-ul li {
+.menu ul li {
   list-style: none;
   margin: 0 1rem;
 }
@@ -56,7 +56,7 @@ ul li {
 }
 
 @media (max-width: 596px) {
-  ul {
+  .menu ul {
     display: none;
   }
 
