@@ -1,4 +1,5 @@
 DROP TABLE IF EXISTS bookings CASCADE;
+DROP TABLE IF EXISTS waitlist CASCADE;
 
 CREATE TABLE bookings (
   id SERIAL PRIMARY KEY,
@@ -8,4 +9,13 @@ CREATE TABLE bookings (
   phone VARCHAR(50),
   notes TEXT,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE waitlist (
+  id SERIAL PRIMARY KEY,
+  event_id VARCHAR(255) NOT NULL,
+  full_name VARCHAR(255) NOT NULL,
+  email VARCHAR(255) NOT NULL,
+  created_at TIMESTAMP DEFAULT NOW(),
+  notified BOOLEAN DEFAULT FALSE
 );
