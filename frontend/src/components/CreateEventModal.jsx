@@ -1,11 +1,12 @@
 import { useState } from "react";
 import ModalWrapper from "./ModalWrapper";
+import SuccessModal from "./SuccessModal";
 
 import { Asterisk } from "lucide-react";
 
 import "../styles/ModalStyles.css";
 
-function CreateEventModal({ onClose }) {
+function CreateEventModal({ onClose, onSuccess }) {
   const [title, setTitle] = useState("");
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
@@ -43,6 +44,7 @@ function CreateEventModal({ onClose }) {
     //TODO: StatusMessages and isSubmitting
 
     console.log("Event Created:");
+    onSuccess();
   }
 
   function handleCancel() {

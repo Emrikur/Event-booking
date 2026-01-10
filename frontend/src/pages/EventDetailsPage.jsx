@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useParams } from "react-router-dom";
 
 import JoinEventModal from "../components/JoinEventModal";
+import SuccessModal from "../components/SuccessModal";
 
 import {
   CalendarClock,
@@ -15,6 +16,7 @@ import "../styles/EventDetailsPage.css";
 
 function EventDetailsPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
 
   const { id } = useParams();
 
@@ -181,6 +183,23 @@ function EventDetailsPage() {
         <JoinEventModal
           event={mockEvent}
           onClose={() => setIsModalOpen(false)}
+          onSuccess={() => {
+            setIsModalOpen(false);
+            setIsSuccessModalOpen(true);
+          }}
+        />
+      )}
+
+      {isSuccessModalOpen && (
+        <SuccessModal
+          title="You're All Set!"
+          message={
+            <>
+              Your spot has been reserved for <strong>{mockEvent.title}</strong>
+            </>
+          }
+          buttonText="View Event Details"
+          onClose={() => setIsSuccessModalOpen(false)}
         />
       )}
     </section>

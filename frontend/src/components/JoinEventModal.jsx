@@ -7,7 +7,7 @@ import { CalendarClock, MapPin, Wallet, Asterisk } from "lucide-react";
 
 import "../styles/ModalStyles.css";
 
-function JoinEventModal({ event, onClose }) {
+function JoinEventModal({ event, onClose, onSuccess }) {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -31,15 +31,15 @@ function JoinEventModal({ event, onClose }) {
    * Auto-clear status message after 5 seconds
    * Cleanup prevents memory leaks if component unmounts
    */
-  // useEffect(() => {
-  //   if (Object.keys(errors).length > 0) {
-  //     const timer = setTimeout(() => {
-  //       setErrors({});
-  //     }, 5000);
+  useEffect(() => {
+    if (Object.keys(errors).length > 0) {
+      const timer = setTimeout(() => {
+        setErrors({});
+      }, 5000);
 
-  //     return () => clearTimeout(timer);
-  //   }
-  // }, [errors]);
+      return () => clearTimeout(timer);
+    }
+  }, [errors]);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -88,7 +88,7 @@ function JoinEventModal({ event, onClose }) {
       onClose();
 
       //TODO: Implement success modal
-      // onSuccess();
+      onSuccess();
     } catch (error) {
       console.error("Error submitting booking:", error);
       setErrors({ submit: "Something went wrong. Please try again." });
