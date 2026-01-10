@@ -7,7 +7,7 @@ import { CalendarClock, MapPin, Wallet, Asterisk } from "lucide-react";
 
 import "../styles/ModalStyles.css";
 
-function JoinEventModal({ event, onClose, onSuccess }) {
+function JoinEventModal({ event, onClose, onSuccess, isWaitlist }) {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -108,7 +108,11 @@ function JoinEventModal({ event, onClose, onSuccess }) {
   return (
     <ModalWrapper
       title="Join Event"
-      subtitle="Please fill in your details to reserve your spot"
+      subtitle={
+        isWaitlist
+          ? "Get notified when a spot becomes available"
+          : "Please fill in your details to reserve your spot"
+      }
       onClose={handleCancel}
     >
       <div className="modal__event-summary">
@@ -224,7 +228,13 @@ function JoinEventModal({ event, onClose, onSuccess }) {
             disabled={isSubmitting}
             className="modal__button modal__button--primary"
           >
-            {isSubmitting ? "Booking..." : "Book Now"}
+            {isSubmitting
+              ? isWaitlist
+                ? "Joining..."
+                : "Booking..."
+              : isWaitlist
+              ? "Join Waitlist"
+              : "Book Now"}
           </button>
         </div>
       </form>

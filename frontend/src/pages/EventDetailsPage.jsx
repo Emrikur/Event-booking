@@ -48,6 +48,8 @@ function EventDetailsPage() {
     },
   };
 
+  const isWaitlist = mockEvent.spotsLeft === 0;
+
   return (
     <section className="event-detail">
       {/* Hero Section */}
@@ -153,10 +155,14 @@ function EventDetailsPage() {
           </div>
 
           <button
-            className="booking__button"
+            className={`booking__button ${
+              isWaitlist
+                ? "booking__button--secondary"
+                : "booking__button--primary"
+            }`}
             onClick={() => setIsModalOpen(true)}
           >
-            Join Event
+            {isWaitlist ? "Join Waitlist" : "Join Event"}
           </button>
 
           <div className="booking__divider"></div>
@@ -187,9 +193,11 @@ function EventDetailsPage() {
             setIsModalOpen(false);
             setIsSuccessModalOpen(true);
           }}
+          isWaitlist={isWaitlist}
         />
       )}
 
+      {/* Success Modal */}
       {isSuccessModalOpen && (
         <SuccessModal
           title="You're All Set!"
