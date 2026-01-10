@@ -1,0 +1,43 @@
+.success-modal {
+  /* max-width: 400px;
+  width: 100%; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 1.2rem;
+}
+
+.success-modal__icon {
+  height: 60px;
+  width: 60px;
+  background: var(--gradient-one);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-light);
+  margin-bottom: 30px;
+}
+
+.success-modal__title {
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  margin-bottom: 1rem;
+  color: var(--text-dark);
+}
+
+.success-modal__message {
+  color: var(--text-muted);
+}
+
+.success-modal__button {
+  background: var(--primary-default);
+  color: var(--text-light);
+  border: none;
+  padding: 0.9rem 2rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-block: 1rem;
+  transition: background 0.3s;
+}

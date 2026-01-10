@@ -4,7 +4,13 @@ import { X } from "lucide-react";
 
 import "../styles/ModalStyles.css";
 
-export default function ModalWrapper({ title, subtitle, children, onClose }) {
+export default function ModalWrapper({
+  title,
+  subtitle,
+  children,
+  onClose,
+  showDivider = true,
+}) {
   // Prevent scroll if modal is open
   useEffect(() => {
     document.body.style.overflow = "hidden";
@@ -22,7 +28,7 @@ export default function ModalWrapper({ title, subtitle, children, onClose }) {
           </button>
           <h2 className="modal__title">{title}</h2>
           {subtitle && <p className="modal__subtitle">{subtitle}</p>}
-          <div className="modal__divider"></div>
+          {showDivider && <div className="modal__divider"></div>}
         </div>
         {children}
       </div>

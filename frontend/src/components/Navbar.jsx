@@ -3,9 +3,11 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 
 import CreateEventModal from "./CreateEventModal";
+import SuccessModal from "./SuccessModal";
 
 const Navbar = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
 
   const showMenu = () => {
     const menu = document.querySelector(".menu ul");
@@ -43,7 +45,22 @@ const Navbar = () => {
       </div>
 
       {isModalOpen && (
-        <CreateEventModal onClose={() => setIsModalOpen(false)} />
+        <CreateEventModal
+          onClose={() => setIsModalOpen(false)}
+          onSuccess={() => {
+            setIsModalOpen(false);
+            setIsSuccessModalOpen(true);
+          }}
+        />
+      )}
+
+      {isSuccessModalOpen && (
+        <SuccessModal
+          title="Event Created!"
+          message="Your event has been published successfully"
+          buttonText="View My Event"
+          onClose={() => setIsSuccessModalOpen(false)}
+        />
       )}
     </nav>
   );
