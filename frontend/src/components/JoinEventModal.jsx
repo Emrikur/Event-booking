@@ -13,8 +13,6 @@ function JoinEventModal({ event, onClose, onSuccess }) {
   const [phone, setPhone] = useState("");
   const [notes, setNotes] = useState("");
 
-  // const [statusMessage, setStatusMessage] = useState("");
-
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
