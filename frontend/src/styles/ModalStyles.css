@@ -142,7 +142,7 @@ input[type="time"]::-webkit-datetime-edit {
   border: none;
 }
 
-.modal__button--secondary {
+.modal__button--outline {
   background-color: transparent;
   border: 2px solid var(--outline-default);
   font-weight: 600;
@@ -150,7 +150,7 @@ input[type="time"]::-webkit-datetime-edit {
   transition: all 0.3s;
 }
 
-.modal__button--secondary:hover {
+.modal__button--outline:hover {
   background-color: var(--outline-default);
 }
 
@@ -163,6 +163,14 @@ input[type="time"]::-webkit-datetime-edit {
   background-color: var(--primary-hover);
 }
 
+.modal__button--secondary {
+  background-color: var(--secondary-default);
+  color: var(--text-light);
+}
+
+.modal__button--secondary:hover {
+  background: var(--secondary-hover);
+}
 .modal__input--error {
   border-color: #ef4444;
 }

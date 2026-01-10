@@ -107,7 +107,7 @@ function JoinEventModal({ event, onClose, onSuccess, isWaitlist }) {
 
   return (
     <ModalWrapper
-      title="Join Event"
+      title={isWaitlist ? "Join Waitlist" : "Join Event"}
       subtitle={
         isWaitlist
           ? "Get notified when a spot becomes available"
@@ -219,14 +219,17 @@ function JoinEventModal({ event, onClose, onSuccess, isWaitlist }) {
           <button
             onClick={handleCancel}
             type="button"
-            className="modal__button modal__button--secondary"
+            className="modal__button modal__button--outline"
           >
             Cancel
           </button>
           <button
             type="submit"
             disabled={isSubmitting}
-            className="modal__button modal__button--primary"
+            // className="modal__button modal__button--primary"
+            className={`modal__button ${
+              isWaitlist ? "modal__button--secondary" : "modal__button--primary"
+            }`}
           >
             {isSubmitting
               ? isWaitlist

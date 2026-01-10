@@ -217,7 +217,7 @@
 }
 
 .booking__button--secondary:hover {
-  background: var(--primary-hover);
+  background: var(--secondary-hover);
 }
 
 .booking__divider {

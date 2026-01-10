@@ -29,7 +29,7 @@ function EventDetailsPage() {
     date: "June 20, 2025",
     time: "07:00",
     location: "Slottsskogen Park, Gothenburg",
-    spotsLeft: 15,
+    spotsLeft: 0,
     totalSpots: 30,
     price: "Free",
     description:
