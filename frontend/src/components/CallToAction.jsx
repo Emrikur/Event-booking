@@ -1,11 +1,13 @@
 import { useState } from "react";
 
 import CreateEventModal from "./CreateEventModal";
+import SuccessModal from "./SuccessModal";
 
 import "../styles/CallToAction.css";
 
 function CallToAction({ title, subtitle, buttonText }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
 
   return (
     <section className="cta">
@@ -20,7 +22,22 @@ function CallToAction({ title, subtitle, buttonText }) {
       </div>
 
       {isModalOpen && (
-        <CreateEventModal onClose={() => setIsModalOpen(false)} />
+        <CreateEventModal
+          onClose={() => setIsModalOpen(false)}
+          onSuccess={() => {
+            setIsModalOpen(false);
+            setIsSuccessModalOpen(true);
+          }}
+        />
+      )}
+
+      {isSuccessModalOpen && (
+        <SuccessModal
+          title="Event Created!"
+          message="Your event has been published successfully"
+          buttonText="View My Event"
+          onClose={() => setIsSuccessModalOpen(false)}
+        />
       )}
     </section>
   );
