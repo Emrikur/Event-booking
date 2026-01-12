@@ -59,6 +59,32 @@ app.post("/api/bookings", async (request, response) => {
   }
 });
 
+app.post("/api/waitlist", async (request, response) => {
+  const { event_id, full_name, email } = request.body;
+
+  try {
+    if (!full_name || !email) {
+      return response.status(400).json({
+        error: "Full name and email are required",
+      });
+    }
+
+    await client.query(
+      "INSERT INTO waitlist (event_id, full_name, email) VALUES ($1, $2, $3) RETURNING *",
+      [event_id, full_name, email]
+    );
+
+    response
+      .status(201)
+      .json({ message: "Waitlist entry created successfully" });
+  } catch (error) {
+    console.error("Error creating waitlist entry:", error);
+    response.status(500).json({
+      error: "Failed to join waitlist",
+    });
+  }
+});
+
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });

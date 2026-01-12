@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { createBooking } from "../services/api";
+import { createBooking, createWaitlistEntry } from "../services/api";
 
 import ModalWrapper from "./ModalWrapper";
 
@@ -7,7 +7,7 @@ import { CalendarClock, MapPin, Wallet, Asterisk } from "lucide-react";
 
 import "../styles/ModalStyles.css";
 
-function JoinEventModal({ event, onClose, onSuccess }) {
+function JoinEventModal({ event, onClose, onSuccess, isWaitlist }) {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -66,16 +66,25 @@ function JoinEventModal({ event, onClose, onSuccess }) {
     }
 
     try {
-      const bookingData = {
-        event_id: event.id,
-        full_name: fullName,
-        email: email,
-        phone: phone || null,
-        notes: notes || null,
-      };
+      const bookingData = isWaitlist
+        ? {
+            event_id: event.id,
+            full_name: fullName,
+            email: email,
+          }
+        : {
+            event_id: event.id,
+            full_name: fullName,
+            email: email,
+            phone: phone || null,
+            notes: notes || null,
+          };
 
-      const response = await createBooking(bookingData);
-      console.log("Booking successful:", response);
+      console.log("Sending to waitlist:", bookingData);
+
+      const response = isWaitlist
+        ? await createWaitlistEntry(bookingData)
+        : await createBooking(bookingData);
 
       setFullName("");
       setEmail("");
@@ -85,7 +94,6 @@ function JoinEventModal({ event, onClose, onSuccess }) {
 
       onClose();
 
-      //TODO: Implement success modal
       onSuccess();
     } catch (error) {
       console.error("Error submitting booking:", error);
@@ -107,9 +115,14 @@ function JoinEventModal({ event, onClose, onSuccess }) {
 
   return (
     <ModalWrapper
-      title="Join Event"
-      subtitle="Please fill in your details to reserve your spot"
+      title={isWaitlist ? "Join Waitlist" : "Join Event"}
+      subtitle={
+        isWaitlist
+          ? "Get notified when a spot becomes available"
+          : "Please fill in your details to reserve your spot"
+      }
       onClose={handleCancel}
+      isWaitlist={isWaitlist}
     >
       <div className="modal__event-summary">
         <h3 className="modal__event-title">{event.title}</h3>
@@ -178,33 +191,37 @@ function JoinEventModal({ event, onClose, onSuccess }) {
           {errors.email && <span className="modal__error">{errors.email}</span>}
         </div>
 
-        <div className="modal__form-group">
-          <label htmlFor="phone" className="modal__label">
-            Phone Number
-          </label>
-          <input
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            type="tel"
-            id="phone"
-            className="modal__input"
-            placeholder="+46 70 123 45 67"
-          />
-        </div>
+        {!isWaitlist && (
+          <>
+            <div className="modal__form-group">
+              <label htmlFor="phone" className="modal__label">
+                Phone Number
+              </label>
+              <input
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                type="tel"
+                id="phone"
+                className="modal__input"
+                placeholder="+46 70 123 45 67"
+              />
+            </div>
 
-        <div className="modal__form-group">
-          <label htmlFor="notes" className="modal__label">
-            Additional Information (optional)
-          </label>
-          <textarea
-            value={notes}
-            onChange={(e) => setNotes(e.target.value)}
-            id="notes"
-            className="modal__textarea"
-            rows="4"
-            placeholder="Any special requirements or questions..."
-          ></textarea>
-        </div>
+            <div className="modal__form-group">
+              <label htmlFor="notes" className="modal__label">
+                Additional Information (optional)
+              </label>
+              <textarea
+                value={notes}
+                onChange={(e) => setNotes(e.target.value)}
+                id="notes"
+                className="modal__textarea"
+                rows="4"
+                placeholder="Any special requirements or questions..."
+              ></textarea>
+            </div>
+          </>
+        )}
 
         {errors.submit && (
           <div className="modal__error modal__error--submit">
@@ -215,16 +232,25 @@ function JoinEventModal({ event, onClose, onSuccess }) {
           <button
             onClick={handleCancel}
             type="button"
-            className="modal__button modal__button--secondary"
+            className="modal__button modal__button--outline"
           >
             Cancel
           </button>
           <button
             type="submit"
             disabled={isSubmitting}
-            className="modal__button modal__button--primary"
+            // className="modal__button modal__button--primary"
+            className={`modal__button ${
+              isWaitlist ? "modal__button--secondary" : "modal__button--primary"
+            }`}
           >
-            {isSubmitting ? "Booking..." : "Book Now"}
+            {isSubmitting
+              ? isWaitlist
+                ? "Joining..."
+                : "Booking..."
+              : isWaitlist
+              ? "Join Waitlist"
+              : "Book Now"}
           </button>
         </div>
       </form>

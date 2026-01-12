@@ -10,6 +10,7 @@ export default function ModalWrapper({
   children,
   onClose,
   showDivider = true,
+  isWaitlist = false,
 }) {
   // Prevent scroll if modal is open
   useEffect(() => {
@@ -23,9 +24,17 @@ export default function ModalWrapper({
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal" onClick={(e) => e.stopPropagation()}>
         <div className="modal__header">
-          <button className="modal__close" onClick={onClose}>
+          <button
+            className={`modal__close ${
+              isWaitlist ? "modal__close--waitlist" : ""
+            }`}
+            onClick={onClose}
+          >
             <X size={20} />
           </button>
+          {/* <button className="modal__close" onClick={onClose}>
+            <X size={20} />
+          </button> */}
           <h2 className="modal__title">{title}</h2>
           {subtitle && <p className="modal__subtitle">{subtitle}</p>}
           {showDivider && <div className="modal__divider"></div>}

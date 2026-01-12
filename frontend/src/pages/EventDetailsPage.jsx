@@ -29,7 +29,7 @@ function EventDetailsPage() {
     date: "June 20, 2025",
     time: "07:00",
     location: "Slottsskogen Park, Gothenburg",
-    spotsLeft: 15,
+    spotsLeft: 0,
     totalSpots: 30,
     price: "Free",
     description:
@@ -47,6 +47,8 @@ function EventDetailsPage() {
       eventsHosted: 50,
     },
   };
+
+  const isWaitlist = mockEvent.spotsLeft === 0;
 
   return (
     <section className="event-detail">
@@ -153,10 +155,14 @@ function EventDetailsPage() {
           </div>
 
           <button
-            className="booking__button"
+            className={`booking__button ${
+              isWaitlist
+                ? "booking__button--secondary"
+                : "booking__button--primary"
+            }`}
             onClick={() => setIsModalOpen(true)}
           >
-            Join Event
+            {isWaitlist ? "Join Waitlist" : "Join Event"}
           </button>
 
           <div className="booking__divider"></div>
@@ -187,9 +193,11 @@ function EventDetailsPage() {
             setIsModalOpen(false);
             setIsSuccessModalOpen(true);
           }}
+          isWaitlist={isWaitlist}
         />
       )}
 
+      {/* Success Modal Join Event*/}
       {isSuccessModalOpen && (
         <SuccessModal
           title="You're All Set!"
@@ -200,6 +208,22 @@ function EventDetailsPage() {
           }
           buttonText="View Event Details"
           onClose={() => setIsSuccessModalOpen(false)}
+        />
+      )}
+
+      {/* Success Modal Join Waitlist*/}
+      {isSuccessModalOpen && isWaitlist && (
+        <SuccessModal
+          title="You're on the Waitlist!"
+          message={
+            <>
+              You're on the waitlist for <strong>{mockEvent.title}</strong>.
+              We'll send you an email as soon as a spot opens up!
+            </>
+          }
+          buttonText="Browse More Events"
+          onClose={() => setIsSuccessModalOpen(false)}
+          isWaitlist={isWaitlist}
         />
       )}
     </section>
