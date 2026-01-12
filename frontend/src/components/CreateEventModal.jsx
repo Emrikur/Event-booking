@@ -247,7 +247,7 @@ function CreateEventModal({ onClose, onSuccess }) {
           <button
             onClick={handleCancel}
             type="button"
-            className="modal__button modal__button--secondary"
+            className="modal__button modal__button--outline"
           >
             Cancel
           </button>
