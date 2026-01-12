@@ -182,7 +182,39 @@ function JoinEventModal({ event, onClose, onSuccess, isWaitlist }) {
           {errors.email && <span className="modal__error">{errors.email}</span>}
         </div>
 
-        <div className="modal__form-group">
+        {!isWaitlist && (
+          <>
+            <div className="modal__form-group">
+              <label htmlFor="phone" className="modal__label">
+                Phone Number
+              </label>
+              <input
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                type="tel"
+                id="phone"
+                className="modal__input"
+                placeholder="+46 70 123 45 67"
+              />
+            </div>
+
+            <div className="modal__form-group">
+              <label htmlFor="notes" className="modal__label">
+                Additional Information (optional)
+              </label>
+              <textarea
+                value={notes}
+                onChange={(e) => setNotes(e.target.value)}
+                id="notes"
+                className="modal__textarea"
+                rows="4"
+                placeholder="Any special requirements or questions..."
+              ></textarea>
+            </div>
+          </>
+        )}
+
+        {/* <div className="modal__form-group">
           <label htmlFor="phone" className="modal__label">
             Phone Number
           </label>
@@ -208,7 +240,7 @@ function JoinEventModal({ event, onClose, onSuccess, isWaitlist }) {
             rows="4"
             placeholder="Any special requirements or questions..."
           ></textarea>
-        </div>
+        </div> */}
 
         {errors.submit && (
           <div className="modal__error modal__error--submit">
