@@ -21,13 +21,14 @@ export default defineType({
       name: 'image',
       title: 'Background Image',
       type: 'image',
-      description: 'Add descriptive alt text for accessibility. Leave empty if purely decorative.',
       options: {
         hotspot: true,
       },
       fields: [
         {
           name: 'alt',
+          description:
+            'Add descriptive alt text for accessibility. Leave empty if purely decorative.',
           type: 'string',
           title: 'Alt text',
         },
