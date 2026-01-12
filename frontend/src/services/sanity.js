@@ -18,3 +18,13 @@ export async function getHero() {
     }
   }`);
 }
+
+export async function getTeam() {
+  return await client.fetch(`*[_type == 'team']{
+  _id,
+  firstName,
+    surname,
+    initials,
+    role,
+    description}`);
+}
