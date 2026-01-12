@@ -84,9 +84,9 @@ function CreateEventModal({ onClose, onSuccess }) {
     if (!hostName.trim()) {
       newErrors.hostName = "Host name is required";
     }
-    if (!eventImageFile) {
-      newErrors.eventImage = "Event image is required";
-    }
+    // if (!eventImageFile) {
+    //   newErrors.eventImage = "Event image is required";
+    // }
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
@@ -193,8 +193,8 @@ function CreateEventModal({ onClose, onSuccess }) {
             type="text"
             className="modal__input"
             placeholder="Event title"
-            required
           />
+          {errors.title && <span className="modal__error">{errors.title}</span>}
         </div>
 
         <div className="modal__form-group">
@@ -210,8 +210,8 @@ function CreateEventModal({ onClose, onSuccess }) {
             onChange={(e) => setDate(e.target.value)}
             type="date"
             className="modal__input"
-            required
           />
+          {errors.date && <span className="modal__error">{errors.date}</span>}
         </div>
 
         <div className="modal__form-group">
@@ -227,8 +227,8 @@ function CreateEventModal({ onClose, onSuccess }) {
             onChange={(e) => setTime(e.target.value)}
             type="time"
             className="modal__input"
-            required
           />
+          {errors.time && <span className="modal__error">{errors.time}</span>}
         </div>
 
         <div className="modal__form-group">
@@ -245,8 +245,10 @@ function CreateEventModal({ onClose, onSuccess }) {
             type="text"
             className="modal__input"
             placeholder="Event location"
-            required
           />
+          {errors.location && (
+            <span className="modal__error">{errors.location}</span>
+          )}
         </div>
 
         <div className="modal__form-group">
@@ -308,9 +310,6 @@ function CreateEventModal({ onClose, onSuccess }) {
         <div className="modal__form-group">
           <label htmlFor="eventImage" className="modal__label">
             Event Image
-            <span className="modal__required">
-              <Asterisk size={20} />
-            </span>
           </label>
           <input
             id="eventImage"
@@ -318,7 +317,6 @@ function CreateEventModal({ onClose, onSuccess }) {
             type="file"
             accept="image/*"
             className="modal__input"
-            required
           />
           {eventImagePreview && (
             <div className="modal__image-preview">
@@ -341,8 +339,10 @@ function CreateEventModal({ onClose, onSuccess }) {
             type="text"
             className="modal__input"
             placeholder="Host name or studio"
-            required
           />
+          {errors.hostName && (
+            <span className="modal__error">{errors.hostName}</span>
+          )}
         </div>
 
         <div className="modal__form-group">
@@ -372,6 +372,12 @@ function CreateEventModal({ onClose, onSuccess }) {
             placeholder="e.g. YS"
           />
         </div>
+
+        {errors.submit && (
+          <div className="modal__error modal__error--submit">
+            {errors.submit}
+          </div>
+        )}
 
         <div className="modal__actions">
           <button

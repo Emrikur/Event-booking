@@ -226,6 +226,7 @@ function JoinEventModal({ event, onClose, onSuccess, isWaitlist }) {
             {errors.submit}
           </div>
         )}
+
         <div className="modal__actions">
           <button
             onClick={handleCancel}
