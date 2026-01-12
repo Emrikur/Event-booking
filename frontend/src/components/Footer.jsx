@@ -1,8 +1,9 @@
 import "../styles/Footer.css";
-import FB from "../assets/icons/facebook.png";
-import IG from "../assets/icons/instagram.png";
-import LI from "../assets/icons/linkedin.png";
-import X from "../assets/icons/twitter.png";
+import { Facebook } from "lucide-react";
+import { Instagram } from "lucide-react";
+import { Linkedin } from "lucide-react";
+import { Twitter } from "lucide-react";
+
 
 export default function Footer() {
   return (
@@ -35,10 +36,10 @@ export default function Footer() {
   <h3>Follow Us</h3>
   <div className="social-media-links">
 
-    <a href="#"><img title="Instagram" src={IG} alt="instagram" /></a>
-    <a href="#"><img title="Facebook" src={FB} alt="facebook" /></a>
-    <a href="#"><img title="LinkedIn" src={LI} alt="linkedin" /></a>
-    <a href="#"><img title="X" src={X} alt="X" /></a>
+    <a href="#"><Instagram width={40} height={40} className="social-icon" /></a>
+    <a href="#"><Facebook width={40} height={40} className="social-icon" /></a>
+    <a href="#"><Linkedin width={40} height={40} className="social-icon" /></a>
+    <a href="#"><Twitter width={40} height={40} className="social-icon" /></a>
   </div>
 
 </div>
