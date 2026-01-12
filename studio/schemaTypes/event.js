@@ -24,7 +24,6 @@ export default defineType({
           description: 'Add descriptive alt text for accessibility',
           type: 'string',
           title: 'Alt text',
-          validation: (Rule) => Rule.required(),
         },
       ],
       validation: (Rule) => Rule.required(),
@@ -35,18 +34,6 @@ export default defineType({
       type: 'datetime',
       validation: (Rule) => Rule.required(),
     }),
-    // defineField({
-    //   name: 'date',
-    //   title: 'Date',
-    //   type: 'date',
-    //   validation: (Rule) => Rule.required(),
-    // }),
-    // defineField({
-    //   name: 'time',
-    //   title: 'Time',
-    //   type: 'string',
-    //   validation: (Rule) => Rule.required(),
-    // }),
     defineField({
       name: 'location',
       title: 'Location',
