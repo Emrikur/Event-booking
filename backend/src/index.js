@@ -6,6 +6,9 @@ import dotenv from "dotenv";
 // Config
 dotenv.config();
 
+// Sanity Client
+import { createEvent } from "./services/sanityClient.js";
+
 // Database Setup
 import { Client } from "pg";
 
@@ -20,7 +23,8 @@ app.use(
   })
 );
 
-app.use(express.json());
+app.use(express.json({ limit: "10mb" }));
+app.use(express.urlencoded({ limit: "10mb", extended: true }));
 app.use(express.static("public"));
 
 const client = new Client({
@@ -81,6 +85,53 @@ app.post("/api/waitlist", async (request, response) => {
     console.error("Error creating waitlist entry:", error);
     response.status(500).json({
       error: "Failed to join waitlist",
+    });
+  }
+});
+
+app.post("/api/events", async (request, response) => {
+  const {
+    title,
+    eventDateTime,
+    location,
+    price,
+    maxParticipants,
+    description,
+    whatToBring,
+    eventImageFile,
+    hostName,
+    hostBio,
+    hostAvatar,
+  } = request.body;
+
+  try {
+    if (!title || !eventDateTime || !location || !hostName) {
+      return response.status(400).json({
+        error: "Required fields missing",
+      });
+    }
+
+    const eventData = {
+      title,
+      eventDateTime,
+      location,
+      price,
+      maxParticipants,
+      description,
+      whatToBring,
+      eventImageFile,
+      hostName,
+      hostBio,
+      hostAvatar,
+    };
+
+    await createEvent(eventData);
+
+    response.status(201).json({ message: "Event created successfully" });
+  } catch (error) {
+    console.error("Error creating event:", error);
+    response.status(500).json({
+      error: "Failed to create event",
     });
   }
 });
