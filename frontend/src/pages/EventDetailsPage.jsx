@@ -197,7 +197,7 @@ function EventDetailsPage() {
         />
       )}
 
-      {/* Success Modal */}
+      {/* Success Modal Join Event*/}
       {isSuccessModalOpen && (
         <SuccessModal
           title="You're All Set!"
@@ -208,6 +208,22 @@ function EventDetailsPage() {
           }
           buttonText="View Event Details"
           onClose={() => setIsSuccessModalOpen(false)}
+        />
+      )}
+
+      {/* Success Modal Join Waitlist*/}
+      {isSuccessModalOpen && isWaitlist && (
+        <SuccessModal
+          title="You're on the Waitlist!"
+          message={
+            <>
+              You're on the waitlist for <strong>{mockEvent.title}</strong>.
+              We'll send you an email as soon as a spot opens up!
+            </>
+          }
+          buttonText="Browse More Events"
+          onClose={() => setIsSuccessModalOpen(false)}
+          isWaitlist={isWaitlist}
         />
       )}
     </section>
