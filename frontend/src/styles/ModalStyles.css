@@ -47,6 +47,10 @@
   justify-content: center;
 }
 
+.modal__close--waitlist {
+  background-color: var(--secondary-default);
+}
+
 .modal__subtitle {
   color: var(--text-muted);
 }

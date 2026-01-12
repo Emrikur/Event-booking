@@ -20,6 +20,10 @@
   margin-bottom: 30px;
 }
 
+.success-modal__icon--waitlist {
+  background: var(--gradient-two);
+}
+
 .success-modal__title {
   font-size: clamp(1.75rem, 4vw, 2.5rem);
   margin-bottom: 1rem;
@@ -40,4 +44,8 @@
   cursor: pointer;
   margin-block: 1rem;
   transition: background 0.3s;
+}
+
+.success-modal__button--waitlist {
+  background-color: var(--secondary-default);
 }
