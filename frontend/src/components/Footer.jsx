@@ -1,8 +1,5 @@
 import "../styles/Footer.css";
-import { Facebook } from "lucide-react";
-import { Instagram } from "lucide-react";
-import { Linkedin } from "lucide-react";
-import { Twitter } from "lucide-react";
+import { Facebook, Instagram, Linkedin, Twitter } from "lucide-react";
 
 
 export default function Footer() {
