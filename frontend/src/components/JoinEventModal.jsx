@@ -80,8 +80,6 @@ function JoinEventModal({ event, onClose, onSuccess, isWaitlist }) {
             notes: notes || null,
           };
 
-      console.log("Sending to waitlist:", bookingData);
-
       const response = isWaitlist
         ? await createWaitlistEntry(bookingData)
         : await createBooking(bookingData);
@@ -239,7 +237,6 @@ function JoinEventModal({ event, onClose, onSuccess, isWaitlist }) {
           <button
             type="submit"
             disabled={isSubmitting}
-            // className="modal__button modal__button--primary"
             className={`modal__button ${
               isWaitlist ? "modal__button--secondary" : "modal__button--primary"
             }`}
