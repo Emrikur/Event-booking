@@ -1,8 +1,15 @@
 import "../styles/navbarStyles.css";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import logo from "../assets/logo.png";
 
+import CreateEventModal from "./CreateEventModal";
+import SuccessModal from "./SuccessModal";
+
 const Navbar = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+
   const showMenu = () => {
     const menu = document.querySelector(".menu");
     menu.classList.toggle("floatMenu");
@@ -33,8 +40,29 @@ const Navbar = () => {
       </div>
 
       <div className="button-section">
-        <button className="createEvent">Create Event</button>
+        <button className="createEvent" onClick={() => setIsModalOpen(true)}>
+          Create Event
+        </button>
       </div>
+
+      {isModalOpen && (
+        <CreateEventModal
+          onClose={() => setIsModalOpen(false)}
+          onSuccess={() => {
+            setIsModalOpen(false);
+            setIsSuccessModalOpen(true);
+          }}
+        />
+      )}
+
+      {isSuccessModalOpen && (
+        <SuccessModal
+          title="Event Created!"
+          message="Your event has been published successfully"
+          buttonText="View My Event"
+          onClose={() => setIsSuccessModalOpen(false)}
+        />
+      )}
     </nav>
   );
 };

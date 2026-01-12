@@ -1,4 +1,9 @@
+import { useState } from "react";
 import { useParams } from "react-router-dom";
+
+import JoinEventModal from "../components/JoinEventModal";
+import SuccessModal from "../components/SuccessModal";
+
 import {
   CalendarClock,
   MapPin,
@@ -10,6 +15,9 @@ import {
 import "../styles/EventDetailsPage.css";
 
 function EventDetailsPage() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+
   const { id } = useParams();
 
   const mockEvent = {
@@ -21,7 +29,7 @@ function EventDetailsPage() {
     date: "June 20, 2025",
     time: "07:00",
     location: "Slottsskogen Park, Gothenburg",
-    spotsLeft: 15,
+    spotsLeft: 0,
     totalSpots: 30,
     price: "Free",
     description:
@@ -40,8 +48,7 @@ function EventDetailsPage() {
     },
   };
 
-  console.log("whatToBring:", mockEvent.whatToBring);
-  console.log("whatToBring length:", mockEvent.whatToBring.length);
+  const isWaitlist = mockEvent.spotsLeft === 0;
 
   return (
     <section className="event-detail">
@@ -147,7 +154,16 @@ function EventDetailsPage() {
             <div className="booking__price-amount">{mockEvent.price}</div>
           </div>
 
-          <button className="booking__button">Join Event</button>
+          <button
+            className={`booking__button ${
+              isWaitlist
+                ? "booking__button--secondary"
+                : "booking__button--primary"
+            }`}
+            onClick={() => setIsModalOpen(true)}
+          >
+            {isWaitlist ? "Join Waitlist" : "Join Event"}
+          </button>
 
           <div className="booking__divider"></div>
 
@@ -167,6 +183,49 @@ function EventDetailsPage() {
           </div>
         </aside>
       </div>
+
+      {/* Join Event Modal */}
+      {isModalOpen && (
+        <JoinEventModal
+          event={mockEvent}
+          onClose={() => setIsModalOpen(false)}
+          onSuccess={() => {
+            setIsModalOpen(false);
+            setIsSuccessModalOpen(true);
+          }}
+          isWaitlist={isWaitlist}
+        />
+      )}
+
+      {/* Success Modal Join Event*/}
+      {isSuccessModalOpen && (
+        <SuccessModal
+          title="You're All Set!"
+          message={
+            <>
+              Your spot has been reserved for <strong>{mockEvent.title}</strong>
+            </>
+          }
+          buttonText="View Event Details"
+          onClose={() => setIsSuccessModalOpen(false)}
+        />
+      )}
+
+      {/* Success Modal Join Waitlist*/}
+      {isSuccessModalOpen && isWaitlist && (
+        <SuccessModal
+          title="You're on the Waitlist!"
+          message={
+            <>
+              You're on the waitlist for <strong>{mockEvent.title}</strong>.
+              We'll send you an email as soon as a spot opens up!
+            </>
+          }
+          buttonText="Browse More Events"
+          onClose={() => setIsSuccessModalOpen(false)}
+          isWaitlist={isWaitlist}
+        />
+      )}
     </section>
   );
 }
