@@ -1,6 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ModalWrapper from "./ModalWrapper";
-import SuccessModal from "./SuccessModal";
 
 import { Asterisk } from "lucide-react";
 
@@ -16,35 +15,142 @@ function CreateEventModal({ onClose, onSuccess }) {
   const [description, setDescription] = useState("");
   const [whatToBring, setWhatToBring] = useState("");
 
+  const [eventImageFile, setEventImageFile] = useState(null);
+  const [eventImagePreview, setEventImagePreview] = useState(null);
+
   const [hostName, setHostName] = useState("");
   const [hostBio, setHostBio] = useState("");
   const [hostAvatar, setHostAvatar] = useState("");
 
-  const [statusMessage, setStatusMessage] = useState(""); // "success", "error", "invalid-email"
+  const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  function handleSubmit(e) {
+  /**
+   * Auto-clear status message after 5 seconds
+   * Cleanup prevents memory leaks if component unmounts
+   */
+  useEffect(() => {
+    if (Object.keys(errors).length > 0) {
+      const timer = setTimeout(() => {
+        setErrors({});
+      }, 5000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [errors]);
+
+  function handleImageChange(e) {
+    const file = e.target.files[0];
+
+    if (file) {
+      if (!file.type.startsWith("image/")) {
+        alert("Please select an image file");
+        return;
+      }
+
+      if (file.size > 5 * 1024 * 1024) {
+        alert("File size must be less than 5MB");
+        return;
+      }
+
+      setEventImageFile(file);
+
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setEventImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  async function handleSubmit(e) {
     e.preventDefault();
+    setIsSubmitting(true);
 
-    // Clear UI on submit
-    setTitle("");
-    setDate("");
-    setTime("");
-    setLocation("");
-    setPrice("");
-    setMaxParticipants("");
-    setDescription("");
-    setWhatToBring("");
-    setHostName("");
-    setHostBio("");
-    setHostAvatar("");
+    const newErrors = {};
 
-    //TODO: Send event data to Sanity
-    //TODO: Show confirmation message efter closing modal
-    //TODO: StatusMessages and isSubmitting
+    if (!title.trim()) {
+      newErrors.title = "Title is required";
+    }
+    if (!date) {
+      newErrors.date = "Date is required";
+    }
+    if (!time) {
+      newErrors.time = "Time is required";
+    }
+    if (!location.trim()) {
+      newErrors.location = "Location is required";
+    }
+    if (!hostName.trim()) {
+      newErrors.hostName = "Host name is required";
+    }
+    if (!eventImageFile) {
+      newErrors.eventImage = "Event image is required";
+    }
 
-    console.log("Event Created:");
-    onSuccess();
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      setIsSubmitting(false);
+      return;
+    }
+
+    const eventDateTime = `${date}T${time}:00.000Z`;
+
+    const eventData = {
+      title,
+      eventDateTime,
+      location,
+      price: Number(price) || null,
+      maxParticipants: Number(maxParticipants) || null,
+      description: description || null,
+      whatToBring: whatToBring
+        ? whatToBring.split(",").map((item) => item.trim())
+        : [],
+      eventImageFile: eventImagePreview,
+      hostName,
+      hostBio: hostBio || null,
+      hostAvatar: hostAvatar || null,
+    };
+
+    try {
+      const response = await fetch("http://localhost:8080/api/events", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(eventData),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to create event");
+      }
+
+      const result = await response.json();
+
+      // Clear UI on success
+      setTitle("");
+      setDate("");
+      setTime("");
+      setLocation("");
+      setPrice("");
+      setMaxParticipants("");
+      setDescription("");
+      setWhatToBring("");
+      setEventImageFile(null);
+      setEventImagePreview(null);
+      setHostName("");
+      setHostBio("");
+      setHostAvatar("");
+      setErrors({});
+
+      onClose();
+      onSuccess();
+    } catch (error) {
+      console.error("Error creating event:", error);
+      setErrors({ submit: "Something went wrong. Please try again." });
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   function handleCancel() {
@@ -57,6 +163,8 @@ function CreateEventModal({ onClose, onSuccess }) {
     setMaxParticipants("");
     setDescription("");
     setWhatToBring("");
+    setEventImageFile(null);
+    setEventImagePreview(null);
     setHostName("");
     setHostBio("");
     setHostAvatar("");
@@ -151,7 +259,7 @@ function CreateEventModal({ onClose, onSuccess }) {
             onChange={(e) => setPrice(e.target.value)}
             type="text"
             className="modal__input"
-            placeholder="Free or 100 SEK"
+            placeholder="Enter price in SEK (leave empty if free)"
           />
         </div>
 
@@ -195,6 +303,28 @@ function CreateEventModal({ onClose, onSuccess }) {
             className="modal__input"
             placeholder="e.g. Yoga mat, towel..."
           />
+        </div>
+
+        <div className="modal__form-group">
+          <label htmlFor="eventImage" className="modal__label">
+            Event Image
+            <span className="modal__required">
+              <Asterisk size={20} />
+            </span>
+          </label>
+          <input
+            id="eventImage"
+            onChange={handleImageChange}
+            type="file"
+            accept="image/*"
+            className="modal__input"
+            required
+          />
+          {eventImagePreview && (
+            <div className="modal__image-preview">
+              <img src={eventImagePreview} alt="" />
+            </div>
+          )}
         </div>
 
         <div className="modal__form-group">
@@ -253,9 +383,10 @@ function CreateEventModal({ onClose, onSuccess }) {
           </button>
           <button
             type="submit"
+            disabled={isSubmitting}
             className="modal__button modal__button--primary"
           >
-            Create Event
+            {isSubmitting ? "Creating..." : "Create Event"}
           </button>
         </div>
       </form>
