@@ -97,7 +97,7 @@ const EventsComponent = () => {
             </p>
           </div>
           <div className="event-action">
-            <button onClick={test} className="event-join">Join Event</button>
+            <button className="event-join">Join Event</button>
           </div>
         </div>
       </section>
