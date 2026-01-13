@@ -60,3 +60,12 @@ export async function getUpcomingEvents(limit = 3) {
     hostAvatar
   }`);
 }
+
+export async function getValue() {
+  return await client.fetch(`*[_type == 'value']{
+  _id,
+  title,
+    description,
+    icon
+  }`);
+}
