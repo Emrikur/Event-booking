@@ -72,6 +72,7 @@ export default defineType({
       name: 'hostName',
       title: 'Host Name',
       type: 'string',
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'hostBio',

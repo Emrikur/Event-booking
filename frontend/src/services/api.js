@@ -54,3 +54,15 @@ export async function createWaitlistEntry(bookingData) {
     throw error;
   }
 }
+
+export async function getEventAvailableSpots(eventId) {
+  const response = await fetch(
+    `${API_BASE_URL}/events/${eventId}/available-spots`
+  );
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch available spots");
+  }
+
+  return await response.json();
+}
