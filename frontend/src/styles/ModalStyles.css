@@ -109,7 +109,15 @@
   background-color: transparent;
   border: 1px solid var(--outline-default);
   border-radius: 8px;
-  font-size: 1rem;
+  font-family: var(--font-body);
+  color: var(--text-dark);
+  font-size: 0.875rem;
+  font-family: var(--font-body);
+}
+
+select.modal__input {
+  color: var(--text-dark);
+  font-size: 0.875rem;
   font-family: var(--font-body);
 }
 
@@ -120,12 +128,62 @@
 }
 
 input[type="date"]::-webkit-datetime-edit {
-  color: var(--text-muted);
+  color: var(--text-dark);
   font-size: 0.875rem;
   font-family: var(--font-body);
 }
+
 input[type="time"]::-webkit-datetime-edit {
+  color: var(--text-dark);
+  font-size: 0.875rem;
+  font-family: var(--font-body);
+}
+
+.modal__input-file-hidden {
+  display: none;
+}
+
+.modal__input-file-label {
+  display: flex;
+  align-items: center;
+  padding: 0.6rem 0.8rem;
+  background-color: transparent;
+  border: 1px solid var(--outline-default);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: border-color 0.3s;
+}
+
+.modal__input-file-label:hover {
+  border-color: var(--primary-default);
+}
+
+.modal__input-description {
   color: var(--text-muted);
+  font-size: 0.75rem;
+  margin-top: -0.25rem;
+  margin-bottom: 0.5rem;
+  font-style: italic;
+}
+
+.modal__input-file-button {
+  padding: 0.5rem 1rem;
+  margin-right: 1rem;
+  background-color: var(--primary-default);
+  color: var(--text-light);
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  font-family: var(--font-body);
+  transition: background-color 0.3s;
+}
+
+.modal__input-file-label:hover .modal__input-file-button {
+  background-color: var(--primary-hover);
+}
+
+.modal__input-file-text {
+  color: var(--text-dark);
   font-size: 0.875rem;
   font-family: var(--font-body);
 }
@@ -186,6 +244,13 @@ input[type="time"]::-webkit-datetime-edit {
 .modal__button--secondary:hover {
   background: var(--secondary-hover);
 }
+
+.modal__button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+  filter: grayscale(30%);
+}
+
 .modal__input--error {
   border-color: #ef4444;
 }
