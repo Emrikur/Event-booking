@@ -1,6 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ModalWrapper from "./ModalWrapper";
-import SuccessModal from "./SuccessModal";
 
 import { Asterisk } from "lucide-react";
 
@@ -11,40 +10,153 @@ function CreateEventModal({ onClose, onSuccess }) {
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [location, setLocation] = useState("");
+  const [category, setCategory] = useState("");
   const [price, setPrice] = useState("");
   const [maxParticipants, setMaxParticipants] = useState("");
   const [description, setDescription] = useState("");
   const [whatToBring, setWhatToBring] = useState("");
 
+  const [eventImageFile, setEventImageFile] = useState(null);
+  const [eventImagePreview, setEventImagePreview] = useState(null);
+
   const [hostName, setHostName] = useState("");
   const [hostBio, setHostBio] = useState("");
   const [hostAvatar, setHostAvatar] = useState("");
 
-  const [statusMessage, setStatusMessage] = useState(""); // "success", "error", "invalid-email"
+  const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  function handleSubmit(e) {
+  /**
+   * Auto-clear status message after 5 seconds
+   * Cleanup prevents memory leaks if component unmounts
+   */
+  useEffect(() => {
+    if (Object.keys(errors).length > 0) {
+      const timer = setTimeout(() => {
+        setErrors({});
+      }, 5000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [errors]);
+
+  function handleImageChange(e) {
+    const file = e.target.files[0];
+
+    if (file) {
+      if (!file.type.startsWith("image/")) {
+        alert("Please select an image file");
+        return;
+      }
+
+      if (file.size > 5 * 1024 * 1024) {
+        alert("File size must be less than 5MB");
+        return;
+      }
+
+      setEventImageFile(file);
+
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setEventImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  async function handleSubmit(e) {
     e.preventDefault();
+    setIsSubmitting(true);
 
-    // Clear UI on submit
-    setTitle("");
-    setDate("");
-    setTime("");
-    setLocation("");
-    setPrice("");
-    setMaxParticipants("");
-    setDescription("");
-    setWhatToBring("");
-    setHostName("");
-    setHostBio("");
-    setHostAvatar("");
+    const newErrors = {};
 
-    //TODO: Send event data to Sanity
-    //TODO: Show confirmation message efter closing modal
-    //TODO: StatusMessages and isSubmitting
+    if (!title.trim()) {
+      newErrors.title = "Title is required";
+    }
+    if (!date) {
+      newErrors.date = "Date is required";
+    }
+    if (!time) {
+      newErrors.time = "Time is required";
+    }
+    if (!location.trim()) {
+      newErrors.location = "Location is required";
+    }
+    if (!category) {
+      newErrors.category = "Category is required";
+    }
+    if (!hostName.trim()) {
+      newErrors.hostName = "Host name is required";
+    }
+    // if (!eventImageFile) {
+    //   newErrors.eventImage = "Event image is required";
+    // }
 
-    console.log("Event Created:");
-    onSuccess();
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      setIsSubmitting(false);
+      return;
+    }
+
+    const eventDateTime = `${date}T${time}:00.000Z`;
+
+    const eventData = {
+      title,
+      eventDateTime,
+      category,
+      location,
+      price: Number(price) || null,
+      maxParticipants: Number(maxParticipants) || null,
+      description: description || null,
+      whatToBring: whatToBring
+        ? whatToBring.split(",").map((item) => item.trim())
+        : [],
+      eventImageFile: eventImagePreview,
+      hostName,
+      hostBio: hostBio || null,
+      hostAvatar: hostAvatar || null,
+    };
+
+    try {
+      const response = await fetch("http://localhost:8080/api/events", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(eventData),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to create event");
+      }
+
+      const result = await response.json();
+
+      // Clear UI on success
+      setTitle("");
+      setDate("");
+      setTime("");
+      setLocation("");
+      setCategory("");
+      setPrice("");
+      setMaxParticipants("");
+      setDescription("");
+      setWhatToBring("");
+      setEventImageFile(null);
+      setEventImagePreview(null);
+      setHostName("");
+      setHostBio("");
+      setHostAvatar("");
+      setErrors({});
+
+      onClose();
+      onSuccess();
+    } catch (error) {
+      console.error("Error creating event:", error);
+      setErrors({ submit: "Something went wrong. Please try again." });
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   function handleCancel() {
@@ -53,10 +165,13 @@ function CreateEventModal({ onClose, onSuccess }) {
     setDate("");
     setTime("");
     setLocation("");
+    setCategory("");
     setPrice("");
     setMaxParticipants("");
     setDescription("");
     setWhatToBring("");
+    setEventImageFile(null);
+    setEventImagePreview(null);
     setHostName("");
     setHostBio("");
     setHostAvatar("");
@@ -85,8 +200,8 @@ function CreateEventModal({ onClose, onSuccess }) {
             type="text"
             className="modal__input"
             placeholder="Event title"
-            required
           />
+          {errors.title && <span className="modal__error">{errors.title}</span>}
         </div>
 
         <div className="modal__form-group">
@@ -102,8 +217,8 @@ function CreateEventModal({ onClose, onSuccess }) {
             onChange={(e) => setDate(e.target.value)}
             type="date"
             className="modal__input"
-            required
           />
+          {errors.date && <span className="modal__error">{errors.date}</span>}
         </div>
 
         <div className="modal__form-group">
@@ -119,8 +234,8 @@ function CreateEventModal({ onClose, onSuccess }) {
             onChange={(e) => setTime(e.target.value)}
             type="time"
             className="modal__input"
-            required
           />
+          {errors.time && <span className="modal__error">{errors.time}</span>}
         </div>
 
         <div className="modal__form-group">
@@ -137,8 +252,36 @@ function CreateEventModal({ onClose, onSuccess }) {
             type="text"
             className="modal__input"
             placeholder="Event location"
-            required
           />
+          {errors.location && (
+            <span className="modal__error">{errors.location}</span>
+          )}
+        </div>
+
+        <div className="modal__form-group">
+          <label htmlFor="category" className="modal__label">
+            Category
+            <span className="modal__required">
+              <Asterisk size={20} />
+            </span>
+          </label>
+          <select
+            id="category"
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+            className="modal__input"
+          >
+            <option value="" disabled>
+              Select a category
+            </option>
+            <option value="wellness">Wellness</option>
+            <option value="music">Music</option>
+            <option value="food-drink">Food & Drink</option>
+            <option value="workshop">Workshop</option>
+          </select>
+          {errors.category && (
+            <span className="modal__error">{errors.category}</span>
+          )}
         </div>
 
         <div className="modal__form-group">
@@ -151,7 +294,7 @@ function CreateEventModal({ onClose, onSuccess }) {
             onChange={(e) => setPrice(e.target.value)}
             type="text"
             className="modal__input"
-            placeholder="Free or 100 SEK"
+            placeholder="Enter price in SEK (leave empty if free)"
           />
         </div>
 
@@ -198,6 +341,39 @@ function CreateEventModal({ onClose, onSuccess }) {
         </div>
 
         <div className="modal__form-group">
+          <label htmlFor="eventImage" className="modal__label">
+            Event Image
+          </label>
+          <p className="modal__input-description">
+            If no image is uploaded, a default category-specific image will be
+            used
+          </p>
+
+          <input
+            id="eventImage"
+            onChange={handleImageChange}
+            type="file"
+            accept="image/*"
+            className="modal__input-file-hidden"
+          />
+          <label htmlFor="eventImage" className="modal__input-file-label">
+            <span className="modal__input-file-button">Choose file</span>
+            <span className="modal__input-file-text">
+              {eventImageFile ? eventImageFile.name : "No file chosen"}
+            </span>
+          </label>
+
+          {errors.eventImage && (
+            <span className="modal__error">{errors.eventImage}</span>
+          )}
+          {eventImagePreview && (
+            <div className="modal__image-preview">
+              <img src={eventImagePreview} alt="" />
+            </div>
+          )}
+        </div>
+
+        <div className="modal__form-group">
           <label htmlFor="hostName" className="modal__label">
             Host Name
             <span className="modal__required">
@@ -211,8 +387,10 @@ function CreateEventModal({ onClose, onSuccess }) {
             type="text"
             className="modal__input"
             placeholder="Host name or studio"
-            required
           />
+          {errors.hostName && (
+            <span className="modal__error">{errors.hostName}</span>
+          )}
         </div>
 
         <div className="modal__form-group">
@@ -243,6 +421,12 @@ function CreateEventModal({ onClose, onSuccess }) {
           />
         </div>
 
+        {errors.submit && (
+          <div className="modal__error modal__error--submit">
+            {errors.submit}
+          </div>
+        )}
+
         <div className="modal__actions">
           <button
             onClick={handleCancel}
@@ -253,9 +437,10 @@ function CreateEventModal({ onClose, onSuccess }) {
           </button>
           <button
             type="submit"
+            disabled={isSubmitting}
             className="modal__button modal__button--primary"
           >
-            Create Event
+            {isSubmitting ? "Creating..." : "Create Event"}
           </button>
         </div>
       </form>
