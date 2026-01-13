@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { createBooking, createWaitlistEntry } from "../services/api";
+import { formatEventDateTime } from "../utils/datehelper";
 
 import ModalWrapper from "./ModalWrapper";
 
@@ -68,12 +69,12 @@ function JoinEventModal({ event, onClose, onSuccess, isWaitlist }) {
     try {
       const bookingData = isWaitlist
         ? {
-            event_id: event.id,
+            event_id: event._id,
             full_name: fullName,
             email: email,
           }
         : {
-            event_id: event.id,
+            event_id: event._id,
             full_name: fullName,
             email: email,
             phone: phone || null,
@@ -130,7 +131,7 @@ function JoinEventModal({ event, onClose, onSuccess, isWaitlist }) {
               <CalendarClock size={20} />
             </span>
             <p className="modal__event-text">
-              {event.date} @{event.time}
+              <span>{formatEventDateTime(event.eventDateTime)}</span>
             </p>
           </div>
 
@@ -138,14 +139,18 @@ function JoinEventModal({ event, onClose, onSuccess, isWaitlist }) {
             <span className="modal__event-icon">
               <MapPin size={20} />
             </span>
-            <p className="modal__event-text">{event.location}</p>
+            <p className="modal__event-text">
+              <span>{event.location}</span>
+            </p>
           </div>
 
           <div className="modal__event-item">
             <span className="modal__event-icon">
               <Wallet size={20} />
             </span>
-            <p className="modal__event-text">{event.price}</p>
+            <p className="modal__event-text">
+              <span>{event.price ? `${event.price} SEK` : "Free"}</span>
+            </p>
           </div>
         </div>
       </div>

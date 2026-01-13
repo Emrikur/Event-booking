@@ -36,6 +36,31 @@ export async function getTeam() {
     description}`);
 }
 
+export async function getUpcomingEvents(limit = 3) {
+  return await client.fetch(`*[_type == "event" && eventDateTime > now()] | order(eventDateTime asc) [0...${limit}]{
+    _id,
+    title,
+    image{
+      asset->{
+        url
+      }
+    },
+    eventDateTime,
+    location,
+    category->{
+      title,
+      slug
+    },
+    price,
+    maxParticipants,
+    description,
+    whatToBring,
+    hostName,
+    hostBio,
+    hostAvatar
+  }`);
+}
+
 export async function getValue() {
   return await client.fetch(`*[_type == 'value']{
   _id,
@@ -43,5 +68,4 @@ export async function getValue() {
     description,
     icon
   }`);
-
 }
