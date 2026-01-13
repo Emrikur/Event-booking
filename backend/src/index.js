@@ -7,6 +7,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 // Sanity Client
+import { client as sanityClient } from "./services/sanityClient.js";
 import { createEvent } from "./services/sanityClient.js";
 
 // Database Setup
@@ -51,8 +52,6 @@ app.post("/api/bookings", async (request, response) => {
       "INSERT INTO bookings (event_id, full_name, email, phone, notes) VALUES ($1, $2, $3, $4, $5) RETURNING *",
       [event_id, full_name, email, phone, notes]
     );
-
-    //TODO: Uppdatera spots_left i Sanity
 
     response.status(201).json({ message: "Booking created successfully" });
   } catch (error) {
@@ -132,6 +131,38 @@ app.post("/api/events", async (request, response) => {
     console.error("Error creating event:", error);
     response.status(500).json({
       error: "Failed to create event",
+    });
+  }
+});
+
+app.get("/api/events/:eventId/available-spots", async (request, response) => {
+  const { eventId } = request.params;
+
+  try {
+    const event = await sanityClient.fetch(
+      `*[_type == "event" && _id == $eventId][0]{
+        maxParticipants
+      }`,
+      { eventId }
+    );
+
+    if (!event) {
+      return response.status(404).json({ error: "Event not found" });
+    }
+
+    const bookingCountResult = await client.query(
+      "SELECT COUNT(*) as booking_count FROM bookings WHERE event_id = $1",
+      [eventId]
+    );
+
+    const bookingCount = Number(bookingCountResult.rows[0].booking_count);
+    const spotsLeft = event.maxParticipants - bookingCount;
+
+    response.status(200).json({ spotsLeft });
+  } catch (error) {
+    console.error("Error fetching available spots:", error);
+    response.status(500).json({
+      error: "Failed to fetch available spots",
     });
   }
 });
