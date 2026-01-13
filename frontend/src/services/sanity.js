@@ -35,3 +35,13 @@ export async function getTeam() {
     role,
     description}`);
 }
+
+export async function getValue() {
+  return await client.fetch(`*[_type == 'value']{
+  _id,
+  title,
+    description,
+    icon
+  }`);
+
+}
