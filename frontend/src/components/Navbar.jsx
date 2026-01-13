@@ -1,6 +1,7 @@
 import "../styles/navbarStyles.css";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import logo from "../assets/logo.png";
 
 import CreateEventModal from "./CreateEventModal";
 import SuccessModal from "./SuccessModal";
@@ -10,7 +11,7 @@ const Navbar = () => {
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
 
   const showMenu = () => {
-    const menu = document.querySelector(".menu ul");
+    const menu = document.querySelector(".menu");
     menu.classList.toggle("floatMenu");
   };
 
@@ -22,7 +23,7 @@ const Navbar = () => {
         <div className="bar"></div>
       </div>
       <div className="logo">
-        <p style={{ fontSize: "20px" }}>EventHub</p>
+        <img src={logo} alt="EventHub Logo" />
       </div>
       <div className="menu">
         <ul>

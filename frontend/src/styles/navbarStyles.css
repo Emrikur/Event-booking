@@ -5,15 +5,19 @@
   background-color: #f9fafb6e;
   height: 80px;
   margin: 0 auto;
-  width: 80%;
+  width: 85%;
 }
 
 .logo {
   align-items: center;
   display: flex;
   justify-content: center;
-  padding-top: 15px;
+  height: 100%;
   width: 25%;
+}
+
+.logo img {
+  border-radius: 5px;
 }
 
 .menu ul {
@@ -30,9 +34,13 @@
   width: 50%;
 }
 
-.menu ul li {
+.menu ul li a {
   list-style: none;
   margin: 0 1rem;
+  text-decoration: none;
+  color: #333;
+  font-size: 1rem;
+  font-weight: 500;
 }
 
 .button-section {
@@ -49,31 +57,54 @@
   color: white;
   cursor: pointer;
   margin: 20px;
-  font-size: 1rem;
-  height: 45px;
-  padding: 0.5rem 1.2rem;
+  font-size: 0.8rem;
+  height: 40px;
   white-space: nowrap;
+  width: 140px;
 }
 
-@media (max-width: 596px) {
-  .menu ul {
+@media (max-width: 768px) {
+  .createEvent {
+    font-size: 0.9rem;
+    padding: 0.4rem 1.2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .createEvent {
+    font-size: 0.8rem;
+    padding: 0.3rem 1.2rem;
+    margin-right: 50px;
+  }
+}
+
+@media (min-width: 360px) and (max-width: 596px) {
+  .menu {
     display: none;
   }
 
-  .menu {
-    position: absolute;
+  .hamburger-menu {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    height: 100%;
+    width: 25%;
   }
 
   .navbar {
     width: 100%;
     justify-content: center;
+    gap: 40px;
     align-items: center;
   }
 
   .logo {
-    width: 38%;
-    padding-top: 15px;
-    margin: 10px;
+    margin: 20px;
+    width: 50%;
+  }
+
+  .logo img {
+    height: 50px;
   }
 
   .hamburger-menu {
@@ -93,7 +124,7 @@
   .floatMenu {
     display: block;
     position: absolute;
-    top: 40px;
+    top: 80px;
     background-color: #0f0f0ff2;
     width: 90vw;
     margin: auto;
@@ -108,6 +139,7 @@
   .floatMenu ul {
     list-style: none;
     padding: 0;
+
     margin: 0;
   }
 
@@ -115,11 +147,13 @@
     margin: 0.5rem 0;
   }
 
-  .floatMenu a {
-    text-decoration: none;
-    color: #ffffff;
-    font-size: 1.2rem;
-    font-weight: 500;
+  .menu ul li a {
+    color: white;
+  }
+
+  .menu ul li a:focus {
+    color: rgb(224, 224, 224);
+    font-size: 1.1rem;
   }
 
   @keyframes slideDown {
@@ -131,5 +165,19 @@
       opacity: 1;
       transform: translateY(0);
     }
+  }
+}
+
+@media (max-width: 768px) {
+  .logo img {
+    max-width: 150px;
+    height: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .logo img {
+    max-width: 100px;
+    height: auto;
   }
 }
