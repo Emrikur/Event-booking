@@ -7,10 +7,11 @@ function SuccessModal({
   title,
   message,
   buttonText,
+  onClick,
   onClose,
   isWaitlist = false,
 }) {
-  //TODO: Implement onClick for button to redirect to the created event page or another relevant page
+  //TODO: Implement onClick for button to redirect to the created event page or events page
 
   return (
     <ModalWrapper onClose={onClose} showDivider={false} isWaitlist={isWaitlist}>
@@ -25,7 +26,7 @@ function SuccessModal({
         <h2 className="success-modal__title">{title}</h2>
         <p className="success-modal__message">{message}</p>
         <button
-          onClick={onClose}
+          onClick={onClick || onClose}
           className={`success-modal__button ${
             isWaitlist ? "success-modal__button--waitlist" : ""
           }`}

@@ -1,49 +1,177 @@
-import yogaImg from "../assets/yoga.jpg";
-import cookingImg from "../assets/cooking.jpg";
-import cameraImg from "../assets/camera.jpg";
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { getUpcomingEvents } from "../services/sanity";
+import { formatEventDateTime } from "../utils/datehelper";
+import JoinEventModal from "../components/JoinEventModal";
+import SuccessModal from "../components/SuccessModal";
+
+import defaultWellness from "../assets/default-wellness.webp";
+import defaultMusic from "../assets/default-music.webp";
+import defaultFood from "../assets/default-food.webp";
+import defaultWorkshop from "../assets/default-workshop.webp";
+
 import { CalendarClock, MapPin, UsersRound } from "lucide-react";
+
 import "../styles/UpcomingEvents.css";
 
 function UpcomingEvents() {
+  const navigate = useNavigate();
+
+  const [upcomingEvents, setUpcomingEvents] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+  const [selectedEvent, setSelectedEvent] = useState(null);
+
+  const defaultImages = {
+    wellness: defaultWellness,
+    music: defaultMusic,
+    food: defaultFood,
+    workshop: defaultWorkshop,
+  };
+
+  useEffect(() => {
+    async function fetchUpcomingEvents() {
+      try {
+        // await new Promise((resolve) => setTimeout(resolve, 5000));
+        const data = await getUpcomingEvents();
+        setUpcomingEvents(data);
+      } catch (error) {
+        console.error("Error fetching events:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    fetchUpcomingEvents();
+  }, []);
+
+  function handleJoinEvent(event, isWaitlist) {
+    setSelectedEvent({ ...event, isWaitlist });
+    setIsModalOpen(true);
+  }
+
   return (
-    <section className="upcoming-events">
-      <div className="upcoming-events-header">
-      <h2 className="upcoming-events-title">Upcoming Events</h2>
-      <div className="see-all-events">See all events →</div>
-      </div>
-      <div className="upcoming-events-list">
-        <div className="event-card">
-          <img src= {yogaImg} alt="Morning Yoga in the Park" className="event-image"/>
+    <>
+      {isLoading && (
+        <div className="upcoming-events__loading">
+          <div className="upcoming-events__spinner"></div>
+          <p>Loading Upcoming Events...</p>
+        </div>
+      )}
 
-          <h3 className="event-title">Morning Yoga in the Park</h3>
-          <p className="event-meta"> <CalendarClock size={18} /> June 20, 2025 @07:00</p>
-          <p className="event-meta"><MapPin size={18} /> Slottsskogen, Gothenburg</p>
-          <p className="event-spots"><UsersRound size={18} /> 15 spots left</p>
-
-          <button className="event-button">Join Event</button>
+      <section className="upcoming-events">
+        <div className="upcoming-events-header">
+          <h2 className="upcoming-events-title">Upcoming Events</h2>
+          <Link to="/events" className="see-all-events">
+            See all Events →
+          </Link>
         </div>
 
+        <div className="upcoming-events-list">
+          {upcomingEvents.map((event) => {
+            const imageUrl = event.image?.asset?.url
+              ? event.image.asset.url
+              : defaultImages[event.category?.slug?.current] ||
+                defaultImages.workshop;
 
-        <div className="event-card">
-          <img src={cookingImg} alt="Cooking" className="event-image"/>
-          <h3 className="event-title">Fresh Pasta</h3>
-          <p className="event-meta"><CalendarClock size={18} /> May 26, 2025 @11:00</p>
-          <p className="event-meta"><MapPin size={18} /> Södermalm, Stockholm</p>
-          <p className="event-spots"><UsersRound size={18} /> 20 spots left</p>
-          <button className="event-button">Join Event</button>
+            //TODO: Replace with real spotsLeft logic
+            // const isWaitlist = event.spotsLeft === 0;
+            const isWaitlist = event.title === "Morning Yoga in the Park";
+            const spotsLeft = isWaitlist ? 0 : event.maxParticipants;
+
+            return (
+              <div key={event._id} className="event-card">
+                <img src={imageUrl} alt={event.title} className="event-image" />
+
+                <div className="event-card__content">
+                  <h3 className="event-title">{event.title}</h3>
+                  <p className="event-meta">
+                    <CalendarClock size={18} />
+                    <span>{formatEventDateTime(event.eventDateTime)}</span>
+                  </p>
+                  <p className="event-meta">
+                    <MapPin size={18} />
+                    <span>{event.location}</span>
+                  </p>
+                  <p className="event-spots">
+                    <UsersRound size={18} />
+                    <span>{event.maxParticipants} spots left</span>
+                  </p>
+                </div>
+
+                <div className="event-card__actions">
+                  <Link
+                    to={`/events/${event._id}`}
+                    className="event-button event-button--outline"
+                  >
+                    View Details
+                  </Link>
+                  <button
+                    onClick={() => handleJoinEvent(event, isWaitlist)}
+                    className={`event-button ${
+                      isWaitlist
+                        ? "event-button--secondary"
+                        : "event-button--primary"
+                    }`}
+                  >
+                    {isWaitlist ? "Join Waitlist" : "Join Event"}
+                  </button>
+                </div>
+              </div>
+            );
+          })}
         </div>
+      </section>
 
+      {/* Join Event Modal */}
+      {isModalOpen && selectedEvent && (
+        <JoinEventModal
+          event={selectedEvent}
+          onClose={() => setIsModalOpen(false)}
+          onSuccess={() => {
+            setIsModalOpen(false);
+            setIsSuccessModalOpen(true);
+          }}
+          isWaitlist={selectedEvent.isWaitlist}
+        />
+      )}
 
-        <div className="event-card">
-          <img src= {cameraImg} alt="Camera" className="event-image" />
-          <h3 className="event-title"> Photography Workshop </h3>
-          <p className="event-meta"><CalendarClock size={18} /> May 24, 2025 @10:00</p>
-          <p className="event-meta"><MapPin size={18} /> Haga, Göteborg</p>
-          <p className="event-spots"><UsersRound size={18} /> 4 spots left</p>
-          <button className="event-button">Join Event</button>
-        </div>
-      </div>
-    </section>
+      {/* Success Modal - Join Event */}
+      {isSuccessModalOpen && !selectedEvent.isWaitlist && (
+        <SuccessModal
+          title="You're All Set!"
+          message={
+            <>
+              Your spot has been reserved for{" "}
+              <strong>{selectedEvent.title}</strong>
+            </>
+          }
+          buttonText="View Event Details"
+          onClose={() => setIsSuccessModalOpen(false)}
+        />
+      )}
+
+      {/* Success Modal - Join Waitlist */}
+      {isSuccessModalOpen && selectedEvent.isWaitlist && (
+        <SuccessModal
+          title="You're on the Waitlist!"
+          message={
+            <>
+              You're on the waitlist for <strong>{selectedEvent.title}</strong>.
+              We'll send you an email as soon as a spot opens up!
+            </>
+          }
+          buttonText="Browse More Events"
+          onClose={() => setIsSuccessModalOpen(false)}
+          onClick={() => {
+            setIsSuccessModalOpen(false);
+            navigate("/events");
+          }}
+          isWaitlist={true}
+        />
+      )}
+    </>
   );
 }
 
