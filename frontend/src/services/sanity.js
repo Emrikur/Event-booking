@@ -1,4 +1,5 @@
 import { createClient } from "@sanity/client";
+import { createImageUrlBuilder } from "@sanity/image-url";
 
 export const client = createClient({
   projectId: import.meta.env.VITE_SANITY_PROJECT_ID,
@@ -6,6 +7,12 @@ export const client = createClient({
   useCdn: true,
   apiVersion: "2024-01-01",
 });
+
+const builder = createImageUrlBuilder(client);
+
+export function urlFor(source) {
+  return builder.image(source);
+}
 
 export async function getHero() {
   return await client.fetch(`*[_type == "hero"][0]{
@@ -17,4 +24,14 @@ export async function getHero() {
       }
     }
   }`);
+}
+
+export async function getTeam() {
+  return await client.fetch(`*[_type == 'team']{
+  _id,
+  firstName,
+    surname,
+    initials,
+    role,
+    description}`);
 }
