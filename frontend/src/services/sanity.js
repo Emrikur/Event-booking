@@ -69,3 +69,23 @@ export async function getValue() {
     icon
   }`);
 }
+
+export async function getEventDetails() {
+  return await client.fetch(`*[_type == 'event']{
+    title,
+    image,
+    slug,
+    eventDateTime,
+    location,
+    category,
+    price,
+    maxParticipants,
+    description,
+    whatToBring,
+    description,
+    hostName,
+    hostBio,
+    hostAvatar
+  }`);
+
+}
