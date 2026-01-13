@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+
 import { getUpcomingEvents } from "../services/sanity";
 import { formatEventDateTime } from "../utils/datehelper";
+import { getEventAvailableSpots } from "../services/api";
+
 import JoinEventModal from "../components/JoinEventModal";
 import SuccessModal from "../components/SuccessModal";
 
@@ -30,21 +33,33 @@ function UpcomingEvents() {
     workshop: defaultWorkshop,
   };
 
-  useEffect(() => {
-    async function fetchUpcomingEvents() {
-      try {
-        // await new Promise((resolve) => setTimeout(resolve, 5000));
-        const data = await getUpcomingEvents();
-        setUpcomingEvents(data);
-      } catch (error) {
-        console.error("Error fetching events:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    }
+  async function loadEvents() {
+    try {
+      const data = await getUpcomingEvents();
 
-    fetchUpcomingEvents();
+      const eventsWithSpots = await Promise.all(
+        data.map(async (event) => {
+          const { spotsLeft } = await getEventAvailableSpots(event._id);
+          return { ...event, spotsLeft };
+        })
+      );
+
+      setUpcomingEvents(eventsWithSpots);
+    } catch (error) {
+      console.error("Error fetching events:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    loadEvents();
   }, []);
+
+  function handleJoinEvent(event, isWaitlist) {
+    setSelectedEvent({ ...event, isWaitlist });
+    setIsModalOpen(true);
+  }
 
   function handleJoinEvent(event, isWaitlist) {
     setSelectedEvent({ ...event, isWaitlist });
@@ -75,10 +90,7 @@ function UpcomingEvents() {
               : defaultImages[event.category?.slug?.current] ||
                 defaultImages.workshop;
 
-            //TODO: Replace with real spotsLeft logic
-            // const isWaitlist = event.spotsLeft === 0;
-            const isWaitlist = event.title === "Morning Yoga in the Park";
-            const spotsLeft = isWaitlist ? 0 : event.maxParticipants;
+            const isWaitlist = event.spotsLeft === 0;
 
             return (
               <div key={event._id} className="event-card">
@@ -96,7 +108,7 @@ function UpcomingEvents() {
                   </p>
                   <p className="event-spots">
                     <UsersRound size={18} />
-                    <span>{event.maxParticipants} spots left</span>
+                    <span>{event.spotsLeft} spots left</span>
                   </p>
                 </div>
 
@@ -132,6 +144,7 @@ function UpcomingEvents() {
           onSuccess={() => {
             setIsModalOpen(false);
             setIsSuccessModalOpen(true);
+            loadEvents();
           }}
           isWaitlist={selectedEvent.isWaitlist}
         />
