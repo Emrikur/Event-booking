@@ -10,6 +10,7 @@ function CreateEventModal({ onClose, onSuccess }) {
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [location, setLocation] = useState("");
+  const [category, setCategory] = useState("");
   const [price, setPrice] = useState("");
   const [maxParticipants, setMaxParticipants] = useState("");
   const [description, setDescription] = useState("");
@@ -81,6 +82,9 @@ function CreateEventModal({ onClose, onSuccess }) {
     if (!location.trim()) {
       newErrors.location = "Location is required";
     }
+    if (!category) {
+      newErrors.category = "Category is required";
+    }
     if (!hostName.trim()) {
       newErrors.hostName = "Host name is required";
     }
@@ -99,6 +103,7 @@ function CreateEventModal({ onClose, onSuccess }) {
     const eventData = {
       title,
       eventDateTime,
+      category,
       location,
       price: Number(price) || null,
       maxParticipants: Number(maxParticipants) || null,
@@ -132,6 +137,7 @@ function CreateEventModal({ onClose, onSuccess }) {
       setDate("");
       setTime("");
       setLocation("");
+      setCategory("");
       setPrice("");
       setMaxParticipants("");
       setDescription("");
@@ -159,6 +165,7 @@ function CreateEventModal({ onClose, onSuccess }) {
     setDate("");
     setTime("");
     setLocation("");
+    setCategory("");
     setPrice("");
     setMaxParticipants("");
     setDescription("");
@@ -252,6 +259,32 @@ function CreateEventModal({ onClose, onSuccess }) {
         </div>
 
         <div className="modal__form-group">
+          <label htmlFor="category" className="modal__label">
+            Category
+            <span className="modal__required">
+              <Asterisk size={20} />
+            </span>
+          </label>
+          <select
+            id="category"
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+            className="modal__input"
+          >
+            <option value="" disabled>
+              Select a category
+            </option>
+            <option value="wellness">Wellness</option>
+            <option value="music">Music</option>
+            <option value="food-drink">Food & Drink</option>
+            <option value="workshop">Workshop</option>
+          </select>
+          {errors.category && (
+            <span className="modal__error">{errors.category}</span>
+          )}
+        </div>
+
+        <div className="modal__form-group">
           <label htmlFor="price" className="modal__label">
             Price
           </label>
@@ -311,13 +344,28 @@ function CreateEventModal({ onClose, onSuccess }) {
           <label htmlFor="eventImage" className="modal__label">
             Event Image
           </label>
+          <p className="modal__input-description">
+            If no image is uploaded, a default category-specific image will be
+            used
+          </p>
+
           <input
             id="eventImage"
             onChange={handleImageChange}
             type="file"
             accept="image/*"
-            className="modal__input"
+            className="modal__input-file-hidden"
           />
+          <label htmlFor="eventImage" className="modal__input-file-label">
+            <span className="modal__input-file-button">Choose file</span>
+            <span className="modal__input-file-text">
+              {eventImageFile ? eventImageFile.name : "No file chosen"}
+            </span>
+          </label>
+
+          {errors.eventImage && (
+            <span className="modal__error">{errors.eventImage}</span>
+          )}
           {eventImagePreview && (
             <div className="modal__image-preview">
               <img src={eventImagePreview} alt="" />
