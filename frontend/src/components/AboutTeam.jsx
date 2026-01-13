@@ -27,8 +27,8 @@ export default function AboutTeam() {
     </div>
 
     <div className="team-flex-container">
-      {teamData.map((member) =>
-        <div className="member-card" key={member._id}>
+      {teamData.map((member, index) =>
+        <div className="member-card" key={index}>
           <div className="member-initials-box"><h2>{member.initials}</h2></div>
           <h3>{member.firstName} {member.surname}</h3>
           <h4>{member.role}</h4>
