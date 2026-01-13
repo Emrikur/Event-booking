@@ -94,7 +94,18 @@ function UpcomingEvents() {
 
             return (
               <div key={event._id} className="event-card">
-                <img src={imageUrl} alt={event.title} className="event-image" />
+                <div className="event-card__image-wrapper">
+                  <img
+                    src={imageUrl}
+                    alt={event.title}
+                    className="event-image"
+                  />
+                  {event.category.title && (
+                    <span className="event-card__category-badge">
+                      {event.category.title}
+                    </span>
+                  )}
+                </div>
 
                 <div className="event-card__content">
                   <h3 className="event-title">{event.title}</h3>
