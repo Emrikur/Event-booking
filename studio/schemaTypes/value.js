@@ -9,13 +9,13 @@ export default defineType({
       name: 'title',
       title: 'Title',
       type: 'string',
-      validation: (Rule) => Rule.required(),
+      validation: (Rule) => Rule.required().error('Title is required'),
     }),
     defineField({
       name: 'description',
       title: 'Description',
       type: 'text',
-      validation: (Rule) => Rule.required(),
+      validation: (Rule) => Rule.required().error('Description is required'),
     }),
     defineField({
       name: 'icon',
@@ -51,7 +51,7 @@ export default defineType({
         ],
         layout: 'dropdown',
       },
-      validation: (Rule) => Rule.required(),
+      validation: (Rule) => Rule.required().error('Icon is required'),
     }),
   ],
 })
