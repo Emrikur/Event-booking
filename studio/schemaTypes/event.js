@@ -26,7 +26,7 @@ export default defineType({
           title: 'Alt text',
         },
       ],
-      validation: (Rule) => Rule.required(),
+      description: 'If no image is uploaded a default category-specific image will be used',
     }),
     defineField({
       name: 'eventDateTime',
@@ -38,6 +38,13 @@ export default defineType({
       name: 'location',
       title: 'Location',
       type: 'string',
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'category',
+      title: 'Category',
+      type: 'reference',
+      to: [{type: 'category'}],
       validation: (Rule) => Rule.required(),
     }),
     defineField({
