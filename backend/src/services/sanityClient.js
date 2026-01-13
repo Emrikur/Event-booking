@@ -62,7 +62,7 @@ export async function createEvent(eventData) {
     const result = await client.create({
       _type: "event",
       ...eventDataWithoutImage,
-      image: imageRef,
+      ...(imageRef && { image: imageRef }),
     });
     return result;
   } catch (error) {
