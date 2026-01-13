@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import ModalWrapper from "./ModalWrapper";
+import { getCategories } from "../services/sanity";
 
 import { Asterisk } from "lucide-react";
 
@@ -23,8 +24,21 @@ function CreateEventModal({ onClose, onSuccess }) {
   const [hostBio, setHostBio] = useState("");
   const [hostAvatar, setHostAvatar] = useState("");
 
+  const [categories, setCategories] = useState([]);
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    async function fetchCategories() {
+      try {
+        const data = await getCategories();
+        setCategories(data);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    }
+    fetchCategories();
+  }, []);
 
   /**
    * Auto-clear status message after 5 seconds
@@ -88,9 +102,6 @@ function CreateEventModal({ onClose, onSuccess }) {
     if (!hostName.trim()) {
       newErrors.hostName = "Host name is required";
     }
-    // if (!eventImageFile) {
-    //   newErrors.eventImage = "Event image is required";
-    // }
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
@@ -274,10 +285,11 @@ function CreateEventModal({ onClose, onSuccess }) {
             <option value="" disabled>
               Select a category
             </option>
-            <option value="wellness">Wellness</option>
-            <option value="music">Music</option>
-            <option value="food-drink">Food & Drink</option>
-            <option value="workshop">Workshop</option>
+            {categories.map((category) => (
+              <option key={category._id} value={category._id}>
+                {category.title}
+              </option>
+            ))}
           </select>
           {errors.category && (
             <span className="modal__error">{errors.category}</span>

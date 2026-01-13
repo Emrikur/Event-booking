@@ -36,6 +36,14 @@ export async function getTeam() {
     description}`);
 }
 
+export async function getCategories() {
+  return await client.fetch(`*[_type == "category"]{
+    _id,
+    title,
+    slug
+  }`);
+}
+
 export async function getUpcomingEvents(limit = 3) {
   return await client.fetch(`*[_type == "event" && eventDateTime > now()] | order(eventDateTime asc) [0...${limit}]{
     _id,

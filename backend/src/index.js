@@ -93,6 +93,7 @@ app.post("/api/events", async (request, response) => {
     title,
     eventDateTime,
     location,
+    category,
     price,
     maxParticipants,
     description,
@@ -104,7 +105,7 @@ app.post("/api/events", async (request, response) => {
   } = request.body;
 
   try {
-    if (!title || !eventDateTime || !location || !hostName) {
+    if (!title || !eventDateTime || !location || !category || !hostName) {
       return response.status(400).json({
         error: "Required fields missing",
       });
@@ -114,6 +115,7 @@ app.post("/api/events", async (request, response) => {
       title,
       eventDateTime,
       location,
+      category,
       price,
       maxParticipants,
       description,
