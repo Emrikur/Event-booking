@@ -1,0 +1,57 @@
+import {defineField, defineType} from 'sanity'
+
+export default defineType({
+  name: 'value',
+  title: 'Company Values Section',
+  type: 'document',
+  fields: [
+    defineField({
+      name: 'title',
+      title: 'Title',
+      type: 'string',
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'description',
+      title: 'Description',
+      type: 'text',
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'icon',
+      title: 'Icon',
+      type: 'string',
+      options: {
+        list: [
+          {title: 'Heart', value: 'Heart'},
+          {title: 'Shield', value: 'Shield'},
+          {title: 'Lightbulb', value: 'Lightbulb'},
+          {title: 'Users', value: 'Users'},
+          {title: 'Target', value: 'Target'},
+          {title: 'Trending Up', value: 'TrendingUp'},
+          {title: 'Rocket', value: 'Rocket'},
+          {title: 'Accessibility', value: 'Accessibility'},
+          {title: 'Sprout', value: 'Sprout'},
+          {title: 'Lock', value: 'Lock'},
+          {title: 'Handshake', value: 'Handshake'},
+          {title: 'Sparkles', value: 'Sparkles'},
+          {title: 'Star', value: 'Star'},
+          {title: 'Award', value: 'Award'},
+          {title: 'Briefcase', value: 'Briefcase'},
+          {title: 'Compass', value: 'Compass'},
+          {title: 'Globe', value: 'Globe'},
+          {title: 'Check Circle', value: 'CheckCircle'},
+          {title: 'Eye', value: 'Eye'},
+          {title: 'Wrench', value: 'Wrench'},
+          {title: 'Layers', value: 'Layers'},
+          {title: 'Message Circle', value: 'MessageCircle'},
+          {title: 'Puzzle', value: 'Puzzle'},
+          {title: 'Shield Check', value: 'ShieldCheck'},
+          {title: 'Zap', value: 'Zap'},
+        ],
+        layout: 'dropdown',
+      },
+      validation: (Rule) => Rule.required(),
+    }),
+  ],
+})
