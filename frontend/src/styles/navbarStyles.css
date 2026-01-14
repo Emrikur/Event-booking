@@ -4,13 +4,13 @@
 }
 
 .navbar-inner {
-  max-width: 1200px;
+  max-width: 75rem;
   margin: 0 auto;
   padding: 1.2rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 80px;
+  height: 5rem;
 }
 
 .logo {
@@ -19,14 +19,10 @@
 }
 
 .logo img {
-  height: clamp(32px, 6vw, 56px);
+  height: clamp(2rem, 6vw, 3.5rem);
   width: auto;
   border-radius: 5px;
 }
-
-/* .menu {
-  display: flex;
-} */
 
 .menu ul {
   display: flex;
@@ -77,7 +73,7 @@
   background-color: #333;
 }
 
-@media (max-width: 596px) {
+@media (max-width: 37.25rem) {
   .logo {
     visibility: hidden;
   }
@@ -93,7 +89,7 @@
   .floatMenu {
     display: block;
     position: absolute;
-    top: 80px;
+    top: 5rem;
     left: 50%;
     transform: translateX(-50%);
     width: 100%;
@@ -123,7 +119,7 @@
   }
 }
 
-@media (min-width: 1220px) {
+@media (min-width: 76.25rem) {
   .navbar-inner {
     padding: 1.2rem 0;
   }
