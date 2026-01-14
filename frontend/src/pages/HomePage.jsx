@@ -3,6 +3,7 @@ import SearchBar from "../components/SearchBar";
 import HowItWorks from "../components/HowItWorks";
 import CallToAction from "../components/CallToAction";
 import UpcomingEvents from "../components/UpcomingEvents";
+import { getHostEventCTA } from "../services/sanity";
 
 function HomePage() {
   return (
@@ -10,11 +11,7 @@ function HomePage() {
       <Hero />
       <SearchBar />
       <HowItWorks />
-      <CallToAction
-        title="Want to Host an Event?"
-        subtitle="Join thousands of hosts creating amazing experiences."
-        buttonText="Start Hosting"
-      />
+      <CallToAction fetchCTA={getHostEventCTA} />
       <UpcomingEvents />
     </>
   );

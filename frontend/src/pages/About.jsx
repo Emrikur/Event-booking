@@ -5,6 +5,7 @@ import AboutValues from "../components/AboutValues";
 import AboutTeam from "../components/AboutTeam";
 import AboutStory from "../components/AboutStory";
 import CallToAction from "../components/CallToAction";
+import { getJoinCommunityCTA } from "../services/sanity";
 
 function About() {
   return (
@@ -15,11 +16,7 @@ function About() {
       <AboutValues />
       <AboutStory />
       <AboutTeam />
-      <CallToAction
-        title="Ready to Get Started?"
-        subtitle="Join thousands of hosts and attendees creating unforgettable moments every day"
-        buttonText="Start Hosting"
-      />
+      <CallToAction fetchCTA={getJoinCommunityCTA} />
     </>
   );
 }
