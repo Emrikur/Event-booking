@@ -9,8 +9,9 @@ import { getEvents } from "../services/sanity";
 import { urlFor } from "../services/sanity";
 
 const EventsComponent = () => {
-  const categories = useState(["All events"]);
+  const [allEvents, setAllEvents] = useState(null);
   const [events, setEvents] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState();
 
   const defaultImages = {
     wellness: "../assets/default-wellness.webp",
@@ -22,18 +23,38 @@ const EventsComponent = () => {
   useEffect(() => {
     async function fetchEvents() {
       const data = await getEvents();
-      setEvents(data);
+      setAllEvents(data); // Store all events separately
+      setEvents(data); // Initialize displayed events with all events
     }
 
     fetchEvents();
   }, []);
 
+  const handleCategoryChange = (category) => {
+    setSelectedCategory(category);
+
+    if (category === "All events") {
+      setEvents(allEvents);
+    } else {
+      const filteredEvents = allEvents.filter(
+        (event) => event.category.title === category
+      );
+      setEvents(filteredEvents);
+    }
+  };
+
+  const handleAllEventsClick = () => {
+    setEvents(allEvents);
+  };
+
   return (
     <>
       <section className="category">
         <div className="category-bar">
-          {categories[0]}
-          <DropdownMenu />
+          <button className="all-events" onClick={handleAllEventsClick}>
+            All events
+          </button>
+          <DropdownMenu onCategoryChange={handleCategoryChange} />
         </div>
       </section>
       <section className="event-list">
