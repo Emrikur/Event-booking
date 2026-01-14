@@ -41,7 +41,7 @@ export async function getAboutHero() {
 }
 
 export async function getAboutMission() {
-  return await client.fetch(`*[_type == 'aboutMission']{
+  return await client.fetch(`*[_type == 'aboutMission'][0]{
     _id,
     title,
     description
