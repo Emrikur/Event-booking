@@ -1,23 +1,36 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { getHostEventCTA, getJoinCommunityCTA } from "../services/sanity";
 
 import CreateEventModal from "./CreateEventModal";
 import SuccessModal from "./SuccessModal";
 
 import "../styles/CallToAction.css";
 
-function CallToAction({ title, subtitle, buttonText }) {
+function CallToAction({ fetchCTA }) {
+  const [ctaData, setCtaData] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+
+  useEffect(() => {
+    async function loadCTA() {
+      const data = await fetchCTA();
+      setCtaData(data);
+    }
+
+    loadCTA();
+  }, [fetchCTA]);
+
+  if (!ctaData) return null;
 
   return (
     <section className="cta">
       <div className="cta__container">
         <div className="cta__content">
-          <h2 className="cta__title">{title}</h2>
-          <p className="cta__text">{subtitle}</p>
+          <h2 className="cta__title">{ctaData.title}</h2>
+          <p className="cta__text">{ctaData.subtitle}</p>
         </div>
         <button className="cta__button" onClick={() => setIsModalOpen(true)}>
-          {buttonText}
+          {ctaData.buttonText}
         </button>
       </div>
 
