@@ -139,7 +139,10 @@ export async function getEventDetails() {
     slug,
     eventDateTime,
     location,
-    category,
+    category->{
+      title,
+      slug
+    },
     price,
     maxParticipants,
     description,
