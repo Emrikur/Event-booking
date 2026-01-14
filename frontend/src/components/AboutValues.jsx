@@ -28,15 +28,13 @@ export default function AboutValues() {
           const Icon = LucideIcons[value.icon];
 
           return (
-            <>
-              <div key={value._id}>
-                <div className="Value-icon-box">
-                  {Icon ? <Icon /> : <LucideIcons.CircleQuestionMark />}
-                </div>
-                <h3>{value.title}</h3>
-                <p>{value.description}</p>
+            <div key={value._id}>
+              <div className="Value-icon-box">
+                {Icon ? <Icon /> : <LucideIcons.CircleQuestionMark />}
               </div>
-            </>
+              <h3>{value.title}</h3>
+              <p>{value.description}</p>
+            </div>
           );
         })}
       </div>
