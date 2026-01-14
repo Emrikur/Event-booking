@@ -3,8 +3,23 @@ import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import "../styles/dropdownMenuStyles.css";
+import { useState, useEffect } from "react";
+import { getEvents } from "../services/sanity";
 
-export default function BasicMenu() {
+export default function DropdownMenu() {
+  const [categories, setCategories] = useState([]);
+  useEffect(() => {
+    async function fetchEvents() {
+      const data = await getEvents();
+      const uniqueCategories = Array.from(
+        new Set(data.map((event) => event.category.title))
+      );
+      setCategories(uniqueCategories);
+    }
+
+    fetchEvents();
+  }, []);
+
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -36,10 +51,11 @@ export default function BasicMenu() {
           },
         }}
       >
-        <MenuItem onClick={handleClose}>Wellnes</MenuItem>
-        <MenuItem onClick={handleClose}>Music</MenuItem>
-        <MenuItem onClick={handleClose}>Food & Drink</MenuItem>
-        <MenuItem onClick={handleClose}>Workshop</MenuItem>
+        {categories.map((category) => (
+          <MenuItem key={category} onClick={handleClose}>
+            {category}
+          </MenuItem>
+        ))}
       </Menu>
     </div>
   );
