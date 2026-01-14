@@ -18,8 +18,8 @@ export default function AboutStats() {
 
   return (
     <section className="stats-section">
-      {stats.map((stat) => (
-        <div key={stat._id}>
+      {stats.map((stat, index) => (
+        <div key={index}>
           <h2>{stat.number}</h2>
           <p>{stat.label}</p>
         </div>
