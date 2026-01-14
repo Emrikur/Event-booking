@@ -15,7 +15,20 @@ export function urlFor(source) {
 }
 
 export async function getHero() {
-  return await client.fetch(`*[_type == "hero"][0]{
+  return await client.fetch(`*[_type == "hero" && pageId == "home"][0]{
+    _id,
+    title,
+    subtitle,
+    image{
+      asset->{
+        url
+      }
+    }
+  }`);
+}
+
+export async function getAboutHero() {
+  return await client.fetch(`*[_type == "hero" && pageId == "about"][0]{
     _id,
     title,
     subtitle,
@@ -121,7 +134,7 @@ export async function getEventDetails() {
 }
 
 export async function getHostEventCTA() {
-  return await client.fetch(`*[_type == "cta"][0]{
+  return await client.fetch(`*[_type == "cta" && pageId == "host-event"][0]{
     _id,
     title,
     subtitle,
@@ -130,7 +143,7 @@ export async function getHostEventCTA() {
 }
 
 export async function getJoinCommunityCTA() {
-  return await client.fetch(`*[_type == "cta"][1]{
+  return await client.fetch(`*[_type == "cta" && pageId == "join-community"][0]{
     _id,
     title,
     subtitle,

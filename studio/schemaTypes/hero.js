@@ -6,6 +6,18 @@ export default defineType({
   type: 'document',
   fields: [
     defineField({
+      name: 'pageId',
+      title: 'Page',
+      type: 'string',
+      options: {
+        list: [
+          {title: 'Home Page', value: 'home'},
+          {title: 'About Page', value: 'about'},
+        ],
+      },
+      validation: (Rule) => Rule.required().error('Page is required'),
+    }),
+    defineField({
       name: 'title',
       title: 'Title',
       type: 'string',
@@ -14,7 +26,7 @@ export default defineType({
     defineField({
       name: 'subtitle',
       title: 'Subtitle',
-      type: 'string',
+      type: 'text',
       validation: (Rule) => Rule.required().error('Subtitle is required'),
     }),
     defineField({

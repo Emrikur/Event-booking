@@ -6,6 +6,18 @@ export default defineType({
   type: 'document',
   fields: [
     defineField({
+      name: 'pageId',
+      title: 'Page',
+      type: 'string',
+      options: {
+        list: [
+          {title: 'Host Event (Home)', value: 'host-event'},
+          {title: 'Join Community (About)', value: 'join-community'},
+        ],
+      },
+      validation: (Rule) => Rule.required().error('Page is required'),
+    }),
+    defineField({
       name: 'title',
       title: 'Title',
       type: 'string',
