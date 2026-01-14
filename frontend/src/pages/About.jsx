@@ -5,12 +5,12 @@ import AboutValues from "../components/AboutValues";
 import AboutTeam from "../components/AboutTeam";
 import AboutStory from "../components/AboutStory";
 import CallToAction from "../components/CallToAction";
-import { getJoinCommunityCTA } from "../services/sanity";
+import { getAboutHero, getJoinCommunityCTA } from "../services/sanity";
 
 function About() {
   return (
     <>
-      <AboutHero />
+      <AboutHero fetchHero={getAboutHero} />
       <AboutMission />
       <AboutStats />
       <AboutValues />
