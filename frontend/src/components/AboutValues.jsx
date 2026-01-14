@@ -19,23 +19,22 @@ export default function AboutValues() {
   return (
     <section className="about-values-section">
       <div className="values-header-titles">
-        <div className="value-tag">Our Values</div>
+        <span className="badge">Our Values</span>
         <h2>What We Stand For</h2>
       </div>
+
       <div className="values-flex-container">
         {valueData.map((value) => {
           const Icon = LucideIcons[value.icon];
 
           return (
-            <>
-              <div key={value._id}>
-                <div className="Value-icon-box">
-                  {Icon ? <Icon /> : <LucideIcons.CircleQuestionMark />}
-                </div>
-                <h3>{value.title}</h3>
-                <p>{value.description}</p>
+            <div key={value._id}>
+              <div className="Value-icon-box">
+                {Icon ? <Icon /> : <LucideIcons.CircleQuestionMark />}
               </div>
-            </>
+              <h3>{value.title}</h3>
+              <p>{value.description}</p>
+            </div>
           );
         })}
       </div>

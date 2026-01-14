@@ -9,7 +9,6 @@ export default function AboutStats() {
   useEffect(() => {
     async function fetchStats() {
       const data = await getAboutStats();
-      console.log("Stats data:", data);
       setStats(data.stats);
     }
     fetchStats();
