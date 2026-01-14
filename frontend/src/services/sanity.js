@@ -16,6 +16,7 @@ export function urlFor(source) {
 
 export async function getHero() {
   return await client.fetch(`*[_type == "hero"][0]{
+    _id,
     title,
     subtitle,
     image{
@@ -80,6 +81,7 @@ export async function getValue() {
 
 export async function getEventDetails() {
   return await client.fetch(`*[_type == 'event']{
+    _id,
     title,
     image,
     slug,
@@ -99,6 +101,7 @@ export async function getEventDetails() {
 
 export async function getHostEventCTA() {
   return await client.fetch(`*[_type == "cta"][0]{
+    _id,
     title,
     subtitle,
     buttonText
@@ -107,8 +110,23 @@ export async function getHostEventCTA() {
 
 export async function getJoinCommunityCTA() {
   return await client.fetch(`*[_type == "cta"][1]{
+    _id,
     title,
     subtitle,
     buttonText
+  }`);
+}
+
+export async function getHowItWorks() {
+  return await client.fetch(`*[_type == "howItWorks"] | order(order asc){
+    _id,
+    title,
+    description,
+    order,
+    icon{
+      asset->{
+        url
+      }
+    }
   }`);
 }

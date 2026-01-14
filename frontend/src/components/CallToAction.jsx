@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { getHostEventCTA, getJoinCommunityCTA } from "../services/sanity";
 
 import CreateEventModal from "./CreateEventModal";
 import SuccessModal from "./SuccessModal";
