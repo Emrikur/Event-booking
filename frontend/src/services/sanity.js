@@ -48,6 +48,16 @@ export async function getAboutMission() {
   }`);
 }
 
+export async function getAboutStats() {
+  return await client.fetch(`*[_type == 'aboutStats'][0]{
+    _id,
+    stats[]{
+      number,
+      label
+    }
+  }`);
+}
+
 export async function getTeam() {
   return await client.fetch(`*[_type == 'team']{
     _id,

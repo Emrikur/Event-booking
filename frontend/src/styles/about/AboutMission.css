@@ -1,6 +1,7 @@
 .mission-section {
   padding: 2.5rem 1.2rem 1rem 1.2rem;
   text-align: center;
+  background-color: var(--bg-two);
 }
 
 .mission-content {

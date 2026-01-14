@@ -1,18 +1,19 @@
-.stats-section{
-  background-color: rgb(245, 245, 245);
-  padding: 5rem 0;
+.stats-section {
+  background-color: var(--bg-one);
+  padding: 2.5rem 1.2rem 3rem 1.2rem;
   display: flex;
-  flex-direction:row;
+  flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-evenly;
   gap: 2.5rem;
   align-items: center;
   text-align: center;
-  margin: 2rem 0;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-.stats-section h1{
-background: -webkit-linear-gradient(250deg, #667EEA, #EC4899);
+.stats-section h2 {
+  background: linear-gradient(135deg, var(--primary-default) 0%, #ec4899 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -20,16 +21,8 @@ background: -webkit-linear-gradient(250deg, #667EEA, #EC4899);
   padding: 10px;
 }
 
-
-@media (min-width: 1000px) {
-
-  .stats-section{
-   background-color: #F9FAFB;
-  padding: 6rem 0;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
-  align-items: center;
-  text-align: center;
-}
+@media (min-width: 48rem) {
+  .stats-section {
+    padding: 4rem 1.2rem 3rem 1.2rem;
+  }
 }
