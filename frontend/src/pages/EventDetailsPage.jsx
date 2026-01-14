@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { getEventDetails } from "../services/sanity";
+import { urlFor } from "../services/sanity";
 import JoinEventModal from "../components/JoinEventModal";
 import SuccessModal from "../components/SuccessModal";
 
@@ -18,7 +19,7 @@ function EventDetailsPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const [eventDetails, setEventDetails] = useState([]);
-  const [_loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
 
 
 
@@ -67,13 +68,15 @@ function EventDetailsPage() {
 
 const currentEvent = eventDetails.find(detailCard => detailCard.slug.current === pageSlug)
 
+if(loading)return <p>Loading...</p>
+
  if(!currentEvent){
   return(
     null
   )
  }
   console.log(currentEvent)
-// console.log(currentEvent)
+
     const isWaitlist = mockEvent.spotsLeft === 0;
 
 
@@ -82,7 +85,8 @@ const currentEvent = eventDetails.find(detailCard => detailCard.slug.current ===
       {/* Hero Section */}
       <header
         className="event-detail__hero"
-        style={{ backgroundImage: `url(${mockEvent.image})` }}
+        style={{ backgroundImage: `url(${urlFor(currentEvent.image)
+        .url()})` }}
       >
         <div className="event-detail__hero-content">
           <span className="event-detail__category">{currentEvent.category.title}</span>
