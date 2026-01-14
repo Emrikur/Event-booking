@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-
+import { getEventDetails } from "../services/sanity";
 import JoinEventModal from "../components/JoinEventModal";
 import SuccessModal from "../components/SuccessModal";
 
@@ -17,8 +17,10 @@ import "../styles/EventDetailsPage.css";
 function EventDetailsPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+  const [eventDetails, setEventDetails] = useState([]);
+  const [_loading, setLoading] = useState(true);
 
-  const { id } = useParams();
+
 
   const mockEvent = {
     id: 1,
@@ -48,9 +50,34 @@ function EventDetailsPage() {
     },
   };
 
-  const isWaitlist = mockEvent.spotsLeft === 0;
 
-  return (
+
+  const { pageSlug } = useParams();
+  console.log("Slug from URL:", pageSlug);
+
+  useEffect(() => {
+    async function fetchEventDetails() {
+      await getEventDetails()
+      .then((data) => setEventDetails(data))
+      .catch((err) => console.error(err));
+      setLoading(false)
+    }
+    fetchEventDetails();
+  }, [pageSlug]);
+
+const currentEvent = eventDetails.find(detailCard => detailCard.slug.current === pageSlug)
+
+ if(!currentEvent){
+  return(
+    null
+  )
+ }
+  console.log(currentEvent)
+// console.log(currentEvent)
+    const isWaitlist = mockEvent.spotsLeft === 0;
+
+
+    return (
     <section className="event-detail">
       {/* Hero Section */}
       <header
@@ -58,13 +85,14 @@ function EventDetailsPage() {
         style={{ backgroundImage: `url(${mockEvent.image})` }}
       >
         <div className="event-detail__hero-content">
-          <span className="event-detail__category">{mockEvent.category}</span>
-          <h1 className="event-detail__title">{mockEvent.title}</h1>
-          <p className="event-detail__host">Hosted by {mockEvent.host.name}</p>
+          <span className="event-detail__category">{currentEvent.category.title}</span>
+          <h1 className="event-detail__title">{currentEvent.title}</h1>
+          <p className="event-detail__host">Hosted by {currentEvent.hostName}</p>
         </div>
       </header>
 
-      {/* Event Details Section */}
+
+      Event Details Section
       <div className="event-detail__wrapper">
         <article className="event-detail__content">
           <section className="event-detail__section">
@@ -77,7 +105,7 @@ function EventDetailsPage() {
                 <div className="event-info__content">
                   <h3>Date & Time</h3>
                   <p>
-                    {mockEvent.date} @{mockEvent.time}
+                    {currentEvent.eventDateTime} @{mockEvent.time}
                   </p>
                 </div>
               </div>
@@ -89,7 +117,7 @@ function EventDetailsPage() {
                 </span>
                 <div className="event-info__content">
                   <h3>Location</h3>
-                  <p>{mockEvent.location}</p>
+                  <p>{currentEvent.location}</p>
                 </div>
               </div>
 
@@ -111,31 +139,32 @@ function EventDetailsPage() {
           {/* About This Event Section */}
           <section className="event-detail__section">
             <h2 className="event-detail__section-title">About This Event</h2>
-            <p className="event-detail__description">{mockEvent.description}</p>
+            <p className="event-detail__description">{currentEvent.description}</p>
           </section>
 
           {/* What to Bring Section */}
           <section className="event-detail__section">
             <h2 className="event-detail__section-title">What to bring</h2>
-            <ul className="event-detail__list">
-              {mockEvent.whatToBring.map((item, index) => (
+            {currentEvent.whatToBring ? <ul className="event-detail__list">
+              {currentEvent.whatToBring && currentEvent.whatToBring.map((item, index) => (
                 <li key={index}>{item}</li>
               ))}
-            </ul>
+            </ul> : <p>No required items</p>}
+
           </section>
 
           {/* Meet Your Host */}
           <section className="event-detail__section">
             <h2 className="event-detail__section-title">Meet Your Host</h2>
             <div className="host-card">
-              <div className="host-card__avatar">{mockEvent.host.avatar}</div>
+              <div className="host-card__avatar">{currentEvent.hostAvatar}</div>
               <div className="host-card__info">
                 <h3 className="event-detail__host-name">
-                  {mockEvent.host.name}
+                  {currentEvent.hostName}
                 </h3>
-                <p className="event-detail__host-bio">{mockEvent.host.bio}</p>
+                <p className="event-detail__host-bio">{currentEvent.hostBio}</p>
                 <p className="event-detail__host-stats">
-                  {mockEvent.host.eventsHosted}+ events hosted
+                  {/* {mockEvent.host.eventsHosted} */}50+ events hosted
                 </p>
               </div>
             </div>
@@ -151,7 +180,7 @@ function EventDetailsPage() {
 
           <div className="booking__price">
             <div className="booking__price-label">Price per person</div>
-            <div className="booking__price-amount">{mockEvent.price}</div>
+            <div className="booking__price-amount">{currentEvent.price}</div>
           </div>
 
           <button
@@ -187,7 +216,7 @@ function EventDetailsPage() {
       {/* Join Event Modal */}
       {isModalOpen && (
         <JoinEventModal
-          event={mockEvent}
+          event={currentEvent}
           onClose={() => setIsModalOpen(false)}
           onSuccess={() => {
             setIsModalOpen(false);
@@ -217,7 +246,7 @@ function EventDetailsPage() {
           title="You're on the Waitlist!"
           message={
             <>
-              You're on the waitlist for <strong>{mockEvent.title}</strong>.
+              You're on the waitlist for <strong>{currentEvent.title}</strong>.
               We'll send you an email as soon as a spot opens up!
             </>
           }
