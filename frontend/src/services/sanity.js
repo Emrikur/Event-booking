@@ -40,10 +40,18 @@ export async function getAboutHero() {
   }`);
 }
 
+export async function getAboutMission() {
+  return await client.fetch(`*[_type == 'aboutMission'][0]{
+    _id,
+    title,
+    description
+  }`);
+}
+
 export async function getTeam() {
   return await client.fetch(`*[_type == 'team']{
-  _id,
-  firstName,
+    _id,
+    firstName,
     surname,
     initials,
     role,

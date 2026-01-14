@@ -1,12 +1,27 @@
+import { useEffect, useState } from "react";
+import { getAboutMission } from "../services/sanity";
+
 import "../styles/about/AboutMission.css";
 
 function AboutMission() {
+  const [mission, setMission] = useState(null);
+
+  useEffect(() => {
+    async function fetchMission() {
+      const data = await getAboutMission();
+      setMission(data);
+    }
+    fetchMission();
+  }, []);
+
+  if (!mission) return null;
+
   return (
     <section className="mission-section">
       <div className="mission-content">
-        <button className="mission-button">Our Mission</button>
-        <h2>Connecting Communities Through <br/>Shared Experiences</h2>
-        <p>At EventHub, we believe that the best moments in life happen when people come together. Whether it's a yoga class in the park, a cooking workshop, or a local concert, every event is an opportunity to connect, learn, and create lasting memories. Our platform empowers anyone to host events and makes it effortless for people to discover experiences that inspire them.</p>
+        <span className="badge">Our Mission</span>
+        <h2 className="mission-title">{mission.title}</h2>
+        <p>{mission.description}</p>
       </div>
     </section>
   );
