@@ -5,9 +5,11 @@ import MenuItem from "@mui/material/MenuItem";
 import "../styles/dropdownMenuStyles.css";
 import { useState, useEffect } from "react";
 import { getEvents } from "../services/sanity";
+import { ChevronDown } from "lucide-react";
 
-export default function DropdownMenu() {
+export default function DropdownMenu({ onCategoryChange }) {
   const [categories, setCategories] = useState([]);
+  const [, setSelectedCategory] = useState();
   useEffect(() => {
     async function fetchEvents() {
       const data = await getEvents();
@@ -29,6 +31,12 @@ export default function DropdownMenu() {
     setAnchorEl(null);
   };
 
+  const handleCategorySelect = (category) => {
+    setSelectedCategory(category);
+    onCategoryChange(category);
+    handleClose();
+  };
+
   return (
     <div>
       <Button
@@ -38,7 +46,7 @@ export default function DropdownMenu() {
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
       >
-        Category
+        Category <ChevronDown />
       </Button>
       <Menu
         id="basic-menu"
@@ -52,7 +60,12 @@ export default function DropdownMenu() {
         }}
       >
         {categories.map((category) => (
-          <MenuItem key={category} onClick={handleClose}>
+          <MenuItem
+            key={category}
+            onClick={() => {
+              handleCategorySelect(category);
+            }}
+          >
             {category}
           </MenuItem>
         ))}
