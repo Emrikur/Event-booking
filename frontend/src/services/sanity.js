@@ -72,6 +72,7 @@ export async function getEvents() {
   return await client.fetch(`*[_type == 'event']{
     _id,
     title,
+    slug,
     image{
       asset->{
         url
