@@ -9,8 +9,18 @@ export default defineType({
       name: 'title',
       title: 'Event Title',
       type: 'string',
-      validation: (Rule) => Rule.required(),
+      validation: (Rule) => Rule.required().error('Event title is required'),
     }),
+    defineField({
+  name: 'slug',
+  title: 'Slug',
+  type: 'slug',
+  options: {
+    source: 'title',
+    maxLength: 96,
+  },
+  validation: Rule => Rule.required(),
+}),
     defineField({
       name: 'image',
       title: 'Event Image',
@@ -32,20 +42,20 @@ export default defineType({
       name: 'eventDateTime',
       title: 'Event Date & Time',
       type: 'datetime',
-      validation: (Rule) => Rule.required(),
+      validation: (Rule) => Rule.required().error('Event date and time is required'),
     }),
     defineField({
       name: 'location',
       title: 'Location',
       type: 'string',
-      validation: (Rule) => Rule.required(),
+      validation: (Rule) => Rule.required().error('Event location is required'),
     }),
     defineField({
       name: 'category',
       title: 'Category',
       type: 'reference',
       to: [{type: 'category'}],
-      validation: (Rule) => Rule.required(),
+      validation: (Rule) => Rule.required().error('Event category is required'),
     }),
     defineField({
       name: 'price',
@@ -72,6 +82,7 @@ export default defineType({
       name: 'hostName',
       title: 'Host Name',
       type: 'string',
+      validation: (Rule) => Rule.required().error('Event host name is required'),
     }),
     defineField({
       name: 'hostBio',

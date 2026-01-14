@@ -57,13 +57,18 @@ export async function createEvent(eventData) {
       };
     }
 
-    const { eventImageFile, ...eventDataWithoutImage } = eventData;
+    const { eventImageFile, category, ...restEventData } = eventData;
 
     const result = await client.create({
       _type: "event",
-      ...eventDataWithoutImage,
-      image: imageRef,
+      ...restEventData,
+      category: {
+        _type: "reference",
+        _ref: category,
+      },
+      ...(imageRef && { image: imageRef }),
     });
+
     return result;
   } catch (error) {
     console.error("Error creating event in Sanity:", error);

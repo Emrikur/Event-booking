@@ -9,13 +9,13 @@ export default defineType({
       name: 'title',
       title: 'Title',
       type: 'string',
-      validation: (Rule) => Rule.required(),
+      validation: (Rule) => Rule.required().error('Title is required'),
     }),
     defineField({
       name: 'subtitle',
       title: 'Subtitle',
       type: 'string',
-      validation: (Rule) => Rule.required(),
+      validation: (Rule) => Rule.required().error('Subtitle is required'),
     }),
     defineField({
       name: 'image',
@@ -33,6 +33,7 @@ export default defineType({
           title: 'Alt text',
         },
       ],
+      validation: (Rule) => Rule.required().error('Background image is required'),
     }),
   ],
 })

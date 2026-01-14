@@ -5,9 +5,11 @@ import { MapPinIcon } from "lucide-react";
 import { UsersRound } from "lucide-react";
 
 import DropdownMenu from "../components/DropdownMenu";
+import { Link } from "react-router-dom";
 
 const EventsComponent = () => {
   const categories = ["All events", "Category"];
+
 
   return (
     <>
