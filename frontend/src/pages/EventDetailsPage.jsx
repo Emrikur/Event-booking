@@ -92,7 +92,7 @@ const currentEvent = eventDetails.find(detailCard => detailCard.slug.current ===
       </header>
 
 
-      Event Details Section
+
       <div className="event-detail__wrapper">
         <article className="event-detail__content">
           <section className="event-detail__section">
