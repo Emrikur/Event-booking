@@ -35,3 +35,24 @@ export async function getTeam() {
     role,
     description}`);
 }
+
+export async function getEvents() {
+  return await client.fetch(`*[_type == 'event']{
+    _id,
+    title,
+    image{
+      asset->{
+        url
+      },
+      alt
+    },
+    eventDateTime,
+    location,
+    category->{
+      title
+    },
+    maxParticipants,
+    description,
+    price
+  }`);
+}

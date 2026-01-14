@@ -1,13 +1,32 @@
 import "../styles/eventPageStyles.css";
-import yogaImage from "../assets/yogaImage.png";
 import { CalendarClockIcon } from "lucide-react";
 import { MapPinIcon } from "lucide-react";
 import { UsersRound } from "lucide-react";
 
 import DropdownMenu from "../components/DropdownMenu";
+import { useState, useEffect } from "react";
+import { getEvents } from "../services/sanity";
+import { urlFor } from "../services/sanity";
 
 const EventsComponent = () => {
-  const categories = ["All events", "Category"];
+  const categories = useState(["All events"]);
+  const [events, setEvents] = useState(null);
+
+  const defaultImages = {
+    wellness: "../assets/default-wellness.webp",
+    music: "../assets/default-music.webp",
+    food: "../assets/default-food.webp",
+    workshop: "../assets/default-workshop.webp",
+  };
+
+  useEffect(() => {
+    async function fetchEvents() {
+      const data = await getEvents();
+      setEvents(data);
+    }
+
+    fetchEvents();
+  }, []);
 
   return (
     <>
@@ -17,87 +36,36 @@ const EventsComponent = () => {
           <DropdownMenu />
         </div>
       </section>
-
       <section className="event-list">
-        <div className="event">
-          <span className="category-info">{categories[1]}</span>
-          <img src={yogaImage} alt="Yoga Event" className="event-image" />
-          <div className="event-info">
-            <h3 className="event-title">Morning Yoga In The Park</h3>
-            <p className="event-date">
-              <CalendarClockIcon /> June 20, 2025 @07:00
-            </p>
-            <p className="event-location">
-              <MapPinIcon /> Slottsskogen, Gothenburg
-            </p>
-            <p className="event-spots">
-              <UsersRound /> 15 spots left
-            </p>
-          </div>
-          <div className="event-action">
-            <button className="event-join">Join Event</button>
-          </div>
-        </div>
-
-        <div className="event">
-          <span className="category-info">{categories[1]}</span>
-          <img src={yogaImage} alt="Yoga Event" className="event-image" />
-          <div className="event-info">
-            <h3 className="event-title">Morning Yoga In The Park</h3>
-            <p className="event-date">
-              <CalendarClockIcon /> June 20, 2025 @07:00
-            </p>
-            <p className="event-location">
-              <MapPinIcon /> Slottsskogen, Gothenburg
-            </p>
-            <p className="event-spots">
-              <UsersRound /> 15 spots left
-            </p>
-          </div>
-          <div className="event-action">
-            <button className="event-join">Join Event</button>
-          </div>
-        </div>
-
-        <div className="event">
-          <span className="category-info">{categories[1]}</span>
-          <img src={yogaImage} alt="Yoga Event" className="event-image" />
-          <div className="event-info">
-            <h3 className="event-title">Morning Yoga In The Park</h3>
-            <p className="event-date">
-              <CalendarClockIcon /> June 20, 2025 @07:00
-            </p>
-            <p className="event-location">
-              <MapPinIcon /> Slottsskogen, Gothenburg
-            </p>
-            <p className="event-spots">
-              <UsersRound /> 15 spots left
-            </p>
-          </div>
-          <div className="event-action">
-            <button className="event-join">Join Event</button>
-          </div>
-        </div>
-
-        <div className="event">
-          <span className="category-info">{categories[1]}</span>
-          <img src={yogaImage} alt="Yoga Event" className="event-image" />
-          <div className="event-info">
-            <h3 className="event-title">Morning Yoga In The Park</h3>
-            <p className="event-date">
-              <CalendarClockIcon /> June 20, 2025 @07:00
-            </p>
-            <p className="event-location">
-              <MapPinIcon /> Slottsskogen, Gothenburg
-            </p>
-            <p className="event-spots">
-              <UsersRound /> 15 spots left
-            </p>
-          </div>
-          <div className="event-action">
-            <button className="event-join">Join Event</button>
-          </div>
-        </div>
+        {events &&
+          events.map((event) => {
+            const imageUrl = event.image
+              ? urlFor(event.image).url()
+              : defaultImages[event.category];
+            return (
+              <div key={event.title} className="event">
+                <span className="category-info">{event.category.title}</span>
+                <img src={imageUrl} alt="Event image" className="event-image" />
+                <div className="event-info">
+                  <h3 className="event-title">{event.title}</h3>
+                  <p className="event-date">
+                    <CalendarClockIcon />{" "}
+                    {new Date(event.eventDateTime).toLocaleString()}
+                  </p>
+                  <p className="event-location">
+                    <MapPinIcon /> {event.location}
+                  </p>
+                  <p className="event-spots">
+                    <UsersRound />
+                    {event.maxParticipants} spots left
+                  </p>
+                </div>
+                <div className="event-action">
+                  <button className="event-join">Join Event</button>
+                </div>
+              </div>
+            );
+          })}
       </section>
     </>
   );
