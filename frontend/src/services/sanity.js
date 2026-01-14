@@ -95,5 +95,20 @@ export async function getEventDetails() {
     hostBio,
     hostAvatar
   }`);
+}
 
+export async function getHostEventCTA() {
+  return await client.fetch(`*[_type == "cta"][0]{
+    title,
+    subtitle,
+    buttonText
+  }`);
+}
+
+export async function getJoinCommunityCTA() {
+  return await client.fetch(`*[_type == "cta"][1]{
+    title,
+    subtitle,
+    buttonText
+  }`);
 }
