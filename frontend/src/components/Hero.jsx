@@ -3,33 +3,27 @@ import { getHero } from "../services/sanity";
 
 import "../styles/Hero.css";
 
-function Hero() {
+function Hero({ fetchHero }) {
   const [heroData, setHeroData] = useState(null);
 
   useEffect(() => {
-    async function fetchHero() {
-      const data = await getHero();
+    async function loadHero() {
+      const data = await fetchHero();
       setHeroData(data);
     }
 
-    fetchHero();
-  }, []);
+    loadHero();
+  }, [fetchHero]);
+
+  if (!heroData) return null;
 
   return (
     <section className="hero">
-      {heroData && (
-        <>
-          <img
-            src={heroData.image.asset.url}
-            alt="Hero"
-            className="hero-image"
-          />
-          <div className="hero-overlay">
-            <h1 className="hero-title">{heroData.title}</h1>
-            <p className="hero-text">{heroData.subtitle}</p>
-          </div>
-        </>
-      )}
+      <img src={heroData.image.asset.url} alt="" className="hero-image" />
+      <div className="hero-overlay">
+        <h1 className="hero-title">{heroData.title}</h1>
+        <p className="hero-text">{heroData.subtitle}</p>
+      </div>
     </section>
   );
 }
