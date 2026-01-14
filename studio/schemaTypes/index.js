@@ -5,5 +5,6 @@ import team from './team'
 import value from './value'
 import cta from './cta'
 import howItWorks from './howItWorks'
+import aboutMission from './aboutMission'
 
-export const schemaTypes = [category, event, hero, team, value, cta, howItWorks]
+export const schemaTypes = [category, event, hero, team, value, cta, howItWorks, aboutMission]
