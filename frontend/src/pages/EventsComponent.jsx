@@ -4,14 +4,14 @@ import { MapPinIcon } from "lucide-react";
 import { UsersRound } from "lucide-react";
 
 import DropdownMenu from "../components/DropdownMenu";
-import { useState, useEffect } from "react";
-import { getEvents } from "../services/sanity";
+import { useState } from "react";
 import { urlFor } from "../services/sanity";
+import { useContext } from "react";
+import { EventContext } from "../context/EventContext";
 
 const EventsComponent = () => {
-  const [allEvents, setAllEvents] = useState(null);
-  const [events, setEvents] = useState(null);
-  const [selectedCategory, setSelectedCategory] = useState();
+  const { filteredEvents, setFilteredEvents } = useContext(EventContext);
+  const { events } = useContext(EventContext);
 
   const defaultImages = {
     wellness: "../assets/default-wellness.webp",
@@ -20,31 +20,19 @@ const EventsComponent = () => {
     workshop: "../assets/default-workshop.webp",
   };
 
-  useEffect(() => {
-    async function fetchEvents() {
-      const data = await getEvents();
-      setAllEvents(data); // Store all events separately
-      setEvents(data); // Initialize displayed events with all events
-    }
-
-    fetchEvents();
-  }, []);
-
   const handleCategoryChange = (category) => {
-    setSelectedCategory(category);
-
     if (category === "All events") {
-      setEvents(allEvents);
+      setFilteredEvents(events);
     } else {
-      const filteredEvents = allEvents.filter(
+      const filtered = events.filter(
         (event) => event.category.title === category
       );
-      setEvents(filteredEvents);
+      setFilteredEvents(filtered);
     }
   };
 
   const handleAllEventsClick = () => {
-    setEvents(allEvents);
+    setFilteredEvents(events);
   };
 
   return (
@@ -58,8 +46,8 @@ const EventsComponent = () => {
         </div>
       </section>
       <section className="event-list">
-        {events &&
-          events.map((event) => {
+        {filteredEvents &&
+          filteredEvents.map((event) => {
             const imageUrl = event.image
               ? urlFor(event.image).url()
               : defaultImages[event.category];
