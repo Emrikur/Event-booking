@@ -7,6 +7,7 @@ import cta from './cta'
 import howItWorks from './howItWorks'
 import aboutMission from './aboutMission'
 import aboutStats from './aboutStats'
+import aboutStory from './aboutStory'
 
 export const schemaTypes = [
   category,
@@ -18,4 +19,5 @@ export const schemaTypes = [
   howItWorks,
   aboutMission,
   aboutStats,
+  aboutStory,
 ]
