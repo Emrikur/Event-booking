@@ -184,18 +184,24 @@ export async function getEventDetails() {
 export async function getHostEventCTA() {
   return await client.fetch(`*[_type == "cta" && pageId == "host-event"][0]{
     _id,
-    title,
-    subtitle,
-    buttonText
+    title_en,
+    title_sv,
+    subtitle_en,
+    subtitle_sv,
+    buttonText_en,
+    buttonText_sv
   }`);
 }
 
 export async function getJoinCommunityCTA() {
   return await client.fetch(`*[_type == "cta" && pageId == "join-community"][0]{
     _id,
-    title,
-    subtitle,
-    buttonText
+    title_en,
+    title_sv,
+    subtitle_en,
+    subtitle_sv,
+    buttonText_en,
+    buttonText_sv
   }`);
 }
 
