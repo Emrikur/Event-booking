@@ -145,6 +145,32 @@ export async function getUpcomingEvents(limit = 3) {
   }`);
 }
 
+export async function getEventsSpots(slug) {
+  return await client.fetch(`*[_type == "event" && slug.current == $slug][0]{
+    _id,
+    title,
+    slug,
+    image{
+      asset->{
+        url
+      }
+    },
+    eventDateTime,
+    location,
+    category->{
+      title,
+      slug
+    },
+    price,
+    maxParticipants,
+    description,
+    whatToBring,
+    hostName,
+    hostBio,
+    hostAvatar
+  }`,{slug});
+}
+
 export async function getValue() {
   return await client.fetch(`*[_type == 'value']{
   _id,
