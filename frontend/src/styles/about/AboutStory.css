@@ -1,75 +1,66 @@
-  .about-story-main-title {
-    width: fit-content;
-    background-color: var(--primary-default);
-    color: var(--text-light);
-    padding: 0.7rem 1rem;
-    border-radius: 50px;
-    margin: 0 auto;
-    text-align: center;
-    margin-bottom: 1.5rem;
-  }
+.about-story-container {
+  max-width: 1200px;
+  padding: 2.5rem 1.2rem 1rem 1.2rem;
+  margin: 0 auto;
+  text-align: center;
+  background-color: var(--bg-one);
+}
 
-  .about-story-container {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    align-items: center;
-  }
+.about-story-whole-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+}
 
-  .about-story-subtitle,
-  .about-story-subheading,
-  .about-story-text {
-    text-align: center;
-    margin-bottom: 0.5rem;
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
-  }
+.badge {
+  display: inline-block;
+  padding: 0.9rem 1.1rem;
+  background-color: var(--primary-default);
+  color: var(--text-light);
+  border-radius: 1.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
 
-  .about-story-subheading {
-    margin-bottom: 1rem;
-  }
-
-  .about-story-image {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 2rem;
-  }
-
-  .about-story-image img {
-    max-width: 50%;
-    border-radius: 0.5rem;
-    object-fit: cover;
-  }
-    @media (min-width: 48rem) {
-      .about-story-layout {
-   display: flex;
-   flex-direction: column;
-margin-left: 3rem;
-      }
-.about-story-whole-layout{
-  display: flex;
-  flex-direction: row;
+.about-story-subheading {
+  margin-bottom: 1rem;
 }
 
 .about-story-image {
-  display: flex;
-  justify-content: center;
-margin: 2rem;
+  display: none;
 }
 
-  .about-story-subheading,
-  .about-story-text {
+@media (min-width: 48rem) {
+  .about-story-image img {
+    width: 100%;
+    border-radius: 8px;
+  }
+}
+
+@media (min-width: 64rem) {
+  .about-story-container {
+    padding: 2rem 2rem;
+  }
+
+  .about-story-whole-layout {
     text-align: left;
-    margin-bottom: 1rem;
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
   }
 
-  .about-story-subtitle{
-    margin-bottom: 1.5rem;
+  .about-story-subtitle {
+    margin-bottom: 2rem;
   }
-.about-story-image img{
-  max-width: 60%;
-}
 
+  .about-story-whole-layout {
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: start;
+  }
+
+  .about-story-image {
+    display: block;
+  }
+
+  .about-story-whole-layout {
+    gap: 4rem;
+  }
 }

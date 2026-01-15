@@ -2,6 +2,7 @@
   display: flex;
   flex-direction: column;
   margin: 1rem;
+  background-color: var(--bg-two);
 }
 
 .team-header {
@@ -37,8 +38,6 @@
   margin: 1.5rem auto;
   background-color: rgb(245, 245, 245);
 
-
-
   h4 {
     font-weight: 500;
     color: var(--text-muted);
@@ -65,12 +64,11 @@
     rgba(236, 72, 153, 1) 100%
   );
 
-  h1{
+  h1 {
     color: var(--text-light);
     font-weight: 600;
     margin: auto auto;
   }
-
 
   h2 {
     margin: auto auto;
