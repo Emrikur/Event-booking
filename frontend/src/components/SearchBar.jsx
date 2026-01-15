@@ -1,17 +1,31 @@
 import { useState } from "react";
 
 import "../styles/SearchBar.css";
+import { useContext } from "react";
+import { EventContext } from "../context/EventContext";
+import { Link } from "react-router-dom";
 
 function SearchBar() {
   const [searchTerm, setSearchTerm] = useState("");
   const [category, setCategory] = useState("");
+  const { filterEvents } = useContext(EventContext);
 
   function handleSubmit(event) {
     event.preventDefault();
-    // Handle  search logic here
-
-    console.log("Searching for:", searchTerm, "in category:", category);
+    filterEvents(searchTerm, category);
   }
+
+  const onSearchChange = (e) => {
+    const value = e.target.value;
+    setSearchTerm(value);
+    filterEvents(value, category);
+  };
+
+  const onCategoryClick = (e) => {
+    const value = e.target.value;
+    setCategory(value);
+    filterEvents(searchTerm, value);
+  };
 
   return (
     <section className="search-bar">
@@ -21,24 +35,26 @@ function SearchBar() {
           type="text"
           placeholder="Search for events..."
           value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
+          onChange={onSearchChange}
         />
         <select
           className="search-bar__select"
           value={category}
-          onChange={(e) => setCategory(e.target.value)}
+          onChange={onCategoryClick}
         >
           <option value="">All categories</option>
           <option value="wellness">Wellness</option>
-          <option value="food">Food & Drink</option>
+          <option value="food & drink">Food & Drink</option>
           <option value="music">Music</option>
           <option value="sports">Sports</option>
           <option value="social">Social</option>
           <option value="workshop">Workshop</option>
         </select>
-        <button type="submit" className="search-bar__button">
-          Search
-        </button>
+        <Link to="/events">
+          <button type="submit" className="search-bar__button">
+            Search
+          </button>
+        </Link>
       </form>
     </section>
   );

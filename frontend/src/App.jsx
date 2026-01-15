@@ -12,6 +12,7 @@ import HomePage from "./pages/HomePage";
 import EventsComponent from "./pages/EventsComponent";
 import EventDetailsPage from "./pages/EventDetailsPage";
 import About from "./pages/About";
+import { EventProvider } from "./context/EventContext";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -26,8 +27,12 @@ const router = createBrowserRouter(
 
 function App() {
   return (
+    
     <LanguageProvider>
-      <RouterProvider router={router} />
+      <EventProvider>
+        {" "}
+        <RouterProvider router={router} />{" "}
+      </EventProvider>
     </LanguageProvider>
   );
 }

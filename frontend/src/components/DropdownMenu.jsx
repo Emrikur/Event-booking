@@ -9,7 +9,6 @@ import { ChevronDown } from "lucide-react";
 
 export default function DropdownMenu({ onCategoryChange }) {
   const [categories, setCategories] = useState([]);
-  const [, setSelectedCategory] = useState();
   useEffect(() => {
     async function fetchEvents() {
       const data = await getEvents();
@@ -32,7 +31,6 @@ export default function DropdownMenu({ onCategoryChange }) {
   };
 
   const handleCategorySelect = (category) => {
-    setSelectedCategory(category);
     onCategoryChange(category);
     handleClose();
   };
