@@ -1,41 +1,46 @@
-import React from "react";
+import { useEffect, useState } from "react";
+import { PortableText } from "@portabletext/react";
+import { getAboutStory } from "../services/sanity";
+
 import "../styles/about/AboutStory.css";
-import storyImage from "../assets/story.jpg";
 
+function AboutStory() {
+  const [story, setStory] = useState(null);
 
-const AboutStory = () => {
+  useEffect(() => {
+    async function fetchStory() {
+      const data = await getAboutStory();
+      setStory(data);
+    }
+    fetchStory();
+  }, []);
+
+  if (!story) return null;
+
   return (
     <section className="about-story">
       <div className="about-story-container">
         <div className="about-story-texts">
-          <p className="about-story-main-title">Our Story</p>
-          <h2 className="about-story-subtitle">How EventHub Started</h2>
+          <span className="badge">Our Story</span>
 
-            <div className="about-story-whole-layout">
+          <h2 className="about-story-subtitle">{story.title}</h2>
+
+          <div className="about-story-whole-layout">
             <div className="about-story-layout">
-          <h3 className="about-story-subheading">Born from a Simple Idea</h3>
-          <p className="about-story-text">
-            EventHub started in 2023 when our founders struggled to find local events that matched their interests.
-            They realized that while amazing experiences were happening all around, discovering them was unnecessarily complicated.
-          </p>
-          <p className="about-story-text">
-            What began as a weekend project quickly grew into a platform serving thousands of event creators and attendees across Sweden.
-            Today, EventHub helps people discover everything from intimate workshops to large festivals, all in one place.
-          </p>
-          <p className="about-story-text">
-            We're just getting started. Our vision is to become the go-to platform for community events across Europe,
-            making it easier than ever for people to connect through shared passions.
-          </p>
-
+              <h3 className="about-story-subheading">{story.subheading}</h3>
+              <PortableText
+                className="about-story-text"
+                value={story.content}
+              />
+            </div>
+            <div className="about-story-image">
+              <img src={story.image.asset.url} alt={story.image.alt} />
+            </div>
           </div>
-        <div className="about-story-image">
-          <img src={storyImage} alt="Our Story" />
         </div>
-        </div>
-      </div>
       </div>
     </section>
   );
-};
+}
 
 export default AboutStory;
