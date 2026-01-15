@@ -13,7 +13,7 @@ function Navbar() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const [open, setOpen] = useState(false);
-  const { language, setLanguage } = useContext(LanguageContext);
+  const { language, setLanguage, translations } = useContext(LanguageContext);
 
   const menuRef = useRef(null);
   const hamburgerRef = useRef(null);
@@ -56,18 +56,7 @@ function Navbar() {
     };
   }, []);
 
-  const texts = {
-    EN: {
-      home: "Home",
-      events: "Events",
-      about: "About",
-    },
-    SV: {
-      home: "Hem",
-      events: "Evenemang",
-      about: "Om",
-    },
-  };
+  const translation = translations[language].navbar;
 
   return (
     <nav className="navbar">
@@ -86,17 +75,17 @@ function Navbar() {
           <ul>
             <li>
               <Link to="/" onClick={closeMenu}>
-                {texts[language].home}
+                {translation.home}
               </Link>
             </li>
             <li>
               <Link to="/events" onClick={closeMenu}>
-                {texts[language].events}
+                {translation.events}
               </Link>
             </li>
             <li>
               <Link to="/about" onClick={closeMenu}>
-                {texts[language].about}
+                {translation.about}
               </Link>
             </li>
           </ul>
