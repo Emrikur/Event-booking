@@ -1,14 +1,16 @@
 import "../styles/navbarStyles.css";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import logo2 from "../assets/eventhub-logo.png";
-
 import CreateEventModal from "./CreateEventModal";
 import SuccessModal from "./SuccessModal";
 
 const Navbar = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+
+  const menuRef = useRef(null);
+  const hamburgerRef = useRef(null);
 
   const showMenu = () => {
     const menu = document.querySelector(".menu");
@@ -19,11 +21,29 @@ const Navbar = () => {
     const menu = document.querySelector(".menu");
     menu.classList.remove("floatMenu");
   };
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (
+        menuRef.current &&
+        !menuRef.current.contains(event.target) &&
+        !hamburgerRef.current.contains(event.target)
+      ) {
+        const menu = document.querySelector(".menu");
+        menu.classList.remove("floatMenu");
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
 
   return (
     <nav className="navbar">
       <div className="navbar-inner">
-        <div className="hamburger-menu" onClick={showMenu}>
+        <div className="hamburger-menu" ref={hamburgerRef} onClick={showMenu}>
           <div className="bar"></div>
           <div className="bar"></div>
           <div className="bar"></div>
@@ -33,7 +53,7 @@ const Navbar = () => {
           <img src={logo2} alt="EventHub Logo" />
         </div>
 
-        <div className="menu">
+        <div className="menu" ref={menuRef}>
           <ul>
             <li>
               <Link to="/" onClick={closeMenu}>
@@ -78,6 +98,7 @@ const Navbar = () => {
           onClose={() => setIsSuccessModalOpen(false)}
         />
       )}
+
     </nav>
   );
 };
