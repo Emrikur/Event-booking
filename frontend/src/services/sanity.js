@@ -83,6 +83,13 @@ export async function getTeam() {
     description}`);
 }
 
+export async function getTeamSection() {
+  return await client.fetch(`*[_type == "teamSection"][0]{
+    _id,
+    title
+  }`);
+}
+
 export async function getEvents() {
   return await client.fetch(`*[_type == 'event']{
     _id,
