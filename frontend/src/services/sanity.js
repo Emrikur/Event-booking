@@ -58,6 +58,21 @@ export async function getAboutStats() {
   }`);
 }
 
+export async function getAboutStory() {
+  return await client.fetch(`*[_type == "aboutStory"][0]{
+    _id,
+    title,
+    subheading,
+    content,
+    image{
+      asset->{
+        url
+      },
+      alt
+    }
+  }`);
+}
+
 export async function getTeam() {
   return await client.fetch(`*[_type == 'team']{
     _id,
