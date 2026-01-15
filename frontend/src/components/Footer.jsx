@@ -51,16 +51,16 @@ export default function Footer() {
             <h3>Follow Us</h3>
             <div className="social-media-links">
               <a href="#" aria-label="Instagram">
-                <Instagram width={40} height={40} className="social-icon" />
+                <Instagram sixe={24} className="social-icon" />
               </a>
               <a href="#" aria-label="Facebook">
-                <Facebook width={40} height={40} className="social-icon" />
+                <Facebook sixe={24} className="social-icon" />
               </a>
               <a href="#" aria-label="LinkedIn">
-                <Linkedin width={40} height={40} className="social-icon" />
+                <Linkedin sixe={24} className="social-icon" />
               </a>
               <a href="#" aria-label="Twitter">
-                <Twitter width={40} height={40} className="social-icon" />
+                <Twitter sixe={24} className="social-icon" />
               </a>
             </div>
           </section>
