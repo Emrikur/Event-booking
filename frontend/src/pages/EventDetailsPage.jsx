@@ -4,6 +4,9 @@ import { getEventDetails } from "../services/sanity";
 import { urlFor } from "../services/sanity";
 import JoinEventModal from "../components/JoinEventModal";
 import SuccessModal from "../components/SuccessModal";
+import { formatEventDateTime } from "../utils/datehelper";
+import { getEventsSpots } from "../services/sanity";
+import { getEventAvailableSpots } from "../services/api";
 
 import {
   CalendarClock,
@@ -20,82 +23,71 @@ function EventDetailsPage() {
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const [eventDetails, setEventDetails] = useState([]);
   const [loading, setLoading] = useState(true);
-
-
-
-  const mockEvent = {
-    id: 1,
-    title: "Morning Yoga in the Park",
-    category: "Wellness",
-    image:
-      "https://images.unsplash.com/photo-1599901860904-17e6ed7083a0?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    date: "June 20, 2025",
-    time: "07:00",
-    location: "Slottsskogen Park, Gothenburg",
-    spotsLeft: 0,
-    totalSpots: 30,
-    price: "Free",
-    description:
-      "Start your day with mindfulness and movement in the beautiful surroundings of Slottsskogen Park. This morning yoga session is perfect for all levels, whether you're a complete beginner or an experienced yogi. Our experienced instructor will guide you through a gentle flow practice, focusing on breath work, stretching, and relaxation. The fresh morning air and natural setting will help you connect with nature while finding your inner peace.",
-    whatToBring: [
-      "Yoga mat (required)",
-      "Water bottle",
-      "Comfortable clothing",
-      "Sunscreen (weather dependent)",
-    ],
-    host: {
-      name: "Yoga Studio Stockholm",
-      avatar: "YS",
-      bio: "Professional yoga instructors",
-      eventsHosted: 50,
-    },
-  };
-
-
-
+  const [eventSpots, setEventsSpots] = useState([]);
   const { pageSlug } = useParams();
-  console.log("Slug from URL:", pageSlug);
 
   useEffect(() => {
     async function fetchEventDetails() {
-      await getEventDetails()
-      .then((data) => setEventDetails(data))
-      .catch((err) => console.error(err));
-      setLoading(false)
+      await getEventDetails(pageSlug)
+        .then((data) => setEventDetails(data))
+        .catch((err) => console.error(err));
+      setLoading(false);
     }
     fetchEventDetails();
   }, [pageSlug]);
 
-const currentEvent = eventDetails.find(detailCard => detailCard.slug.current === pageSlug)
+  const currentEvent = eventDetails.find(
+    (detailCard) => detailCard.slug.current === pageSlug
+  );
 
-if(loading)return <p>Loading...</p>
+  async function loadEvents() {
+    try {
+      const data = await getEventsSpots(pageSlug);
+      const { spotsLeft } = await getEventAvailableSpots(data._id);
+      const eventsWithSpots = {
+        ...data,
+        spotsLeft,
+      };
 
- if(!currentEvent){
-  return(
-    null
-  )
- }
-  console.log(currentEvent)
+      setEventsSpots(eventsWithSpots);
+    } catch (error) {
+      console.error("Error fetching events:", error);
+    } finally {
+      setLoading(false);
+    }
+  }
 
-    const isWaitlist = mockEvent.spotsLeft === 0;
+  useEffect(() => {
+    loadEvents();
+  }, [pageSlug]);
 
+  if (loading) return <p>Loading...</p>;
 
-    return (
+  if (!currentEvent) {
+    return null;
+  }
+
+  const eventDateTime = formatEventDateTime(currentEvent.eventDateTime);
+
+  const isWaitlist = eventSpots.spotsLeft === 0;
+
+  return (
     <section className="event-detail">
       {/* Hero Section */}
       <header
         className="event-detail__hero"
-        style={{ backgroundImage: `url(${urlFor(currentEvent.image)
-        .url()})` }}
+        style={{ backgroundImage: `url(${urlFor(currentEvent.image).url()})` }}
       >
         <div className="event-detail__hero-content">
-          <span className="event-detail__category">{currentEvent.category.title}</span>
+          <span className="event-detail__category">
+            {currentEvent.category.title}
+          </span>
           <h1 className="event-detail__title">{currentEvent.title}</h1>
-          <p className="event-detail__host">Hosted by {currentEvent.hostName}</p>
+          <p className="event-detail__host">
+            Hosted by {currentEvent.hostName}
+          </p>
         </div>
       </header>
-
-
 
       <div className="event-detail__wrapper">
         <article className="event-detail__content">
@@ -108,9 +100,7 @@ if(loading)return <p>Loading...</p>
                 </span>
                 <div className="event-info__content">
                   <h3>Date & Time</h3>
-                  <p>
-                    {currentEvent.eventDateTime} @{mockEvent.time}
-                  </p>
+                  <p>{eventDateTime}</p>
                 </div>
               </div>
 
@@ -132,8 +122,8 @@ if(loading)return <p>Loading...</p>
                 <div className="event-info__content">
                   <h3>Capacity</h3>
                   <p>
-                    {mockEvent.spotsLeft} spots remaining out of{" "}
-                    {mockEvent.totalSpots}
+                    {eventSpots.spotsLeft} spots remaining out of{" "}
+                    {currentEvent.maxParticipants}
                   </p>
                 </div>
               </div>
@@ -143,18 +133,24 @@ if(loading)return <p>Loading...</p>
           {/* About This Event Section */}
           <section className="event-detail__section">
             <h2 className="event-detail__section-title">About This Event</h2>
-            <p className="event-detail__description">{currentEvent.description}</p>
+            <p className="event-detail__description">
+              {currentEvent.description}
+            </p>
           </section>
 
           {/* What to Bring Section */}
           <section className="event-detail__section">
             <h2 className="event-detail__section-title">What to bring</h2>
-            {currentEvent.whatToBring ? <ul className="event-detail__list">
-              {currentEvent.whatToBring && currentEvent.whatToBring.map((item, index) => (
-                <li key={index}>{item}</li>
-              ))}
-            </ul> : <p>No required items</p>}
-
+            {currentEvent.whatToBring ? (
+              <ul className="event-detail__list">
+                {currentEvent.whatToBring &&
+                  currentEvent.whatToBring.map((item, index) => (
+                    <li key={index}>{item}</li>
+                  ))}
+              </ul>
+            ) : (
+              <p>No required items</p>
+            )}
           </section>
 
           {/* Meet Your Host */}
@@ -178,7 +174,7 @@ if(loading)return <p>Loading...</p>
         {/* Booking Card */}
         <aside className="event-detail__booking">
           <div className="booking__spots">
-            <div className="booking__spots-number">{mockEvent.spotsLeft}</div>
+            <div className="booking__spots-number">{eventSpots.spotsLeft}</div>
             <div className="booking__spots-text">Spots Available</div>
           </div>
 
@@ -236,7 +232,8 @@ if(loading)return <p>Loading...</p>
           title="You're All Set!"
           message={
             <>
-              Your spot has been reserved for <strong>{mockEvent.title}</strong>
+              Your spot has been reserved for{" "}
+              <strong>{currentEvent.title}</strong>
             </>
           }
           buttonText="View Event Details"

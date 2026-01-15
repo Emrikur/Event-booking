@@ -61,11 +61,6 @@ function UpcomingEvents() {
     setIsModalOpen(true);
   }
 
-  function handleJoinEvent(event, isWaitlist) {
-    setSelectedEvent({ ...event, isWaitlist });
-    setIsModalOpen(true);
-  }
-
   return (
     <>
       {isLoading && (
