@@ -108,7 +108,7 @@ function UpcomingEvents() {
                 </div>
 
                 <div className="event-card__content">
-                  <h3 className="event-title">{event.title}</h3>
+                  <h3 className="event-card__content--title">{event.title}</h3>
                   <p className="event-meta">
                     <CalendarClock size={18} />
                     <span>{formatEventDateTime(event.eventDateTime)}</span>
@@ -125,7 +125,7 @@ function UpcomingEvents() {
 
                 <div className="event-card__actions">
                   <Link
-                    to={`/events/${event._id}`}
+                    to={`/events/${event.slug.current}`}
                     className="event-button event-button--outline"
                   >
                     View Details

@@ -17,8 +17,10 @@ export function urlFor(source) {
 export async function getHero() {
   return await client.fetch(`*[_type == "hero" && pageId == "home"][0]{
     _id,
-    title,
-    subtitle,
+    title_en,
+    title_sv,
+    subtitle_en,
+    subtitle_sv,
     image{
       asset->{
         url
@@ -30,8 +32,10 @@ export async function getHero() {
 export async function getAboutHero() {
   return await client.fetch(`*[_type == "hero" && pageId == "about"][0]{
     _id,
-    title,
-    subtitle,
+    title_en,
+    title_sv,
+    subtitle_en,
+    subtitle_sv,
     image{
       asset->{
         url
@@ -40,20 +44,61 @@ export async function getAboutHero() {
   }`);
 }
 
+export async function getAboutMission() {
+  return await client.fetch(`*[_type == 'aboutMission'][0]{
+    _id,
+    title,
+    description
+  }`);
+}
+
+export async function getAboutStats() {
+  return await client.fetch(`*[_type == 'aboutStats'][0]{
+    _id,
+    stats[]{
+      number,
+      label
+    }
+  }`);
+}
+
+export async function getAboutStory() {
+  return await client.fetch(`*[_type == "aboutStory"][0]{
+    _id,
+    title,
+    subheading,
+    content,
+    image{
+      asset->{
+        url
+      },
+      alt
+    }
+  }`);
+}
+
 export async function getTeam() {
   return await client.fetch(`*[_type == 'team']{
-  _id,
-  firstName,
+    _id,
+    firstName,
     surname,
     initials,
     role,
     description}`);
 }
 
+export async function getTeamSection() {
+  return await client.fetch(`*[_type == "teamSection"][0]{
+    _id,
+    title
+  }`);
+}
+
 export async function getEvents() {
   return await client.fetch(`*[_type == 'event']{
     _id,
     title,
+    slug,
     image{
       asset->{
         url
@@ -83,6 +128,7 @@ export async function getUpcomingEvents(limit = 3) {
   return await client.fetch(`*[_type == "event" && eventDateTime > now()] | order(eventDateTime asc) [0...${limit}]{
     _id,
     title,
+    slug,
     image{
       asset->{
         url
@@ -121,7 +167,10 @@ export async function getEventDetails() {
     slug,
     eventDateTime,
     location,
-    category,
+    category->{
+      title,
+      slug
+    },
     price,
     maxParticipants,
     description,
@@ -136,26 +185,34 @@ export async function getEventDetails() {
 export async function getHostEventCTA() {
   return await client.fetch(`*[_type == "cta" && pageId == "host-event"][0]{
     _id,
-    title,
-    subtitle,
-    buttonText
+    title_en,
+    title_sv,
+    subtitle_en,
+    subtitle_sv,
+    buttonText_en,
+    buttonText_sv
   }`);
 }
 
 export async function getJoinCommunityCTA() {
   return await client.fetch(`*[_type == "cta" && pageId == "join-community"][0]{
     _id,
-    title,
-    subtitle,
-    buttonText
+    title_en,
+    title_sv,
+    subtitle_en,
+    subtitle_sv,
+    buttonText_en,
+    buttonText_sv
   }`);
 }
 
 export async function getHowItWorks() {
   return await client.fetch(`*[_type == "howItWorks"] | order(order asc){
     _id,
-    title,
-    description,
+    title_en,
+    title_sv,
+    description_en,
+    description_sv,
     order,
     icon{
       asset->{

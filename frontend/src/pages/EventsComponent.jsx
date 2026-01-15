@@ -2,6 +2,7 @@ import "../styles/eventPageStyles.css";
 import { CalendarClockIcon } from "lucide-react";
 import { MapPinIcon } from "lucide-react";
 import { UsersRound } from "lucide-react";
+import { Link } from "react-router-dom";
 
 import DropdownMenu from "../components/DropdownMenu";
 import { useState } from "react";
@@ -64,14 +65,22 @@ const EventsComponent = () => {
                   <p className="event-location">
                     <MapPinIcon /> {event.location}
                   </p>
+
                   <p className="event-spots">
                     <UsersRound />
                     {event.maxParticipants} spots left
                   </p>
                 </div>
                 <div className="event-action">
-                  <button className="event-join">Join Event</button>
+                  <button className="event-join">
+                    <Link className="event-join"
+                    to={{
+                      pathname: `/events/${event.slug.current}`
+                    }}>Join Event
+                    </Link>
+                  </button>
                 </div>
+
               </div>
             );
           })}
