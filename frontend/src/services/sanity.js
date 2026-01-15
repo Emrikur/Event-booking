@@ -208,8 +208,10 @@ export async function getJoinCommunityCTA() {
 export async function getHowItWorks() {
   return await client.fetch(`*[_type == "howItWorks"] | order(order asc){
     _id,
-    title,
-    description,
+    title_en,
+    title_sv,
+    description_en,
+    description_sv,
     order,
     icon{
       asset->{
