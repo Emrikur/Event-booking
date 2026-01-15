@@ -38,7 +38,6 @@
   display: grid;
   grid-template-columns: 1fr;
   gap: 2rem;
-  margin-top: 3rem;
 }
 
 .member-card {
@@ -53,7 +52,7 @@
   border-radius: 0.5rem;
   padding-top: 2rem;
   padding-bottom: 1rem;
-  margin: 1.5rem auto;
+  /* margin: 1.5rem auto; */
   background-color: var(--bg-one);
 
   p {
@@ -100,6 +99,10 @@
 @media (min-width: 40rem) {
   .team-flex-container {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  .team-title {
+    margin-bottom: 2rem;
   }
 }
 
