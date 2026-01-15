@@ -24,6 +24,10 @@ const translations = {
       followUs: "Follow Us",
       copyright: "© 2026 EventHub. All rights reserved.",
     },
+    howItWorks: {
+      title: "How it Works",
+      subtitle: "Three simple steps to your next adventure",
+    },
   },
   SV: {
     navbar: {
@@ -45,6 +49,10 @@ const translations = {
       terms: "Användarvillkor",
       followUs: "Följ oss",
       copyright: "EventHub. Alla rättigheter förbehållna.",
+    },
+    howItWorks: {
+      title: "Hur det fungerar",
+      subtitle: "Tre enkla steg till ditt nästa äventyr",
     },
   },
 };
