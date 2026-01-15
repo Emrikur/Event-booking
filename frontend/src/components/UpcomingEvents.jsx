@@ -125,7 +125,7 @@ function UpcomingEvents() {
 
                 <div className="event-card__actions">
                   <Link
-                    to={`/events/${event._id}`}
+                    to={`/events/${event.slug.current}`}
                     className="event-button event-button--outline"
                   >
                     View Details

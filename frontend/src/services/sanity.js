@@ -128,6 +128,7 @@ export async function getUpcomingEvents(limit = 3) {
   return await client.fetch(`*[_type == "event" && eventDateTime > now()] | order(eventDateTime asc) [0...${limit}]{
     _id,
     title,
+    slug,
     image{
       asset->{
         url
