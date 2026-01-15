@@ -17,8 +17,10 @@ export function urlFor(source) {
 export async function getHero() {
   return await client.fetch(`*[_type == "hero" && pageId == "home"][0]{
     _id,
-    title,
-    subtitle,
+    title_en,
+    title_sv,
+    subtitle_en,
+    subtitle_sv,
     image{
       asset->{
         url
@@ -30,8 +32,10 @@ export async function getHero() {
 export async function getAboutHero() {
   return await client.fetch(`*[_type == "hero" && pageId == "about"][0]{
     _id,
-    title,
-    subtitle,
+    title_en,
+    title_sv,
+    subtitle_en,
+    subtitle_sv,
     image{
       asset->{
         url
