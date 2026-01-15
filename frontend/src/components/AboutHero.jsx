@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
+import { useContext } from "react";
+import { LanguageContext } from "../context/LanguageContext";
 
 import "../styles/Hero.css";
 
 function AboutHero({ fetchHero }) {
   const [heroData, setHeroData] = useState(null);
+  const { language, translations } = useContext(LanguageContext);
 
   useEffect(() => {
     async function loadHero() {
@@ -20,8 +23,12 @@ function AboutHero({ fetchHero }) {
     <section className="hero">
       <img src={heroData.image.asset.url} alt="" className="hero-image" />
       <div className="hero-overlay">
-        <h1 className="hero-title">{heroData.title}</h1>
-        <p className="hero-text">{heroData.subtitle}</p>
+        <h1 className="hero-title">
+          {language === "EN" ? heroData.title_en : heroData.title_sv}
+        </h1>
+        <p className="hero-text">
+          {language === "EN" ? heroData.subtitle_en : heroData.subtitle_sv}
+        </p>
       </div>
     </section>
   );
