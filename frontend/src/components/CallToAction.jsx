@@ -29,8 +29,6 @@ function CallToAction({ fetchCTA }) {
     <section className="cta">
       <div className="cta__container">
         <div className="cta__content">
-          {/* <h2 className="cta__title">{ctaData.title}</h2>
-          <p className="cta__text">{ctaData.subtitle}</p> */}
           <h2 className="cta__title">
             {language === "EN" ? ctaData.title_en : ctaData.title_sv}
           </h2>
