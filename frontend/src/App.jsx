@@ -5,6 +5,8 @@ import {
   RouterProvider,
 } from "react-router-dom";
 
+import { LanguageProvider } from "./context/LanguageContext";
+
 import MainLayout from "./layouts/MainLayout";
 import HomePage from "./pages/HomePage";
 import EventsComponent from "./pages/EventsComponent";
@@ -23,7 +25,11 @@ const router = createBrowserRouter(
 );
 
 function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <LanguageProvider>
+      <RouterProvider router={router} />
+    </LanguageProvider>
+  );
 }
 
 export default App;
