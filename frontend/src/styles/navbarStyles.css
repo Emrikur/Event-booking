@@ -45,6 +45,14 @@
   align-items: center;
 }
 
+.createEvent,
+.language-button {
+  height: 2.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .createEvent {
   background-color: var(--primary-default);
   border: none;
@@ -54,6 +62,7 @@
   padding: 0.9rem 2rem;
   font-weight: 600;
   transition: background 0.3s;
+  white-space: nowrap;
 }
 
 .createEvent:hover {
@@ -71,6 +80,59 @@
   width: 25px;
   height: 3px;
   background-color: #333;
+}
+
+.language-switcher {
+  position: relative;
+}
+
+.language-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: transparent;
+  border: 1px solid var(--outline-default);
+  border-radius: 8px;
+  /* padding: 0.6rem 1rem; */
+  padding: 0.9rem 2rem;
+  margin-left: 1rem;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.language-button:hover {
+  background-color: var(--outline-hover);
+}
+
+/* .language-button svg {
+  width: 1.25rem;
+  height: 1.25rem;
+} */
+
+.language-dropdown {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  background: #fff;
+  border: 1px solid var(--outline-default);
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 0.5rem 0;
+  margin: 0;
+  min-width: 7.5rem;
+  z-index: 1000;
+}
+
+.language-dropdown li {
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  font-size: 0.875rem;
+  transition: background 0.2s;
+}
+
+.language-dropdown li:hover {
+  background-color: var(--bg-one);
 }
 
 @media (max-width: 37.25rem) {
@@ -116,6 +178,19 @@
   .menu.floatMenu a:focus {
     text-decoration: underline;
     text-underline-offset: 4px;
+  }
+
+  .button-section {
+    gap: 0.5rem;
+  }
+
+  .language-button {
+    padding: 0.5rem 0.75rem;
+    margin-left: 0.5rem;
+  }
+
+  .createEvent {
+    padding: 0.7rem 1.2rem;
   }
 }
 

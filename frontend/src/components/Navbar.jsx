@@ -1,16 +1,23 @@
-import "../styles/navbarStyles.css";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useContext } from "react";
 import { Link } from "react-router-dom";
 import logo2 from "../assets/eventhub-logo.png";
 import CreateEventModal from "./CreateEventModal";
 import SuccessModal from "./SuccessModal";
+import { LanguageContext } from "../context/LanguageContext";
 
-const Navbar = () => {
+import { Globe } from "lucide-react";
+
+import "../styles/navbarStyles.css";
+
+function Navbar() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+  const [open, setOpen] = useState(false);
+  const { language, setLanguage } = useContext(LanguageContext);
 
   const menuRef = useRef(null);
   const hamburgerRef = useRef(null);
+  const languageMenuRef = useRef();
 
   const showMenu = () => {
     const menu = document.querySelector(".menu");
@@ -21,6 +28,16 @@ const Navbar = () => {
     const menu = document.querySelector(".menu");
     menu.classList.remove("floatMenu");
   };
+
+  function toggleLanguageMenu() {
+    setOpen((prev) => !prev);
+  }
+
+  function handleLanguageChange(language) {
+    setLanguage(language);
+    setOpen(false);
+  }
+
   useEffect(() => {
     function handleClickOutside(event) {
       if (
@@ -39,6 +56,18 @@ const Navbar = () => {
     };
   }, []);
 
+  const texts = {
+    EN: {
+      home: "Home",
+      events: "Events",
+      about: "About",
+    },
+    SV: {
+      home: "Hem",
+      events: "Evenemang",
+      about: "Om",
+    },
+  };
 
   return (
     <nav className="navbar">
@@ -57,17 +86,17 @@ const Navbar = () => {
           <ul>
             <li>
               <Link to="/" onClick={closeMenu}>
-                Home
+                {texts[language].home}
               </Link>
             </li>
             <li>
               <Link to="/events" onClick={closeMenu}>
-                Events
+                {texts[language].events}
               </Link>
             </li>
             <li>
               <Link to="/about" onClick={closeMenu}>
-                About
+                {texts[language].about}
               </Link>
             </li>
           </ul>
@@ -77,6 +106,18 @@ const Navbar = () => {
           <button className="createEvent" onClick={() => setIsModalOpen(true)}>
             Create Event
           </button>
+          <div className="language-switcher" ref={languageMenuRef}>
+            <button className="language-button" onClick={toggleLanguageMenu}>
+              <Globe size={20} />
+              {language}
+            </button>
+            {open && (
+              <ul className="language-dropdown">
+                <li onClick={() => handleLanguageChange("EN")}>English</li>
+                <li onClick={() => handleLanguageChange("SV")}>Svenska</li>
+              </ul>
+            )}
+          </div>
         </div>
       </div>
 
@@ -98,9 +139,8 @@ const Navbar = () => {
           onClose={() => setIsSuccessModalOpen(false)}
         />
       )}
-
     </nav>
   );
-};
+}
 
 export default Navbar;
