@@ -108,7 +108,7 @@ function UpcomingEvents() {
                 </div>
 
                 <div className="event-card__content">
-                  <h3 className="event-title">{event.title}</h3>
+                  <h3 className="event-card__content--title">{event.title}</h3>
                   <p className="event-meta">
                     <CalendarClock size={18} />
                     <span>{formatEventDateTime(event.eventDateTime)}</span>
