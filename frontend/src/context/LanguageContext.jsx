@@ -8,6 +8,7 @@ const translations = {
       home: "Home",
       events: "Events",
       about: "About",
+      createEvent: "Create Event",
     },
     footer: {
       tagline: "Find, create and book events across Sweden",
@@ -34,6 +35,7 @@ const translations = {
       home: "Hem",
       events: "Evenemang",
       about: "Om",
+      createEvent: "Skapa",
     },
     footer: {
       tagline: "Hitta, skapa och boka evenemang i hela Sverige",
@@ -58,10 +60,18 @@ const translations = {
 };
 
 export function LanguageProvider({ children }) {
-  const [language, setLanguage] = useState("EN");
+  const savedLanguage = localStorage.getItem("language") || "EN";
+  const [language, setLanguage] = useState(savedLanguage || "EN");
+
+  function changeLanguage(newLanguage) {
+    setLanguage(newLanguage);
+    localStorage.setItem("language", newLanguage);
+  }
 
   return (
-    <LanguageContext.Provider value={{ language, setLanguage, translations }}>
+    <LanguageContext.Provider
+      value={{ language, setLanguage: changeLanguage, translations }}
+    >
       {children}
     </LanguageContext.Provider>
   );

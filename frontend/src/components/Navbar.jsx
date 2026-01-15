@@ -93,7 +93,7 @@ function Navbar() {
 
         <div className="button-section">
           <button className="createEvent" onClick={() => setIsModalOpen(true)}>
-            Create Event
+            {translation.createEvent}
           </button>
           <div className="language-switcher" ref={languageMenuRef}>
             <button className="language-button" onClick={toggleLanguageMenu}>
