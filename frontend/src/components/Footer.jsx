@@ -76,7 +76,7 @@ function Footer() {
       </div>
 
       <div className="footer-copyrights">
-        <p>&copy; {translation.copyright}</p>
+        <p>{translation.copyright}</p>
       </div>
     </footer>
   );
