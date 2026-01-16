@@ -135,7 +135,7 @@
   background-color: var(--bg-one);
 }
 
-@media (max-width: 37.25rem) {
+@media (max-width: 48rem) {
   .logo {
     visibility: hidden;
   }
