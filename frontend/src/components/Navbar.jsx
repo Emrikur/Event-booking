@@ -68,7 +68,9 @@ function Navbar() {
         </div>
 
         <div className="logo">
-          <img src={logo2} alt="EventHub Logo" />
+          <Link to="/">
+            <img src={logo2} alt="EventHub Logo" />
+          </Link>
         </div>
 
         <div className="menu" ref={menuRef}>
