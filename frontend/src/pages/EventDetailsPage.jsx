@@ -8,6 +8,11 @@ import { formatEventDateTime } from "../utils/datehelper";
 import { getEventsSpots } from "../services/sanity";
 import { getEventAvailableSpots } from "../services/api";
 
+import defaultWellness from "../assets/default-wellness.webp";
+import defaultMusic from "../assets/default-music.webp";
+import defaultFood from "../assets/default-food.webp";
+import defaultWorkshop from "../assets/default-workshop.webp";
+
 import {
   CalendarClock,
   MapPin,
@@ -25,6 +30,14 @@ function EventDetailsPage() {
   const [loading, setLoading] = useState(true);
   const [eventSpots, setEventsSpots] = useState([]);
   const { pageSlug } = useParams();
+
+  const defaultImages = {
+    wellness: defaultWellness,
+    music: defaultMusic,
+    food: defaultFood,
+    workshop: defaultWorkshop,
+  };
+
 
   useEffect(() => {
     async function fetchEventDetails() {
@@ -76,7 +89,13 @@ function EventDetailsPage() {
       {/* Hero Section */}
       <header
         className="event-detail__hero"
-        style={{ backgroundImage: `url(${urlFor(currentEvent.image).url()})` }}
+        style={{
+  backgroundImage: `url(${
+    currentEvent.image
+      ? urlFor(currentEvent.image).url()
+      : defaultImages[currentEvent.category.title.toLowerCase()]
+  })`
+}}
       >
         <div className="event-detail__hero-content">
           <span className="event-detail__category">
