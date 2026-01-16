@@ -4,7 +4,7 @@ import {
   createRoutesFromElements,
   RouterProvider,
 } from "react-router-dom";
-import { lazy} from "react";
+import { lazy, Suspense} from "react";
 
 const HomePage = lazy(() => import("./pages/HomePage.jsx"));
 const AboutPage = lazy(() => import("./pages/About.jsx"));
@@ -20,10 +20,11 @@ const router = createBrowserRouter(
 
   createRoutesFromElements(
     <Route path="/" element={<MainLayout />}>
-      <Route index element={<HomePage />} />
-      <Route path="/events" element={<EventsPage />} />
-      <Route path="/events/:pageSlug" element={<EventDetailPage />} />
-      <Route path="/about" element={<AboutPage />} />
+
+      <Route index element={<Suspense fallback={<div>Going Home...</div>}><HomePage /></Suspense>} />
+      <Route path="/events" element={<Suspense fallback={<div>Browsing the Events...</div>}><EventsPage /></Suspense>} />
+      <Route path="/events/:pageSlug" element={<Suspense fallback={<div>Loading Event...</div>}><EventDetailPage /></Suspense>} />
+      <Route path="/about" element={<Suspense fallback={<div>Loading About Us...</div>}><AboutPage /></Suspense>} />
     </Route>
   )
 );
