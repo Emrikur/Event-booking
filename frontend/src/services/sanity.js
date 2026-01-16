@@ -4,8 +4,10 @@ import { createImageUrlBuilder } from "@sanity/image-url";
 export const client = createClient({
   projectId: import.meta.env.VITE_SANITY_PROJECT_ID,
   dataset: import.meta.env.VITE_SANITY_DATASET,
-  useCdn: true,
+  useCdn: false,
   apiVersion: "2024-01-01",
+  token: import.meta.env.VITE_SANITY_READ_TOKEN,
+  perspective: "previewDrafts",
 });
 
 const builder = createImageUrlBuilder(client);
@@ -151,7 +153,8 @@ export async function getUpcomingEvents(limit = 3) {
 }
 
 export async function getEventsSpots(slug) {
-  return await client.fetch(`*[_type == "event" && slug.current == $slug][0]{
+  return await client.fetch(
+    `*[_type == "event" && slug.current == $slug][0]{
     _id,
     title,
     slug,
@@ -173,7 +176,9 @@ export async function getEventsSpots(slug) {
     hostName,
     hostBio,
     hostAvatar
-  }`,{slug});
+  }`,
+    { slug }
+  );
 }
 
 export async function getValue() {
