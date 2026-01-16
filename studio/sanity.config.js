@@ -15,4 +15,16 @@ export default defineConfig({
   schema: {
     types: schemaTypes,
   },
+
+  document: {
+    productionUrl: async (prev, {document}) => {
+      if (document._type === 'event' && document.slug?.current) {
+        const url = `http://localhost:5173/events/${document.slug.current}`
+
+        return url
+      }
+
+      return prev
+    },
+  },
 })
