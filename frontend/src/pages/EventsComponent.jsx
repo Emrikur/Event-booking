@@ -43,7 +43,7 @@ function EventsComponent() {
   };
 
   function handleJoinEvent(event, isWaitlist) {
-    setSelectedEvent({ ...event, isWaitlist });
+    // setSelectedEvent({ ...event, isWaitlist });
     setIsModalOpen(true);
   }
 
