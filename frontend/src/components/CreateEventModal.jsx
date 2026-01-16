@@ -111,8 +111,20 @@ function CreateEventModal({ onClose, onSuccess }) {
 
     const eventDateTime = `${date}T${time}:00.000Z`;
 
+    function slugify(title) {
+      console.log("Here is the title ", title);
+      return title
+        .toLowerCase()
+        .replace(/ /g, "-")
+        .replace(/[^\w-]+/g, "");
+    }
+
     const eventData = {
       title,
+      slug: {
+        _type: "slug",
+        current: `${slugify(title)}`,
+      },
       eventDateTime,
       category,
       location,
