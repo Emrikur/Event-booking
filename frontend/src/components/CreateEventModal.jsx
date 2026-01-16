@@ -128,10 +128,10 @@ function CreateEventModal({ onClose, onSuccess }) {
       eventDateTime,
       category,
       location,
-      price: Number(price) || null,
+      price: price.trim() ? Number(price) : "Free",
       maxParticipants: Number(maxParticipants) || null,
       description: description || null,
-      whatToBring: whatToBring
+      whatToBring: whatToBring.trim()
         ? whatToBring.split(",").map((item) => item.trim())
         : [],
       eventImageFile: eventImagePreview,

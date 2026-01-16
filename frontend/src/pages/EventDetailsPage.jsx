@@ -27,8 +27,10 @@ function EventDetailsPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const [eventDetails, setEventDetails] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
   const [eventSpots, setEventsSpots] = useState([]);
+  const [selectedEvent, setSelectedEvent] = useState(null);
+
   const { pageSlug } = useParams();
 
   const defaultImages = {
@@ -38,13 +40,12 @@ function EventDetailsPage() {
     workshop: defaultWorkshop,
   };
 
-
   useEffect(() => {
     async function fetchEventDetails() {
       await getEventDetails(pageSlug)
         .then((data) => setEventDetails(data))
         .catch((err) => console.error(err));
-      setLoading(false);
+      setIsLoading(false);
     }
     fetchEventDetails();
   }, [pageSlug]);
@@ -56,6 +57,7 @@ function EventDetailsPage() {
   async function loadEvents() {
     try {
       const data = await getEventsSpots(pageSlug);
+
       const { spotsLeft } = await getEventAvailableSpots(data._id);
       const eventsWithSpots = {
         ...data,
@@ -66,7 +68,7 @@ function EventDetailsPage() {
     } catch (error) {
       console.error("Error fetching events:", error);
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   }
 
@@ -74,7 +76,14 @@ function EventDetailsPage() {
     loadEvents();
   }, [pageSlug]);
 
-  if (loading) return <p>Loading...</p>;
+  if (isLoading) {
+    return (
+      <div className="event-detail__loading">
+        <div className="event-detail__spinner"></div>
+        <p>Loading Event Details...</p>
+      </div>
+    );
+  }
 
   if (!currentEvent) {
     return null;
@@ -91,12 +100,12 @@ function EventDetailsPage() {
         className="event-detail__hero"
         aria-details="Page header with image of the chosen event"
         style={{
-  backgroundImage: `url(${
-    currentEvent.image
-      ? urlFor(currentEvent.image).url()
-      : defaultImages[currentEvent.category.title.toLowerCase()]
-  })`
-}}
+          backgroundImage: `url(${
+            currentEvent.image
+              ? urlFor(currentEvent.image).url()
+              : defaultImages[currentEvent.category.title.toLowerCase()]
+          })`,
+        }}
       >
         <div className="event-detail__hero-content">
           <span className="event-detail__category">
@@ -108,38 +117,37 @@ function EventDetailsPage() {
           </p>
         </div>
       </header>
-
       <div className="event-detail__wrapper">
         <article className="event-detail__content">
           <section className="event-detail__section">
             <h2 className="event-detail__section-title">Event Details</h2>
-            <div className="event-info">
-              <div className="event-info__item">
-                <span className="event-info__icon">
+
+            <div className="event-details-info">
+              <div className="event-details-info__item">
+                <span className="event-details-info__icon">
                   <CalendarClock size={26} />
                 </span>
-                <div className="event-info__content">
+                <div className="event-details-info__content">
                   <h3>Date & Time</h3>
                   <p>{eventDateTime}</p>
                 </div>
               </div>
 
-              <div className="event-info__item">
-                <span className="event-info__icon">
-                  {" "}
+              <div className="event-details-info__item">
+                <span className="event-details-info__icon">
                   <MapPin size={26} />
                 </span>
-                <div className="event-info__content">
+                <div className="event-details-info__content">
                   <h3>Location</h3>
                   <p>{currentEvent.location}</p>
                 </div>
               </div>
 
-              <div className="event-info__item">
-                <span className="event-info__icon">
+              <div className="event-details-info__item">
+                <span className="event-details-info__icon">
                   <UsersRound size={26} />
                 </span>
-                <div className="event-info__content">
+                <div className="event-details-info__content">
                   <h3>Capacity</h3>
                   <p>
                     {eventSpots.spotsLeft} spots remaining out of{" "}
@@ -161,15 +169,18 @@ function EventDetailsPage() {
           {/* What to Bring Section */}
           <section className="event-detail__section">
             <h2 className="event-detail__section-title">What to bring</h2>
-            {currentEvent.whatToBring ? (
+            {currentEvent.whatToBring &&
+            currentEvent.whatToBring.filter((item) => item.trim()).length >
+              0 ? (
               <ul className="event-detail__list">
-                {currentEvent.whatToBring &&
-                  currentEvent.whatToBring.map((item, index) => (
+                {currentEvent.whatToBring
+                  .filter((item) => item.trim())
+                  .map((item, index) => (
                     <li key={index}>{item}</li>
                   ))}
               </ul>
             ) : (
-              <p>No required items</p>
+              <p className="event-detail__no-items">No required items</p>
             )}
           </section>
 
@@ -183,9 +194,9 @@ function EventDetailsPage() {
                   {currentEvent.hostName}
                 </h3>
                 <p className="event-detail__host-bio">{currentEvent.hostBio}</p>
-                <p className="event-detail__host-stats">
-                  {/* {mockEvent.host.eventsHosted} */}50+ events hosted
-                </p>
+                {/* <p className="event-detail__host-stats">
+                  50+ events hosted
+                </p> */}
               </div>
             </div>
           </section>
@@ -200,7 +211,11 @@ function EventDetailsPage() {
 
           <div className="booking__price">
             <div className="booking__price-label">Price per person</div>
-            <div className="booking__price-amount">{currentEvent.price}</div>
+            <div className="booking__price-amount">
+              {currentEvent.price === "Free" || !currentEvent.price
+                ? "Free"
+                : `${currentEvent.price} SEK`}
+            </div>
           </div>
 
           <button
@@ -209,7 +224,10 @@ function EventDetailsPage() {
                 ? "booking__button--secondary"
                 : "booking__button--primary"
             }`}
-            onClick={() => setIsModalOpen(true)}
+            onClick={() => {
+              setSelectedEvent({ ...currentEvent, isWaitlist });
+              setIsModalOpen(true);
+            }}
           >
             {isWaitlist ? "Join Waitlist" : "Join Event"}
           </button>
@@ -236,24 +254,25 @@ function EventDetailsPage() {
       {/* Join Event Modal */}
       {isModalOpen && (
         <JoinEventModal
-          event={currentEvent}
+          event={selectedEvent}
           onClose={() => setIsModalOpen(false)}
           onSuccess={() => {
             setIsModalOpen(false);
             setIsSuccessModalOpen(true);
+            loadEvents();
           }}
-          isWaitlist={isWaitlist}
+          isWaitlist={selectedEvent?.isWaitlist}
         />
       )}
 
       {/* Success Modal Join Event*/}
-      {isSuccessModalOpen && (
+      {isSuccessModalOpen && selectedEvent && !selectedEvent.isWaitlist && (
         <SuccessModal
           title="You're All Set!"
           message={
             <>
               Your spot has been reserved for{" "}
-              <strong>{currentEvent.title}</strong>
+              <strong>{selectedEvent.title}</strong>
             </>
           }
           buttonText="View Event Details"
@@ -262,18 +281,18 @@ function EventDetailsPage() {
       )}
 
       {/* Success Modal Join Waitlist*/}
-      {isSuccessModalOpen && isWaitlist && (
+      {isSuccessModalOpen && selectedEvent && selectedEvent.isWaitlist && (
         <SuccessModal
           title="You're on the Waitlist!"
           message={
             <>
-              You're on the waitlist for <strong>{currentEvent.title}</strong>.
+              You're on the waitlist for <strong>{selectedEvent.title}</strong>.
               We'll send you an email as soon as a spot opens up!
             </>
           }
           buttonText="Browse More Events"
           onClose={() => setIsSuccessModalOpen(false)}
-          isWaitlist={isWaitlist}
+          isWaitlist={true}
         />
       )}
     </section>
