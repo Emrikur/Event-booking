@@ -5,7 +5,7 @@ import { Facebook, Instagram, Linkedin, Twitter } from "lucide-react";
 
 import "../styles/Footer.css";
 
-function Footer() {
+function Footer({ onHostEventClick }) {
   const { language, setLanguage, translations } = useContext(LanguageContext);
 
   const translation = translations[language].footer;
@@ -32,7 +32,12 @@ function Footer() {
                 <a href="/about">{translation.about}</a>
               </li>
               <li>
-                <a href="#">{translation.host}</a>
+              <a href="#"
+                  onClick={(e) => {e.preventDefault();
+                    if (onHostEventClick) {  onHostEventClick();
+                    }}}>
+                  {translation.host}
+                </a>
               </li>
             </ul>
           </section>
