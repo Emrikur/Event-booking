@@ -4,12 +4,12 @@ import {
   createRoutesFromElements,
   RouterProvider,
 } from "react-router-dom";
-import { lazy, Suspense} from "react";
+import { lazy} from "react";
 
 const HomePage = lazy(() => import("./pages/HomePage.jsx"));
-const EventDetailPage = lazy(() => import("./pages/EventDetailsPage.jsx"));
-const EventsPage = lazy(() => import("./pages/EventsComponent.jsx"));
 const AboutPage = lazy(() => import("./pages/About.jsx"));
+import EventDetailPage from "./pages/EventDetailsPage.jsx";
+import EventsPage from "./pages/EventsComponent.jsx";
 
 import { LanguageProvider } from "./context/LanguageContext";
 
