@@ -9,7 +9,7 @@
   padding: 0.3rem 0.8rem;
   border-radius: 12px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 .category-bar {
@@ -94,11 +94,6 @@
 .event-card__actions {
   margin-top: auto;
   padding: 0 1.8rem 1.8rem 1.8rem;
-}
-
-.event:hover {
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  transform: translateY(-5px);
 }
 
 .event-date,
