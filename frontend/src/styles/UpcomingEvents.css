@@ -24,7 +24,7 @@
   display: flex;
   flex-direction: column;
   border-radius: 12px;
-  height: 100%; /* ← LÄGG TILL */
+  height: 100%;
 }
 
 .event-card__image-wrapper {
@@ -50,7 +50,7 @@
 }
 
 .event-card__content {
-  flex: 1; /* ← LÄGG TILL */
+  flex: 1;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -63,15 +63,14 @@
 }
 
 .event-card__actions {
-  display: grid; /* ← ÄNDRA från flex */
-  grid-template-columns: 1fr 1fr; /* ← LÄGG TILL */
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 0.75rem;
-  margin-top: auto; /* ← ÄNDRA från 1.6rem */
-  padding: 0 1.8rem 1.8rem 1.8rem; /* ← ÄNDRA padding */
+  margin-top: auto;
+  padding: 0 1.8rem 1.8rem 1.8rem;
 }
 
 .event-button {
-  /* flex: 1; ← TA BORT */
   padding: clamp(0.5rem, 2vw, 0.75rem);
   font-size: clamp(0.813rem, 2vw, 0.875rem);
   border: none;
