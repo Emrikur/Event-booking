@@ -91,6 +91,7 @@ app.post("/api/waitlist", async (request, response) => {
 app.post("/api/events", async (request, response) => {
   const {
     title,
+    slug,
     eventDateTime,
     location,
     category,
@@ -113,6 +114,7 @@ app.post("/api/events", async (request, response) => {
 
     const eventData = {
       title,
+      slug,
       eventDateTime,
       location,
       category,
