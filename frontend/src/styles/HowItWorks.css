@@ -23,6 +23,12 @@
   flex-direction: column;
   align-items: center;
   padding: 2rem 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.how-it-works__step:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
 }
 
 .how-it-works__step-title {
