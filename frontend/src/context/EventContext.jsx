@@ -1,11 +1,13 @@
 import React, { createContext, useState, useEffect } from "react";
 import { getEvents } from "../services/sanity";
+import { set } from "rsuite/esm/internals/utils/date";
 
 export const EventContext = createContext();
 
 export const EventProvider = ({ children }) => {
   const [events, setEvents] = useState([]);
   const [filteredEvents, setFilteredEvents] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const filterEvents = (searchTerm, category) => {
     const filtered = events.filter((item) => {
@@ -28,9 +30,17 @@ export const EventProvider = ({ children }) => {
 
   useEffect(() => {
     async function fetchEvents() {
-      const data = await getEvents();
-      setEvents(data);
-      setFilteredEvents(data);
+      setIsLoading(true);
+
+      try {
+        const data = await getEvents();
+        setEvents(data);
+        setFilteredEvents(data);
+      } catch (error) {
+        console.error("Error fetching events:", error);
+      } finally {
+        setIsLoading(false);
+      }
     }
 
     fetchEvents();
@@ -44,6 +54,7 @@ export const EventProvider = ({ children }) => {
         filteredEvents,
         setFilteredEvents,
         filterEvents,
+        isLoading,
       }}
     >
       {children}

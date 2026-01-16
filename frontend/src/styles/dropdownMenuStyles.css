@@ -1,4 +1,10 @@
 #basic-button {
-  color: black;
-  text-transform: lowercase;
+  color: var(--text-dark);
+  text-transform: capitalize;
+}
+
+#basic-menu .MuiMenuItem-root {
+  font-family: var(--font-body);
+  color: var(--text-dark);
+  font-size: 0.875rem;
 }

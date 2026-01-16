@@ -92,7 +92,7 @@ function UpcomingEvents() {
                 <div className="event-card__image-wrapper">
                   <img
                     src={imageUrl}
-                    alt={event.title}
+                    alt={event.image?.alt || event.title}
                     className="event-image"
                   />
                   {event.category.title && (
@@ -112,7 +112,7 @@ function UpcomingEvents() {
                     <MapPin size={18} />
                     <span>{event.location}</span>
                   </p>
-                  <p className="event-spots">
+                  <p className="event-meta">
                     <UsersRound size={18} />
                     <span>{event.spotsLeft} spots left</span>
                   </p>
