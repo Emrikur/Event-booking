@@ -22,7 +22,7 @@ function Hero({ fetchHero }) {
 
   return (
     <section className="hero">
-      <img src={heroData.image.asset.url} alt="" className="hero-image" />
+      <img src={heroData.image.asset.url} alt="An image of a bustling car free street, with tents lining the sides, during an event" className="hero-image" loading="lazy" />
       <div className="hero-overlay">
         <h1 className="hero-title">
           {language === "EN" ? heroData.title_en : heroData.title_sv}

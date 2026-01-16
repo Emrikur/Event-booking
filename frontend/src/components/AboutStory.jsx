@@ -16,7 +16,6 @@ function AboutStory() {
   }, []);
 
   if (!story) return null;
-
   return (
     <section className="about-story">
       <div className="about-story-container">
@@ -34,7 +33,7 @@ function AboutStory() {
               />
             </div>
             <div className="about-story-image">
-              <img src={story.image.asset.url} alt={story.image.alt} />
+              <img src={story.image.asset.url} alt={story.image.alt} loading="lazy" />
             </div>
           </div>
         </div>
