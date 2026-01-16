@@ -1,11 +1,49 @@
 .upcoming-events {
-  padding: 1.2rem 1.2rem;
+  padding: 2.5rem 1.2rem 3rem 1.2rem;
   margin: 0 auto;
   max-width: 75rem;
 }
 
+.upcoming-events-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+  position: relative;
+}
+
 .upcoming-events-title {
   text-align: center;
+}
+
+.see-all-events {
+  color: var(--primary-default);
+  text-align: center;
+}
+
+.see-all-events:hover {
+  text-decoration: underline;
+  color: var(--primary-default);
+  text-underline-offset: 4px;
+}
+
+/* Större skärmar - 768px och uppåt */
+@media (min-width: 768px) {
+  .upcoming-events-header {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+  }
+
+  .upcoming-events-title {
+    grid-column: 2;
+  }
+
+  .see-all-events {
+    grid-column: 3;
+    justify-self: end;
+  }
 }
 
 .upcoming-events-list {
@@ -106,26 +144,6 @@
 
 .event-button--outline:hover {
   background-color: var(--outline-default);
-}
-
-.see-all-events {
-  color: var(--primary-default);
-  position: static;
-  text-align: center;
-  padding-bottom: 1.5rem;
-}
-
-.see-all-events:hover {
-  text-decoration: underline;
-  color: var(--primary-default);
-  text-underline-offset: 4px;
-}
-
-.upcoming-events-header {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
 }
 
 .upcoming-events__loading {
