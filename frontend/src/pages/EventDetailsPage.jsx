@@ -89,6 +89,7 @@ function EventDetailsPage() {
       {/* Hero Section */}
       <header
         className="event-detail__hero"
+        aria-details="Page header with image of the chosen event"
         style={{
   backgroundImage: `url(${
     currentEvent.image

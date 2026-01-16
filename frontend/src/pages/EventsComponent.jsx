@@ -84,6 +84,7 @@ function EventsComponent() {
                     src={imageUrl}
                     alt={event.image?.alt || event.title}
                     className="event-image"
+                    loading="lazy"
                   />
                   <div className="event-info">
                     <h3 className="event-title">{event.title}</h3>
