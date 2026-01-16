@@ -16,11 +16,7 @@
   align-items: center;
   display: flex;
   gap: 1.5rem;
-  /* justify-content: start; */
-  /* flex-wrap: wrap; */
-  /* border-radius: 10px; */
   height: 50px;
-  /* width: 90%; */
 }
 
 .category-btn {
@@ -38,7 +34,6 @@
   justify-content: center;
   max-width: 75rem;
   margin: 0 auto;
-  /* padding: 0 1.2rem; */
 }
 
 .event-list img {
@@ -48,21 +43,6 @@
   height: 12rem;
   object-fit: cover;
 }
-
-/* .all-events {
-  background-color: #f3f4f6;
-  color: var(--text-dark);
-  border: none;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  font-weight: 600;
-  padding: 0.625rem 1.25rem;
-  transition: all 0.2s;
-}
-
-.all-events:hover {
-  background-color: #e5e7eb;
-} */
 
 .all-events {
   background-color: transparent;
@@ -92,16 +72,6 @@
   font-weight: 600;
 }
 
-/* .event {
-  display: flex;
-  flex-direction: column;
-  background-color: var(--event-card-bg);
-  border-radius: 12px;
-  position: relative;
-  transition: all 0.3s ease;
-  overflow: hidden;
-} */
-
 .event {
   display: flex;
   flex-direction: column;
@@ -122,7 +92,7 @@
 }
 
 .event-card__actions {
-  margin-top: auto; /* ← Pushes to bottom */
+  margin-top: auto;
   padding: 0 1.8rem 1.8rem 1.8rem;
 }
 
@@ -131,13 +101,6 @@
   transform: translateY(-5px);
 }
 
-/* .event-title {
-  margin: 0;
-  height: 2.5rem;
-  line-height: 1.25;
-  overflow: hidden;
-} */
-
 .event-date,
 .event-location,
 .event-spots {
@@ -145,13 +108,6 @@
   display: flex;
   margin: 0;
 }
-
-/* .event-spots,
-.event-location,
-.event-date,
-.event-title {
-  width: 100%;
-} */
 
 .event-date svg,
 .event-location svg,
@@ -211,6 +167,37 @@
 
 .event-button--outline:hover {
   background-color: var(--outline-default);
+}
+
+.events__loading {
+  max-width: 31.25rem;
+  margin: 4rem auto;
+  padding: 3rem;
+  text-align: center;
+}
+
+.events__spinner {
+  width: 2.5rem;
+  height: 2.5rem;
+  margin: 0 auto 1rem;
+  border: 4px solid #f5f5f5;
+  border-top: 4px solid var(--primary-default);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.events__loading p {
+  color: var(--text-muted);
+  font-size: 1rem;
 }
 
 @media (min-width: 1220px) {

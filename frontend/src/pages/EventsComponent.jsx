@@ -16,7 +16,8 @@ function EventsComponent() {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
-  const { filteredEvents, setFilteredEvents } = useContext(EventContext);
+  const { filteredEvents, setFilteredEvents, isLoading } =
+    useContext(EventContext);
   const { events } = useContext(EventContext);
 
   const defaultImages = {
@@ -47,6 +48,7 @@ function EventsComponent() {
   }
 
   //TODO: Change maxParticipants to spotsLeft and fix the display accordingly
+  // TODO: Check that waitinglist works correctly (button change)
   //TODO: Add loading state and empty state
 
   return (
@@ -60,6 +62,13 @@ function EventsComponent() {
             <DropdownMenu onCategoryChange={handleCategoryChange} />
           </div>
         </section>
+
+        {isLoading && (
+          <div className="events__loading">
+            <div className="events__spinner"></div>
+            <p>Loading Events...</p>
+          </div>
+        )}
 
         <section className="event-list">
           {filteredEvents &&
