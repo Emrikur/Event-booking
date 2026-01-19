@@ -23,10 +23,10 @@ function AboutHero({ fetchHero }) {
     <section className="hero">
       <img src={heroData.image.asset.url} alt="An image of people sitting by a table, eating, symbolizing team spirit" className="hero-image" loading="lazy" />
       <div className="hero-overlay">
-        <h1 className="hero-title">
+        <h1 role="Title of the about page" className="hero-title">
           {language === "EN" ? heroData.title_en : heroData.title_sv}
         </h1>
-        <p className="hero-text">
+        <p role="Subtitle of the about page" className="hero-text">
           {language === "EN" ? heroData.subtitle_en : heroData.subtitle_sv}
         </p>
       </div>

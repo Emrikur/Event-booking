@@ -33,7 +33,7 @@ function SearchBar() {
 
   return (
     <section className="search-bar">
-      <form className="search-bar__container" onSubmit={handleSubmit}>
+      <form role="Search form" className="search-bar__container" onSubmit={handleSubmit}>
         <input
           className="search-bar__input"
           type="text"

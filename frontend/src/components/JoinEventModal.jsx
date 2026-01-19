@@ -123,7 +123,7 @@ function JoinEventModal({ event, onClose, onSuccess, isWaitlist }) {
       onClose={handleCancel}
       isWaitlist={isWaitlist}
     >
-      <div className="modal__event-summary">
+      <div role="dialog" aria-modal="true" className="modal__event-summary">
         <h3 className="modal__event-title">{event.title}</h3>
         <div className="modal__event-info">
           <div className="modal__event-item">
