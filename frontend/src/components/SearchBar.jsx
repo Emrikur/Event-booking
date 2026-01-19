@@ -3,16 +3,20 @@ import { useState } from "react";
 import "../styles/SearchBar.css";
 import { useContext } from "react";
 import { EventContext } from "../context/EventContext";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function SearchBar() {
   const [searchTerm, setSearchTerm] = useState("");
   const [category, setCategory] = useState("");
   const { filterEvents } = useContext(EventContext);
 
+  const navigate = useNavigate();
+
   function handleSubmit(event) {
     event.preventDefault();
     filterEvents(searchTerm, category);
+
+    navigate("/events");
   }
 
   const onSearchChange = (e) => {
@@ -50,11 +54,10 @@ function SearchBar() {
           <option value="social">Social</option>
           <option value="workshop">Workshop</option>
         </select>
-        <Link to="/events">
-          <button type="submit" className="search-bar__button">
-            Search
-          </button>
-        </Link>
+
+        <button type="submit" className="search-bar__button">
+          Search
+        </button>
       </form>
     </section>
   );
