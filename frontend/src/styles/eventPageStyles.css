@@ -182,6 +182,25 @@
   animation: spin 1s linear infinite;
 }
 
+.events__no-results {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  margin: 2rem 0;
+  background-color: #f9f9f9;
+  color: #555;
+  font-size: 1.2rem;
+  text-align: center;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.events__no-results p {
+  margin: 0;
+  font-weight: 500;
+}
+
 @keyframes spin {
   0% {
     transform: rotate(0deg);

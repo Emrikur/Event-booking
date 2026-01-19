@@ -9,6 +9,14 @@ import { urlFor } from "../services/sanity";
 import { useContext } from "react";
 import { EventContext } from "../context/EventContext";
 
+import defaultWellness from "../assets/default-wellness.webp";
+import defaultMusic from "../assets/default-music.webp";
+import defaultFood from "../assets/default-food.webp";
+import defaultWorkshop from "../assets/default-workshop.webp";
+import JoinEventModal from "../components/JoinEventModal";
+import SuccessModal from "../components/SuccessModal";
+import { Frown } from "lucide-react";
+
 import "../styles/eventPageStyles.css";
 
 function EventsComponent() {
@@ -19,13 +27,25 @@ function EventsComponent() {
   const { filteredEvents, setFilteredEvents, isLoading } =
     useContext(EventContext);
   const { events } = useContext(EventContext);
+  const [selectedEvent, setSelectedEvent] = useState(null);
 
   const defaultImages = {
-    wellness: "../assets/default-wellness.webp",
-    music: "../assets/default-music.webp",
-    food: "../assets/default-food.webp",
-    workshop: "../assets/default-workshop.webp",
+    wellness: defaultWellness,
+    music: defaultMusic,
+    food: defaultFood,
+    workshop: defaultWorkshop,
   };
+
+  /*
+  const loadEvents = async () => {
+    try {
+      const data = await events();
+      setFilteredEvents(data);
+    } catch (error) {
+      console.error("Error loading events:", error);
+    }
+  };
+*/
 
   const handleCategoryChange = (category) => {
     if (category === "All events") {
@@ -43,7 +63,7 @@ function EventsComponent() {
   };
 
   function handleJoinEvent(event, isWaitlist) {
-    // setSelectedEvent({ ...event, isWaitlist });
+    setSelectedEvent({ ...event, isWaitlist });
     setIsModalOpen(true);
   }
 
@@ -62,20 +82,24 @@ function EventsComponent() {
             <DropdownMenu onCategoryChange={handleCategoryChange} />
           </div>
         </section>
-
         {isLoading && (
           <div className="events__loading">
             <div className="events__spinner"></div>
             <p>Loading Events...</p>
           </div>
         )}
-
+        {!isLoading && filteredEvents.length === 0 && (
+          <div className="events__no-results">
+            <p>No events found. Please try a different filter.</p>
+            <Frown size={68} />
+          </div>
+        )}
         <section className="event-list">
           {filteredEvents &&
             filteredEvents.map((event) => {
               const imageUrl = event.image
                 ? urlFor(event.image).url()
-                : defaultImages[event.category];
+                : defaultImages[event.category?.title?.toLowerCase()];
               const isWaitlist = event.spotsLeft === 0;
               return (
                 <div key={event.title} className="event">
@@ -132,7 +156,7 @@ function EventsComponent() {
           onSuccess={() => {
             setIsModalOpen(false);
             setIsSuccessModalOpen(true);
-            loadEvents();
+            //   loadEvents();
           }}
           isWaitlist={selectedEvent.isWaitlist}
         />
