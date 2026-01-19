@@ -1,4 +1,3 @@
-/* Mobile First */
 .footer-root {
   background-color: #1f2937;
   padding: 3rem 0;
@@ -55,6 +54,7 @@
 .footer-links-container a:hover {
   color: var(--text-light);
   text-decoration: underline;
+  text-underline-offset: 4px;
 }
 
 .social-media-links {
