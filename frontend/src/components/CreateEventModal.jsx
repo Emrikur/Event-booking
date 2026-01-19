@@ -204,11 +204,12 @@ function CreateEventModal({ onClose, onSuccess }) {
 
   return (
     <ModalWrapper
+    role="dialog"
       title="Create Event"
       subtitle="Fill in the details to create a new event"
       onClose={handleCancel}
     >
-      <form className="modal__form" onSubmit={handleSubmit}>
+      <form role="dialog" aria-modal="true" className="modal__form" onSubmit={handleSubmit}>
         <div className="modal__form-group">
           <label htmlFor="title" className="modal__label">
             Title

@@ -14,7 +14,7 @@ function SuccessModal({
   //TODO: Implement onClick for button to redirect to the created event page or events page
 
   return (
-    <ModalWrapper onClose={onClose} showDivider={false} isWaitlist={isWaitlist}>
+    <ModalWrapper role="dialog" onClose={onClose} showDivider={false} isWaitlist={isWaitlist}>
       <div className="success-modal">
         <div
           className={`success-modal__icon ${

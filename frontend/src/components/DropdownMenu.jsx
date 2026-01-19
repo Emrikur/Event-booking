@@ -38,6 +38,7 @@ export default function DropdownMenu({ onCategoryChange }) {
   return (
     <div>
       <Button
+      role="button"
         id="basic-button"
         aria-controls={open ? "basic-menu" : undefined}
         aria-haspopup="true"
@@ -47,6 +48,7 @@ export default function DropdownMenu({ onCategoryChange }) {
         Category <ChevronDown />
       </Button>
       <Menu
+      role="menu"
         id="basic-menu"
         anchorEl={anchorEl}
         open={open}
@@ -59,6 +61,7 @@ export default function DropdownMenu({ onCategoryChange }) {
       >
         {categories.map((category) => (
           <MenuItem
+          role="menuitem"
             key={category}
             onClick={() => {
               handleCategorySelect(category);

@@ -72,19 +72,19 @@ function Navbar() {
         </div>
 
         <div className="menu" ref={menuRef}>
-          <ul>
+          <ul role="menu">
             <li>
-              <Link to="/" onClick={closeMenu}>
+              <Link role="menuitem" to="/" onClick={closeMenu}>
                 {translation.home}
               </Link>
             </li>
             <li>
-              <Link to="/events" onClick={closeMenu}>
+              <Link role="menuitem" to="/events" onClick={closeMenu}>
                 {translation.events}
               </Link>
             </li>
             <li>
-              <Link to="/about" onClick={closeMenu}>
+              <Link role="menuitem" to="/about" onClick={closeMenu}>
                 {translation.about}
               </Link>
             </li>
@@ -101,9 +101,9 @@ function Navbar() {
               {language}
             </button>
             {open && (
-              <ul className="language-dropdown">
-                <li onClick={() => handleLanguageChange("EN")}>English</li>
-                <li onClick={() => handleLanguageChange("SV")}>Svenska</li>
+              <ul role="menu" className="language-dropdown">
+                <li role="menuitem" onClick={() => handleLanguageChange("EN")}>English</li>
+                <li role="menuitem" onClick={() => handleLanguageChange("SV")}>Svenska</li>
               </ul>
             )}
           </div>

@@ -21,7 +21,7 @@ export default function ModalWrapper({
   }, []);
 
   return (
-    <div className="modal-overlay" onClick={onClose}>
+    <div role="dialog" className="modal-overlay" onClick={onClose}>
       <div className="modal" onClick={(e) => e.stopPropagation()}>
         <div className="modal__header">
           <button
