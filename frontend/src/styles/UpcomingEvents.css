@@ -28,7 +28,6 @@
   text-underline-offset: 4px;
 }
 
-/* Större skärmar - 768px och uppåt */
 @media (min-width: 768px) {
   .upcoming-events-header {
     display: grid;
