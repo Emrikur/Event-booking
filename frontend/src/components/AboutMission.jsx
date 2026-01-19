@@ -20,8 +20,8 @@ function AboutMission() {
     <section className="mission-section">
       <div className="mission-content">
         <span className="badge">Our Mission</span>
-        <h2 role="The company's mission header" className="mission-title">{mission.title}</h2>
-        <p role="The company's mission description">{mission.description}</p>
+        <h2 className="mission-title">{mission.title}</h2>
+        <p>{mission.description}</p>
       </div>
     </section>
   );

@@ -73,25 +73,25 @@ function Navbar() {
           </Link>
         </div>
 
-        <div className="menu" ref={menuRef}>
-          <ul role="menu">
+        <nav className="menu" ref={menuRef}>
+          <ul>
             <li>
-              <Link role="menuitem" to="/" onClick={closeMenu}>
+              <Link aria-label="Go to home page" to="/" onClick={closeMenu}>
                 {translation.home}
               </Link>
             </li>
             <li>
-              <Link role="menuitem" to="/events" onClick={closeMenu}>
+              <Link aria-label="Go to events page" to="/events" onClick={closeMenu}>
                 {translation.events}
               </Link>
             </li>
             <li>
-              <Link role="menuitem" to="/about" onClick={closeMenu}>
+              <Link aria-label="Go to the about page" to="/about" onClick={closeMenu}>
                 {translation.about}
               </Link>
             </li>
           </ul>
-        </div>
+        </nav>
 
         <div className="button-section">
           <button className="createEvent" onClick={() => setIsModalOpen(true)}>

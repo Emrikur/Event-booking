@@ -41,8 +41,10 @@ function SearchBar() {
           value={searchTerm}
           onChange={onSearchChange}
         />
+
         <select
           className="search-bar__select"
+          aria-label="Choose category"
           value={category}
           onChange={onCategoryClick}
         >
