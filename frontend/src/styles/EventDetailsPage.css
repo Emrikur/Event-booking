@@ -295,7 +295,7 @@
 }
 
 /* Media Queries */
-@media (min-width: 50rem) {
+@media (min-width: 48rem) {
   .event-detail__wrapper {
     padding: 1.2rem 1.2rem;
     display: grid;
