@@ -73,7 +73,7 @@ function UpcomingEvents() {
       <section className="upcoming-events">
         <div className="upcoming-events-header">
           <h2 className="upcoming-events-title">Upcoming Events</h2>
-          <Link role="navigation" to="/events" className="see-all-events">
+          <Link to="/events" className="see-all-events">
             See all Events →
           </Link>
         </div>
@@ -119,7 +119,7 @@ function UpcomingEvents() {
                 </div>
 
                 <div className="event-card__actions">
-                  <Link role="navigation"
+                  <Link aria-label={`View details for ${event.title}`}
                     to={`/events/${event.slug.current}`}
                     className="event-button event-button--outline"
                   >

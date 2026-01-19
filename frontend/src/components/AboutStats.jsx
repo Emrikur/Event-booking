@@ -20,8 +20,8 @@ export default function AboutStats() {
     <section className="stats-section">
       {stats.map((stat, index) => (
         <div key={index}>
-          <h2 role="Company Stats">{stat.number}</h2>
-          <p role="Company Stats Label">{stat.label}</p>
+          <h2>{stat.number}</h2>
+          <p>{stat.label}</p>
         </div>
       ))}
     </section>

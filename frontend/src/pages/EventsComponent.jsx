@@ -103,6 +103,7 @@ function EventsComponent() {
                   </div>
                   <div className="event-card__actions">
                     <Link
+                    aria-label={`View event details for ${event.title}`}
                       to={`/events/${event.slug.current}`}
                       className="event-button event-button--outline"
                     >
