@@ -21,8 +21,6 @@ export const EventProvider = ({ children }) => {
       const matchesCategory =
         !category ||
         item.category.title.toLowerCase() === category.toLowerCase();
-
-      console.log("Filtering with:", { searchTerm, category });
       return (matchesTitle || matchesLocation) && matchesCategory;
     });
     setFilteredEvents(filtered);
@@ -34,15 +32,19 @@ export const EventProvider = ({ children }) => {
 
       try {
         const data = await getEvents();
-        setEvents(data);
-        setFilteredEvents(data);
+        const now = new Date();
+        console.log("Current date:", now);
+        const filteredData = data.filter(
+          (event) => new Date(event.eventDateTime) > now
+        );
+        setEvents(filteredData);
+        setFilteredEvents(filteredData);
       } catch (error) {
         console.error("Error fetching events:", error);
       } finally {
         setIsLoading(false);
       }
     }
-
     fetchEvents();
   }, []);
 
