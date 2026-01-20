@@ -28,6 +28,7 @@ function EventsComponent() {
     useContext(EventContext);
   const { events } = useContext(EventContext);
   const [selectedEvent, setSelectedEvent] = useState(null);
+  const [eventsWithSpots, setEventsWithSpots] = useState([]);
 
   const defaultImages = {
     wellness: defaultWellness,
@@ -44,6 +45,7 @@ function EventsComponent() {
           return { ...event, spotsLeft };
         })
       );
+      setEventsWithSpots(eventsWithSpots);
       setFilteredEvents(eventsWithSpots);
     } catch (error) {
       console.error("Error fetching event spots:", error);
@@ -52,9 +54,9 @@ function EventsComponent() {
 
   const handleCategoryChange = (category) => {
     if (category === "All events") {
-      setFilteredEvents(events);
+      setFilteredEvents(eventsWithSpots);
     } else {
-      const filtered = events.filter(
+      const filtered = eventsWithSpots.filter(
         (event) => event.category.title === category
       );
       setFilteredEvents(filtered);
@@ -62,7 +64,7 @@ function EventsComponent() {
   };
 
   const handleAllEventsClick = () => {
-    setFilteredEvents(events);
+    setFilteredEvents(eventsWithSpots);
   };
 
   function handleJoinEvent(event, isWaitlist) {
