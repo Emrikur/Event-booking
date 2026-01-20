@@ -1,6 +1,6 @@
 .search-bar {
   position: relative;
-  margin-top: -70px;
+  margin-top: -4.375rem;
   z-index: 10;
   padding: 0 1rem;
 }
@@ -66,7 +66,7 @@
 
 @media (min-width: 48rem) {
   .search-bar {
-    margin-top: -40px;
+    margin-top: -2.5rem;
     padding: 0 2rem;
   }
 
