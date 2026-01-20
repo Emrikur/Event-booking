@@ -6,19 +6,51 @@ export default defineType({
   type: 'document',
   fields: [
     defineField({
-      name: 'title',
-      title: 'Title',
+      name: 'title_sv',
+      title: 'Title (Svenska)',
       type: 'string',
       validation: (Rule) => Rule.required().error('Title is required'),
     }),
     defineField({
-      name: 'subheading',
-      title: 'Subheading',
+      name: 'title_en',
+      title: 'Title (English)',
+      type: 'string',
+      validation: (Rule) => Rule.required().error('Title is required'),
+    }),
+    defineField({
+      name: 'subheading_sv',
+      title: 'Subheading (Svenska)',
       type: 'string',
     }),
     defineField({
-      name: 'content',
-      title: 'Story Content',
+      name: 'subheading_en',
+      title: 'Subheading (English)',
+      type: 'string',
+    }),
+    defineField({
+      name: 'content_sv',
+      title: 'Story Content (Svenska)',
+      type: 'array',
+      of: [
+        {
+          type: 'block',
+          styles: [{title: 'Normal', value: 'normal'}],
+          lists: [],
+          marks: {
+            decorators: [
+              {title: 'Strong', value: 'strong'},
+              {title: 'Emphasis', value: 'em'},
+              {title: 'Underline', value: 'underline'},
+              {title: 'Strike', value: 'strike-through'},
+            ],
+          },
+        },
+      ],
+      validation: (Rule) => Rule.required().error('Story content is required'),
+    }),
+    defineField({
+      name: 'content_en',
+      title: 'Story Content (English)',
       type: 'array',
       of: [
         {

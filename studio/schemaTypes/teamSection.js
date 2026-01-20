@@ -6,8 +6,14 @@ export default defineType({
   type: 'document',
   fields: [
     defineField({
-      name: 'title',
-      title: 'Section Title',
+      name: 'title_sv',
+      title: 'Section Title (Svenska)',
+      type: 'string',
+      validation: (Rule) => Rule.required().error('Title is required'),
+    }),
+    defineField({
+      name: 'title_en',
+      title: 'Section Title (English)',
       type: 'string',
       validation: (Rule) => Rule.required().error('Title is required'),
     }),

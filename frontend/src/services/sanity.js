@@ -49,8 +49,10 @@ export async function getAboutHero() {
 export async function getAboutMission() {
   return await client.fetch(`*[_type == 'aboutMission'][0]{
     _id,
-    title,
-    description
+    title_sv,
+    title_en,
+    description_sv,
+    description_en
   }`);
 }
 
@@ -59,7 +61,8 @@ export async function getAboutStats() {
     _id,
     stats[]{
       number,
-      label
+      label_sv,
+      label_en
     }
   }`);
 }
@@ -67,9 +70,12 @@ export async function getAboutStats() {
 export async function getAboutStory() {
   return await client.fetch(`*[_type == "aboutStory"][0]{
     _id,
-    title,
-    subheading,
-    content,
+    title_sv,
+    title_en,
+    subheading_sv,
+    subheading_en,
+    content_sv,
+    content_en,
     image{
       asset->{
         url
@@ -86,13 +92,16 @@ export async function getTeam() {
     surname,
     initials,
     role,
-    description}`);
+    description_sv,
+    description_en
+  }`);
 }
 
 export async function getTeamSection() {
   return await client.fetch(`*[_type == "teamSection"][0]{
     _id,
-    title
+    title_sv,
+    title_en
   }`);
 }
 
@@ -184,8 +193,10 @@ export async function getEventsSpots(slug) {
 export async function getValue() {
   return await client.fetch(`*[_type == 'value']{
   _id,
-  title,
-    description,
+  title_sv,
+  title_en,
+    description_sv,
+    description_en,
     icon
   }`);
 }

@@ -30,8 +30,14 @@ export default defineType({
       validation: (Rule) => Rule.required().error('Role is required'),
     }),
     defineField({
-      name: 'description',
-      title: 'Bio/Description',
+      name: 'description_sv',
+      title: 'Bio/Description (Svenska)',
+      type: 'text',
+      validation: (Rule) => Rule.required().error('Description is required'),
+    }),
+    defineField({
+      name: 'description_en',
+      title: 'Bio/Description (English)',
       type: 'text',
       validation: (Rule) => Rule.required().error('Description is required'),
     }),

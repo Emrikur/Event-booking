@@ -6,17 +6,31 @@ export default defineType({
   type: 'document',
   fields: [
     defineField({
-      name: 'title',
-      title: 'Title',
+      name: 'title_sv',
+      title: 'Title (Svenska)',
       type: 'string',
       validation: (Rule) => Rule.required().error('Title is required'),
     }),
     defineField({
-      name: 'description',
-      title: 'Description',
+      name: 'title_en',
+      title: 'Title (English)',
+      type: 'string',
+      validation: (Rule) => Rule.required().error('Title is required'),
+    }),
+
+    defineField({
+      name: 'description_sv',
+      title: 'Description (Svenska)',
       type: 'text',
       validation: (Rule) => Rule.required().error('Description is required'),
     }),
+    defineField({
+      name: 'description_en',
+      title: 'Description (English)',
+      type: 'text',
+      validation: (Rule) => Rule.required().error('Description is required'),
+    }),
+
     defineField({
       name: 'icon',
       title: 'Icon',
