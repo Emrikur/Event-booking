@@ -3,7 +3,7 @@ import { getEventAvailableSpots } from "../services/api";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
-import { CalendarClock, MapPin, UsersRound } from "lucide-react";
+import { CalendarClock, MapPin, UsersRound, Search } from "lucide-react";
 
 import DropdownMenu from "../components/DropdownMenu";
 import { urlFor } from "../services/sanity";
@@ -16,7 +16,6 @@ import defaultFood from "../assets/default-food.webp";
 import defaultWorkshop from "../assets/default-workshop.webp";
 import JoinEventModal from "../components/JoinEventModal";
 import SuccessModal from "../components/SuccessModal";
-import { Frown } from "lucide-react";
 
 import "../styles/eventPageStyles.css";
 
@@ -88,7 +87,7 @@ function EventsComponent() {
             <DropdownMenu onCategoryChange={handleCategoryChange} />
           </div>
         </section>
-        
+
         {isLoading && (
           <div className="events__loading">
             <div className="events__spinner"></div>
@@ -98,8 +97,13 @@ function EventsComponent() {
 
         {!isLoading && filteredEvents.length === 0 && (
           <div className="events__no-results">
-            <p>No events found. Please try a different filter.</p>
-            <Frown size={68} />
+            <div className="events__no-results-icon">
+              <Search size={40} strokeWidth={2} />
+            </div>
+            <p>
+              No events found matching your criteria. Try adjusting your filters
+              or browse all events.
+            </p>
           </div>
         )}
 
