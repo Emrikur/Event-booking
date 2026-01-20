@@ -9,8 +9,6 @@ function AboutMission() {
   const [mission, setMission] = useState(null);
   const { language } = useContext(LanguageContext);
 
-
-
   useEffect(() => {
     async function fetchMission() {
       const data = await getAboutMission();
@@ -20,7 +18,7 @@ function AboutMission() {
   }, []);
 
   if (!mission) return null;
-  const badgeText = language === "EN" ? "Our Mission" : "Vår Mission";
+  const badgeText = language === "EN" ? "Our Mission" : "Vår vision";
   const title = language === "EN" ? mission.title_en : mission.title_sv;
   const description =
     language === "EN" ? mission.description_en : mission.description_sv;
@@ -28,9 +26,15 @@ function AboutMission() {
   return (
     <section className="mission-section">
       <div className="mission-content">
-      <span className="badge">{badgeText}</span>
-        <h2 className="mission-title">  {language === "EN" ? mission.title_en : mission.title_sv}</h2>
-        <p> {language === "EN" ? mission.description_en : mission.description_sv}</p>
+        <span className="badge">{badgeText}</span>
+        <h2 className="mission-title">
+          {" "}
+          {language === "EN" ? mission.title_en : mission.title_sv}
+        </h2>
+        <p>
+          {" "}
+          {language === "EN" ? mission.description_en : mission.description_sv}
+        </p>
       </div>
     </section>
   );

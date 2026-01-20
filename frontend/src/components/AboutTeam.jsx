@@ -9,8 +9,6 @@ export default function AboutTeam() {
   const [teamData, setTeamData] = useState([]);
   const { language } = useContext(LanguageContext);
 
-
-
   useEffect(() => {
     async function fetchData() {
       const section = await getTeamSection();
@@ -22,20 +20,19 @@ export default function AboutTeam() {
     fetchData();
   }, []);
 
-
   if (!teamSection || teamData.length === 0) return null;
 
-  const badgeText = language === "EN" ? "Our Team" : "Vårt Team";
-const sectionTitle =
-  language === "EN" ? teamSection.title_en : teamSection.title_sv;
+  const badgeText = language === "EN" ? "Our Team" : "Vårt team";
+  const sectionTitle =
+    language === "EN" ? teamSection.title_en : teamSection.title_sv;
 
   return (
     <>
       <section className="team-section">
         <div className="team-container">
           <div className="team-header">
-          <span className="badge">{badgeText}</span>
-          <h2 className="team-title">{sectionTitle}</h2>
+            <span className="badge">{badgeText}</span>
+            <h2 className="team-title">{sectionTitle}</h2>
           </div>
           <div className="team-flex-container">
             {teamData.map((member, index) => (
@@ -48,7 +45,10 @@ const sectionTitle =
                 </h3>
                 <h4 className="member-card__role">{member.role}</h4>
                 <p className="member-card__description">
-                {language === "EN" ? member.description_en: member.description_sv}</p>
+                  {language === "EN"
+                    ? member.description_en
+                    : member.description_sv}
+                </p>
               </div>
             ))}
           </div>
