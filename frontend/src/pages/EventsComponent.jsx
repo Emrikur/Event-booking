@@ -1,8 +1,9 @@
 import { formatEventDateTime } from "../utils/datehelper";
+import { getEventAvailableSpots } from "../services/api";
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-import { CalendarClock, MapPin, UsersRound } from "lucide-react";
+import { CalendarClock, MapPin, UsersRound, Search } from "lucide-react";
 
 import DropdownMenu from "../components/DropdownMenu";
 import { urlFor } from "../services/sanity";
@@ -15,7 +16,6 @@ import defaultFood from "../assets/default-food.webp";
 import defaultWorkshop from "../assets/default-workshop.webp";
 import JoinEventModal from "../components/JoinEventModal";
 import SuccessModal from "../components/SuccessModal";
-import { Frown } from "lucide-react";
 
 import "../styles/eventPageStyles.css";
 
@@ -36,16 +36,19 @@ function EventsComponent() {
     workshop: defaultWorkshop,
   };
 
-  /*
-  const loadEvents = async () => {
+  async function loadEvents() {
     try {
-      const data = await events();
-      setFilteredEvents(data);
+      const eventsWithSpots = await Promise.all(
+        events.map(async (event) => {
+          const { spotsLeft } = await getEventAvailableSpots(event._id);
+          return { ...event, spotsLeft };
+        })
+      );
+      setFilteredEvents(eventsWithSpots);
     } catch (error) {
-      console.error("Error loading events:", error);
+      console.error("Error fetching event spots:", error);
     }
-  };
-*/
+  }
 
   const handleCategoryChange = (category) => {
     if (category === "All events") {
@@ -67,9 +70,11 @@ function EventsComponent() {
     setIsModalOpen(true);
   }
 
-  //TODO: Change maxParticipants to spotsLeft and fix the display accordingly
-  // TODO: Check that waitinglist works correctly (button change)
-  //TODO: Add loading state and empty state
+  useEffect(() => {
+    if (events.length > 0) {
+      loadEvents();
+    }
+  }, [events]);
 
   return (
     <>
@@ -82,18 +87,26 @@ function EventsComponent() {
             <DropdownMenu onCategoryChange={handleCategoryChange} />
           </div>
         </section>
+
         {isLoading && (
           <div className="events__loading">
             <div className="events__spinner"></div>
             <p>Loading Events...</p>
           </div>
         )}
+
         {!isLoading && filteredEvents.length === 0 && (
           <div className="events__no-results">
-            <p>No events found. Please try a different filter.</p>
-            <Frown size={68} />
+            <div className="events__no-results-icon">
+              <Search size={40} strokeWidth={2} />
+            </div>
+            <p>
+              No events found matching your criteria. Try adjusting your filters
+              or browse all events.
+            </p>
           </div>
         )}
+
         <section className="event-list">
           {filteredEvents &&
             filteredEvents.map((event) => {
@@ -122,12 +135,12 @@ function EventsComponent() {
                     </p>
                     <p className="event-spots">
                       <UsersRound size={18} />
-                      <span>{event.maxParticipants} spots left</span>
+                      <span>{event.spotsLeft} spots left</span>
                     </p>
                   </div>
                   <div className="event-card__actions">
                     <Link
-                    aria-label={`View event details for ${event.title}`}
+                      aria-label={`View event details for ${event.title}`}
                       to={`/events/${event.slug.current}`}
                       className="event-button event-button--outline"
                     >
@@ -158,7 +171,7 @@ function EventsComponent() {
           onSuccess={() => {
             setIsModalOpen(false);
             setIsSuccessModalOpen(true);
-            //   loadEvents();
+            loadEvents();
           }}
           isWaitlist={selectedEvent.isWaitlist}
         />
