@@ -117,6 +117,11 @@
   transition: border-color 0.3s;
 }
 
+.modal__textarea{
+  min-width: 100%;
+  max-width: 100%;
+}
+
 select.modal__input {
   color: var(--text-dark);
   font-size: 0.875rem;
