@@ -19,6 +19,6 @@
   color: var(--primary-default);
   padding: 0.9rem 2rem;
   border: none;
-  border-radius: 8px;
+  border-radius: 0.5rem;
   font-weight: 600;
 }

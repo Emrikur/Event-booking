@@ -25,10 +25,10 @@
 .see-all-events:hover {
   text-decoration: underline;
   color: var(--primary-default);
-  text-underline-offset: 4px;
+  text-underline-offset: 0.25rem;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 48rem) {
   .upcoming-events-header {
     display: grid;
     grid-template-columns: 1fr auto 1fr;
