@@ -107,12 +107,14 @@
 .modal__textarea {
   padding: 0.6rem 0.8rem;
   background-color: transparent;
-  border: 1px solid var(--outline-default);
+  border: 2px solid var(--outline-default);
   border-radius: 8px;
   font-family: var(--font-body);
   color: var(--text-dark);
   font-size: 0.875rem;
   font-family: var(--font-body);
+  outline: none;
+  transition: border-color 0.3s;
 }
 
 select.modal__input {
@@ -120,6 +122,13 @@ select.modal__input {
   font-size: 0.875rem;
   font-family: var(--font-body);
 }
+
+.modal__input:focus,
+.modal__textarea:focus {
+  border-color: var(--primary-default);
+
+}
+
 
 .modal__input::placeholder,
 .modal__textarea::placeholder {
