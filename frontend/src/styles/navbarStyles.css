@@ -77,8 +77,8 @@
 }
 
 .bar {
-  width: 25px;
-  height: 3px;
+  width: 1.563rem;
+  height: 0.1875rem;
   background-color: #333;
 }
 
@@ -177,7 +177,7 @@
   .menu.floatMenu a:hover,
   .menu.floatMenu a:focus {
     text-decoration: underline;
-    text-underline-offset: 4px;
+    text-underline-offset: 0.25rem;
   }
 
   .button-section {

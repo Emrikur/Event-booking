@@ -54,7 +54,7 @@
 .footer-links-container a:hover {
   color: var(--text-light);
   text-decoration: underline;
-  text-underline-offset: 4px;
+  text-underline-offset: 0.25rem;
 }
 
 .social-media-links {
