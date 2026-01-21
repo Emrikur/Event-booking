@@ -2,10 +2,11 @@ import * as React from "react";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import "../styles/dropdownMenuStyles.css";
 import { useState, useEffect } from "react";
 import { getEvents } from "../services/sanity";
 import { ChevronDown } from "lucide-react";
+
+import "../styles/dropdownMenuStyles.css";
 
 export default function DropdownMenu({ onCategoryChange }) {
   const [categories, setCategories] = useState([]);

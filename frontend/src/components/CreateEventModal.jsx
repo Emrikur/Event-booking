@@ -78,6 +78,13 @@ function CreateEventModal({ onClose, onSuccess }) {
     }
   }
 
+  function slugify(title) {
+    return title
+      .toLowerCase()
+      .replace(/ /g, "-")
+      .replace(/[^\w-]+/g, "");
+  }
+
   async function handleSubmit(e) {
     e.preventDefault();
     setIsSubmitting(true);
@@ -99,31 +106,30 @@ function CreateEventModal({ onClose, onSuccess }) {
     if (!category) {
       newErrors.category = "Category is required";
     }
+    if (!maxParticipants || Number(maxParticipants) <= 0) {
+      newErrors.maxParticipants =
+        "Max participants is required and must be greater than 0";
+    }
     if (!hostName.trim()) {
       newErrors.hostName = "Host name is required";
     }
 
     if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors);
+      setErrors({
+        ...newErrors,
+        submit: "Please fill in all required fields marked with *",
+      });
       setIsSubmitting(false);
       return;
     }
 
     const eventDateTime = `${date}T${time}:00.000Z`;
 
-    function slugify(title) {
-      console.log("Here is the title ", title);
-      return title
-        .toLowerCase()
-        .replace(/ /g, "-")
-        .replace(/[^\w-]+/g, "");
-    }
-
     const eventData = {
       title,
       slug: {
         _type: "slug",
-        current: `${slugify(title)}`,
+        current: slugify(title),
       },
       eventDateTime,
       category,
@@ -155,6 +161,8 @@ function CreateEventModal({ onClose, onSuccess }) {
 
       const result = await response.json();
 
+      const slug = slugify(title);
+
       // Clear UI on success
       setTitle("");
       setDate("");
@@ -172,8 +180,7 @@ function CreateEventModal({ onClose, onSuccess }) {
       setHostAvatar("");
       setErrors({});
 
-      onClose();
-      onSuccess();
+      onSuccess(slug);
     } catch (error) {
       console.error("Error creating event:", error);
       setErrors({ submit: "Something went wrong. Please try again." });
@@ -204,12 +211,12 @@ function CreateEventModal({ onClose, onSuccess }) {
 
   return (
     <ModalWrapper
-    role="dialog"
+      role="dialog"
       title="Create Event"
       subtitle="Fill in the details to create a new event"
       onClose={handleCancel}
     >
-      <form role="dialog" aria-modal="true" className="modal__form" onSubmit={handleSubmit}>
+      <form className="modal__form" onSubmit={handleSubmit}>
         <div className="modal__form-group">
           <label htmlFor="title" className="modal__label">
             Title
@@ -326,7 +333,11 @@ function CreateEventModal({ onClose, onSuccess }) {
         <div className="modal__form-group">
           <label htmlFor="maxParticipants" className="modal__label">
             Max Participants
+            <span className="modal__required">
+              <Asterisk size={20} />
+            </span>
           </label>
+
           <input
             id="maxParticipants"
             value={maxParticipants}
@@ -335,6 +346,9 @@ function CreateEventModal({ onClose, onSuccess }) {
             className="modal__input"
             placeholder="Max number of attendees"
           />
+          {errors.maxParticipants && (
+            <span className="modal__error">{errors.maxParticipants}</span>
+          )}
         </div>
 
         <div className="modal__form-group">

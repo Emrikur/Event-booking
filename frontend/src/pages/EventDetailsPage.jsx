@@ -161,8 +161,14 @@ function EventDetailsPage() {
           {/* About This Event Section */}
           <section className="event-detail__section">
             <h2 className="event-detail__section-title">About This Event</h2>
-            <p className="event-detail__description">
-              {currentEvent.description}
+            <p
+              className={`event-detail__description ${
+                !currentEvent.description
+                  ? "event-detail__description--empty"
+                  : ""
+              }`}
+            >
+              {currentEvent.description || "No description available"}
             </p>
           </section>
 
@@ -193,10 +199,13 @@ function EventDetailsPage() {
                 <h3 className="event-detail__host-name">
                   {currentEvent.hostName}
                 </h3>
-                <p className="event-detail__host-bio">{currentEvent.hostBio}</p>
-                {/* <p className="event-detail__host-stats">
-                  50+ events hosted
-                </p> */}
+                <p
+                  className={`event-detail__host-bio ${
+                    !currentEvent.hostBio ? "event-detail__host-bio--empty" : ""
+                  }`}
+                >
+                  {currentEvent.hostBio || "No host bio available"}
+                </p>
               </div>
             </div>
           </section>

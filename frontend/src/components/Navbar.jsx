@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import logo2 from "../assets/eventhub-logo.png";
 import CreateEventModal from "./CreateEventModal";
 import SuccessModal from "./SuccessModal";
@@ -12,8 +12,11 @@ import "../styles/navbarStyles.css";
 function Navbar() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+  const [createdEventSlug, setCreatedEventSlug] = useState("");
   const [open, setOpen] = useState(false);
   const { language, setLanguage, translations } = useContext(LanguageContext);
+
+  const navigate = useNavigate();
 
   const menuRef = useRef(null);
   const hamburgerRef = useRef(null);
@@ -81,12 +84,20 @@ function Navbar() {
               </Link>
             </li>
             <li>
-              <Link aria-label="Go to events page" to="/events" onClick={closeMenu}>
+              <Link
+                aria-label="Go to events page"
+                to="/events"
+                onClick={closeMenu}
+              >
                 {translation.events}
               </Link>
             </li>
             <li>
-              <Link aria-label="Go to the about page" to="/about" onClick={closeMenu}>
+              <Link
+                aria-label="Go to the about page"
+                to="/about"
+                onClick={closeMenu}
+              >
                 {translation.about}
               </Link>
             </li>
@@ -104,8 +115,12 @@ function Navbar() {
             </button>
             {open && (
               <ul role="menu" className="language-dropdown">
-                <li role="menuitem" onClick={() => handleLanguageChange("EN")}>English</li>
-                <li role="menuitem" onClick={() => handleLanguageChange("SV")}>Svenska</li>
+                <li role="menuitem" onClick={() => handleLanguageChange("EN")}>
+                  English
+                </li>
+                <li role="menuitem" onClick={() => handleLanguageChange("SV")}>
+                  Svenska
+                </li>
               </ul>
             )}
           </div>
@@ -115,8 +130,9 @@ function Navbar() {
       {isModalOpen && (
         <CreateEventModal
           onClose={() => setIsModalOpen(false)}
-          onSuccess={() => {
+          onSuccess={(slug) => {
             setIsModalOpen(false);
+            setCreatedEventSlug(slug);
             setIsSuccessModalOpen(true);
           }}
         />
@@ -127,6 +143,10 @@ function Navbar() {
           title="Event Created!"
           message="Your event has been published successfully"
           buttonText="View My Event"
+          onClick={() => {
+            setIsSuccessModalOpen(false);
+            navigate(`/events/${createdEventSlug}`);
+          }}
           onClose={() => setIsSuccessModalOpen(false)}
         />
       )}

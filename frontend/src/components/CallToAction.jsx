@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { useContext } from "react";
+import { useEffect, useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { LanguageContext } from "../context/LanguageContext";
 
 import CreateEventModal from "./CreateEventModal";
@@ -8,11 +8,13 @@ import SuccessModal from "./SuccessModal";
 import "../styles/CallToAction.css";
 
 function CallToAction({ fetchCTA }) {
+  const navigate = useNavigate();
   const [ctaData, setCtaData] = useState(null);
-  const { language, translations } = useContext(LanguageContext);
+  const { language } = useContext(LanguageContext);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+  const [createdEventSlug, setCreatedEventSlug] = useState("");
 
   useEffect(() => {
     async function loadCTA() {
@@ -43,10 +45,11 @@ function CallToAction({ fetchCTA }) {
 
       {isModalOpen && (
         <CreateEventModal
-        role="dialog"
+          role="dialog"
           onClose={() => setIsModalOpen(false)}
-          onSuccess={() => {
+          onSuccess={(slug) => {
             setIsModalOpen(false);
+            setCreatedEventSlug(slug);
             setIsSuccessModalOpen(true);
           }}
         />
@@ -54,10 +57,14 @@ function CallToAction({ fetchCTA }) {
 
       {isSuccessModalOpen && (
         <SuccessModal
-        role="alertdialog"
+          role="alertdialog"
           title="Event Created!"
           message="Your event has been published successfully"
           buttonText="View My Event"
+          onClick={() => {
+            setIsSuccessModalOpen(false);
+            navigate(`/events/${createdEventSlug}`);
+          }}
           onClose={() => setIsSuccessModalOpen(false)}
         />
       )}
