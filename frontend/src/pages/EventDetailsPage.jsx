@@ -103,10 +103,10 @@ function EventDetailsPage() {
           backgroundImage: `url(${
             currentEvent.image
               ? urlFor(currentEvent.image).url()
-              : defaultImages[currentEvent.category.title.toLowerCase()]
+              : defaultImages[currentEvent.category?.slug?.current] || defaultImages.food
           })`,
         }}
-      >
+      >{console.log("current slug ",currentEvent.category.slug.current)}
         <div className="event-detail__hero-content">
           <span className="event-detail__category">
             {currentEvent.category.title}
