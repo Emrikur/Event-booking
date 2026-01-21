@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { getEventDetails } from "../services/sanity";
 import { urlFor } from "../services/sanity";
 import JoinEventModal from "../components/JoinEventModal";
@@ -19,15 +19,18 @@ import {
   UsersRound,
   CalendarDays,
   Share2,
+  Search,
 } from "lucide-react";
 
 import "../styles/EventDetailsPage.css";
 
 function EventDetailsPage() {
+  const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const [eventDetails, setEventDetails] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(false);
   const [eventSpots, setEventsSpots] = useState([]);
   const [selectedEvent, setSelectedEvent] = useState(null);
 
@@ -42,10 +45,23 @@ function EventDetailsPage() {
 
   useEffect(() => {
     async function fetchEventDetails() {
-      await getEventDetails(pageSlug)
-        .then((data) => setEventDetails(data))
-        .catch((err) => console.error(err));
-      setIsLoading(false);
+      setIsLoading(true);
+      setError(false);
+
+      try {
+        const data = await getEventDetails(pageSlug);
+
+        if (!data || data.length === 0) {
+          setError(true);
+        } else {
+          setEventDetails(data);
+        }
+      } catch (err) {
+        console.error("Error fetching event details:", err);
+        setError(true);
+      } finally {
+        setIsLoading(false);
+      }
     }
     fetchEventDetails();
   }, [pageSlug]);
@@ -67,14 +83,14 @@ function EventDetailsPage() {
       setEventsSpots(eventsWithSpots);
     } catch (error) {
       console.error("Error fetching events:", error);
-    } finally {
-      setIsLoading(false);
     }
   }
 
   useEffect(() => {
-    loadEvents();
-  }, [pageSlug]);
+    if (currentEvent) {
+      loadEvents();
+    }
+  }, [pageSlug, currentEvent]);
 
   if (isLoading) {
     return (
@@ -85,12 +101,28 @@ function EventDetailsPage() {
     );
   }
 
-  if (!currentEvent) {
-    return null;
+  if (error || !currentEvent) {
+    return (
+      <div className="event-detail__error">
+        <div className="event-detail__error-icon">
+          <Search size={48} />
+        </div>
+        <h2>Event Not Found</h2>
+        <p>
+          Sorry, we couldn't find the event you're looking for. It may have been
+          removed or the link might be incorrect.
+        </p>
+        <button
+          className="event-detail__error-button"
+          onClick={() => navigate("/events")}
+        >
+          Browse All Events
+        </button>
+      </div>
+    );
   }
 
   const eventDateTime = formatEventDateTime(currentEvent.eventDateTime);
-
   const isWaitlist = eventSpots.spotsLeft === 0;
 
   return (
@@ -103,7 +135,8 @@ function EventDetailsPage() {
           backgroundImage: `url(${
             currentEvent.image
               ? urlFor(currentEvent.image).url()
-              : defaultImages[currentEvent.category?.slug?.current] || defaultImages.food
+              : defaultImages[currentEvent.category?.slug?.current] ||
+                defaultImages.food
           })`,
         }}
       >
