@@ -115,7 +115,10 @@ function CreateEventModal({ onClose, onSuccess }) {
     }
 
     if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors);
+      setErrors({
+        ...newErrors,
+        submit: "Please fill in all required fields marked with *",
+      });
       setIsSubmitting(false);
       return;
     }
