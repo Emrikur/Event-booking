@@ -114,7 +114,7 @@ function EventsComponent() {
             filteredEvents.map((event) => {
               const imageUrl = event.image
                 ? urlFor(event.image).url()
-                : defaultImages[event.category?.title?.toLowerCase()];
+                : defaultImages[event.category?.title.toLowerCase()] || defaultImages.food;
               const isWaitlist = event.spotsLeft === 0;
               return (
                 <div key={event.title} className="event">
