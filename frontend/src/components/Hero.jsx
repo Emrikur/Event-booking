@@ -7,7 +7,7 @@ import "../styles/Hero.css";
 
 function Hero({ fetchHero }) {
   const [heroData, setHeroData] = useState(null);
-  const { language, translations } = useContext(LanguageContext);
+  const { language } = useContext(LanguageContext);
 
   useEffect(() => {
     async function loadHero() {
@@ -22,7 +22,12 @@ function Hero({ fetchHero }) {
 
   return (
     <section className="hero">
-      <img src={heroData.image.asset.url} alt="An image of a bustling street, free from cars, with tents lining the sides, during an event" className="hero-image" loading="lazy" />
+      <img
+        src={heroData.image.asset.url}
+        alt="An image of a bustling street, free from cars, with tents lining the sides, during an event"
+        className="hero-image"
+        loading="lazy"
+      />
       <div className="hero-overlay">
         <h1 className="hero-title">
           {language === "EN" ? heroData.title_en : heroData.title_sv}

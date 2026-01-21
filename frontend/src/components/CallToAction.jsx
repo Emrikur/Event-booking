@@ -10,7 +10,7 @@ import "../styles/CallToAction.css";
 function CallToAction({ fetchCTA }) {
   const navigate = useNavigate();
   const [ctaData, setCtaData] = useState(null);
-  const { language, translations } = useContext(LanguageContext);
+  const { language } = useContext(LanguageContext);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
