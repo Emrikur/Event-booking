@@ -82,8 +82,8 @@ function UpcomingEvents() {
           {upcomingEvents.map((event) => {
             const imageUrl = event.image?.asset?.url
               ? event.image.asset.url
-              : defaultImages[event.category?.slug?.current] ||
-                defaultImages.workshop;
+              : defaultImages[event.category?.title.toLowerCase()] ||
+                defaultImages.food;
 
             const isWaitlist = event.spotsLeft === 0;
 
