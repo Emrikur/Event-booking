@@ -32,9 +32,6 @@ export default function ModalWrapper({
           >
             <X size={20} />
           </button>
-          {/* <button className="modal__close" onClick={onClose}>
-            <X size={20} />
-          </button> */}
           <h2 className="modal__title">{title}</h2>
           {subtitle && <p className="modal__subtitle">{subtitle}</p>}
           {showDivider && <div className="modal__divider"></div>}

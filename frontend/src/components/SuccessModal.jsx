@@ -11,7 +11,6 @@ function SuccessModal({
   onClose,
   isWaitlist = false,
 }) {
-  //TODO: Implement onClick for button to redirect to the created event page or events page
 
   return (
     <ModalWrapper role="dialog" onClose={onClose} showDivider={false} isWaitlist={isWaitlist}>

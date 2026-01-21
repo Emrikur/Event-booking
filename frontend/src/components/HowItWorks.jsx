@@ -43,8 +43,6 @@ function HowItWorks() {
             <p className="how-it-works__step-text">
               {language === "EN" ? step.description_en : step.description_sv}
             </p>
-            {/* <h3 className="how-it-works__step-title">{step.title}</h3>
-            <p className="how-it-works__step-text">{step.description}</p> */}
           </div>
         ))}
       </div>

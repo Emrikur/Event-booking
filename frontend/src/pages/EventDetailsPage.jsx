@@ -206,9 +206,6 @@ function EventDetailsPage() {
                 >
                   {currentEvent.hostBio || "No host bio available"}
                 </p>
-                {/* <p className="event-detail__host-stats">
-                  50+ events hosted
-                </p> */}
               </div>
             </div>
           </section>
