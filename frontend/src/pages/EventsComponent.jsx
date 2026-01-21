@@ -1,34 +1,33 @@
-import { formatEventDateTime } from "../utils/datehelper";
-import { getEventAvailableSpots } from "../services/api";
-import { Link, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useState, useContext, useEffect } from "react";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 
 import { CalendarClock, MapPin, UsersRound, Search } from "lucide-react";
 
+import { formatEventDateTime } from "../utils/datehelper";
 import DropdownMenu from "../components/DropdownMenu";
+import JoinEventModal from "../components/JoinEventModal";
+import SuccessModal from "../components/SuccessModal";
+
 import { urlFor } from "../services/sanity";
-import { useContext } from "react";
 import { EventContext } from "../context/EventContext";
 
 import defaultWellness from "../assets/default-wellness.webp";
 import defaultMusic from "../assets/default-music.webp";
 import defaultFood from "../assets/default-food.webp";
 import defaultWorkshop from "../assets/default-workshop.webp";
-import JoinEventModal from "../components/JoinEventModal";
-import SuccessModal from "../components/SuccessModal";
 
 import "../styles/eventPageStyles.css";
 
 function EventsComponent() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+
+  const { events, filteredEvents, isLoading, filterEvents, resetFilters } =
+    useContext(EventContext);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
-  const { filteredEvents, setFilteredEvents, isLoading } =
-    useContext(EventContext);
-  const { events } = useContext(EventContext);
   const [selectedEvent, setSelectedEvent] = useState(null);
-  const [eventsWithSpots, setEventsWithSpots] = useState([]);
 
   const defaultImages = {
     wellness: defaultWellness,
@@ -37,46 +36,38 @@ function EventsComponent() {
     workshop: defaultWorkshop,
   };
 
-  async function loadEvents() {
-    try {
-      const eventsWithSpots = await Promise.all(
-        events.map(async (event) => {
-          const { spotsLeft } = await getEventAvailableSpots(event._id);
-          return { ...event, spotsLeft };
-        })
-      );
-      setEventsWithSpots(eventsWithSpots);
-      setFilteredEvents(eventsWithSpots);
-    } catch (error) {
-      console.error("Error fetching event spots:", error);
+  useEffect(() => {
+    if (isLoading) return;
+    if (!events.length) return;
+
+    const searchTerm = searchParams.get("query") || "";
+    const category = searchParams.get("category") || "";
+
+    if (!searchTerm && !category) {
+      resetFilters();
+    } else {
+      filterEvents(searchTerm, category);
     }
-  }
+  }, [searchParams, events, isLoading]);
 
   const handleCategoryChange = (category) => {
     if (category === "All events") {
-      setFilteredEvents(eventsWithSpots);
+      navigate("/events");
     } else {
-      const filtered = eventsWithSpots.filter(
-        (event) => event.category.title === category
-      );
-      setFilteredEvents(filtered);
+      const params = new URLSearchParams();
+      params.set("category", category);
+      navigate(`/events?${params.toString()}`);
     }
   };
 
   const handleAllEventsClick = () => {
-    setFilteredEvents(eventsWithSpots);
+    navigate("/events");
   };
 
   function handleJoinEvent(event, isWaitlist) {
     setSelectedEvent({ ...event, isWaitlist });
     setIsModalOpen(true);
   }
-
-  useEffect(() => {
-    if (events.length > 0) {
-      loadEvents();
-    }
-  }, [events]);
 
   return (
     <>
@@ -97,7 +88,7 @@ function EventsComponent() {
           </div>
         )}
 
-        {!isLoading && filteredEvents.length === 0 && (
+        {!isLoading && events.length > 0 && filteredEvents.length === 0 && (
           <div className="events__no-results">
             <div className="events__no-results-icon">
               <Search size={40} strokeWidth={2} />
@@ -110,58 +101,67 @@ function EventsComponent() {
         )}
 
         <section className="event-list">
-          {filteredEvents &&
-            filteredEvents.map((event) => {
-              const imageUrl = event.image
-                ? urlFor(event.image).url()
-                : defaultImages[event.category?.title.toLowerCase()] || defaultImages.food;
-              const isWaitlist = event.spotsLeft === 0;
-              return (
-                <div key={event.title} className="event">
-                  <span className="category-info">{event.category.title}</span>
-                  <img
-                    src={imageUrl}
-                    alt={event.image?.alt || event.title}
-                    className="event-image"
-                    loading="lazy"
-                  />
-                  <div className="event-info">
-                    <h3 className="event-title">{event.title}</h3>
-                    <p className="event-date">
-                      <CalendarClock size={18} />
-                      <span>{formatEventDateTime(event.eventDateTime)}</span>
-                    </p>
-                    <p className="event-location">
-                      <MapPin size={18} />
-                      <span>{event.location}</span>
-                    </p>
-                    <p className="event-spots">
-                      <UsersRound size={18} />
-                      <span>{event.spotsLeft} spots left</span>
-                    </p>
-                  </div>
-                  <div className="event-card__actions">
-                    <Link
-                      aria-label={`View event details for ${event.title}`}
-                      to={`/events/${event.slug.current}`}
-                      className="event-button event-button--outline"
-                    >
-                      View Details
-                    </Link>
-                    <button
-                      onClick={() => handleJoinEvent(event, isWaitlist)}
-                      className={`event-button ${
-                        isWaitlist
-                          ? "event-button--secondary"
-                          : "event-button--primary"
-                      }`}
-                    >
-                      {isWaitlist ? "Join Waitlist" : "Join Event"}
-                    </button>
-                  </div>
+          {filteredEvents.map((event) => {
+            const imageUrl = event.image
+              ? urlFor(event.image).url()
+              : defaultImages[event.category?.title.toLowerCase()] ||
+                defaultImages.food;
+
+            const isWaitlist = event.spotsLeft === 0;
+
+            return (
+              <div key={event._id} className="event">
+                <span className="category-info">{event.category.title}</span>
+
+                <img
+                  src={imageUrl}
+                  alt={event.image?.alt || event.title}
+                  className="event-image"
+                  loading="lazy"
+                />
+
+                <div className="event-info">
+                  <h3 className="event-title">{event.title}</h3>
+
+                  <p className="event-date">
+                    <CalendarClock size={18} />
+                    <span>{formatEventDateTime(event.eventDateTime)}</span>
+                  </p>
+
+                  <p className="event-location">
+                    <MapPin size={18} />
+                    <span>{event.location}</span>
+                  </p>
+
+                  <p className="event-spots">
+                    <UsersRound size={18} />
+                    <span>{event.spotsLeft} spots left</span>
+                  </p>
                 </div>
-              );
-            })}
+
+                <div className="event-card__actions">
+                  <Link
+                    to={`/events/${event.slug.current}`}
+                    className="event-button event-button--outline"
+                    aria-label={`View event details for ${event.title}`}
+                  >
+                    View Details
+                  </Link>
+
+                  <button
+                    onClick={() => handleJoinEvent(event, isWaitlist)}
+                    className={`event-button ${
+                      isWaitlist
+                        ? "event-button--secondary"
+                        : "event-button--primary"
+                    }`}
+                  >
+                    {isWaitlist ? "Join Waitlist" : "Join Event"}
+                  </button>
+                </div>
+              </div>
+            );
+          })}
         </section>
       </div>
 
@@ -169,18 +169,17 @@ function EventsComponent() {
       {isModalOpen && selectedEvent && (
         <JoinEventModal
           event={selectedEvent}
+          isWaitlist={selectedEvent.isWaitlist}
           onClose={() => setIsModalOpen(false)}
           onSuccess={() => {
             setIsModalOpen(false);
             setIsSuccessModalOpen(true);
-            loadEvents();
           }}
-          isWaitlist={selectedEvent.isWaitlist}
         />
       )}
 
-      {/* Success Modal - Join Event */}
-      {isSuccessModalOpen && !selectedEvent.isWaitlist && (
+      {/* Success Modal – Join Event */}
+      {isSuccessModalOpen && selectedEvent && !selectedEvent.isWaitlist && (
         <SuccessModal
           title="You're All Set!"
           message={
@@ -194,8 +193,8 @@ function EventsComponent() {
         />
       )}
 
-      {/* Success Modal - Join Waitlist */}
-      {isSuccessModalOpen && selectedEvent.isWaitlist && (
+      {/* Success Modal – Waitlist */}
+      {isSuccessModalOpen && selectedEvent && selectedEvent.isWaitlist && (
         <SuccessModal
           title="You're on the Waitlist!"
           message={
@@ -205,12 +204,12 @@ function EventsComponent() {
             </>
           }
           buttonText="Browse More Events"
+          isWaitlist
           onClose={() => setIsSuccessModalOpen(false)}
           onClick={() => {
             setIsSuccessModalOpen(false);
             navigate("/events");
           }}
-          isWaitlist={true}
         />
       )}
     </>

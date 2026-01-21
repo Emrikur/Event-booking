@@ -1,59 +1,44 @@
 import { useState } from "react";
-
-import "../styles/SearchBar.css";
-import { useContext } from "react";
-import { EventContext } from "../context/EventContext";
 import { useNavigate } from "react-router-dom";
+import "../styles/SearchBar.css";
 
 function SearchBar() {
   const [searchTerm, setSearchTerm] = useState("");
   const [category, setCategory] = useState("");
-  const { filterEvents } = useContext(EventContext);
-
   const navigate = useNavigate();
 
-  function handleSubmit(event) {
-    event.preventDefault();
-    filterEvents(searchTerm, category);
+  function handleSubmit(e) {
+    e.preventDefault();
 
-    navigate("/events");
+    const params = new URLSearchParams();
+
+    if (searchTerm) params.set("query", searchTerm);
+    if (category) params.set("category", category);
+
+    navigate(`/events?${params.toString()}`);
   }
-
-  const onSearchChange = (e) => {
-    const value = e.target.value;
-    setSearchTerm(value);
-    filterEvents(value, category);
-  };
-
-  const onCategoryClick = (e) => {
-    const value = e.target.value;
-    setCategory(value);
-    filterEvents(searchTerm, value);
-  };
 
   return (
     <section className="search-bar">
-      <form role="Search form" className="search-bar__container" onSubmit={handleSubmit}>
+      <form className="search-bar__container" onSubmit={handleSubmit}>
         <input
           className="search-bar__input"
           type="text"
           placeholder="Search for events..."
           value={searchTerm}
-          onChange={onSearchChange}
+          onChange={(e) => setSearchTerm(e.target.value)}
         />
 
         <select
           className="search-bar__select"
           aria-label="Choose category"
           value={category}
-          onChange={onCategoryClick}
+          onChange={(e) => setCategory(e.target.value)}
         >
           <option value="">All categories</option>
           <option value="wellness">Wellness</option>
           <option value="food & drink">Food & Drink</option>
           <option value="music">Music</option>
-          <option value="sports">Sports</option>
-          <option value="social">Social</option>
           <option value="workshop">Workshop</option>
         </select>
 
