@@ -1,45 +1,41 @@
-.error-page{
-
+.error-page {
   display: flex;
   flex-direction: column;
-  height: 80vh;
-  width: 100vw;
   align-items: center;
   justify-content: center;
-
-
+  padding: 4rem 2rem;
+  margin: 3rem auto;
+  max-width: 31.25rem;
+  gap: 1.5rem;
 }
 
-.error-content{
-  background: var(--outline-default);
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-  text-align: center;
-  margin: 2rem;
-   box-shadow: 0 2px 0.5rem rgba(0, 0, 0, 0.08);
-  border-radius: 0.75rem;
-  padding: 4rem;
-  align-items: center;
-  justify-content: center;
-
-  transform-style: preserve-3d;
-  transform: perspective(1000px)
-  rotateY(var(--rotateY))
-  rotateX(var(--rotateX));
+.events-link {
+  text-decoration: none;
+  color: var(--primary-default);
+  font-weight: 600;
+  font-size: 1.05rem;
+  margin-top: 1rem;
 }
-.grape-container{
-  display: flex;
-  align-items: center;
-  flex-direction: column;
 
-.error-message{
+.error-message {
   font-size: 1.5rem;
   text-align: center;
   max-width: 37.5rem;
 }
 
-.grape{
-    color: var(--primary-default);
-  }
+.error-image {
+  width: 5rem;
+  height: 5rem;
+  border-radius: 50%;
+  background: var(--gradient-one);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+}
+
+.error-redirect {
+  margin: 0;
+  text-align: center;
+  line-height: 1.8;
 }
