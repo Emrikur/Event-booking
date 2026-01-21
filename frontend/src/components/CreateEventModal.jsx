@@ -106,6 +106,10 @@ function CreateEventModal({ onClose, onSuccess }) {
     if (!category) {
       newErrors.category = "Category is required";
     }
+    if (!maxParticipants || Number(maxParticipants) <= 0) {
+      newErrors.maxParticipants =
+        "Max participants is required and must be greater than 0";
+    }
     if (!hostName.trim()) {
       newErrors.hostName = "Host name is required";
     }
@@ -326,7 +330,11 @@ function CreateEventModal({ onClose, onSuccess }) {
         <div className="modal__form-group">
           <label htmlFor="maxParticipants" className="modal__label">
             Max Participants
+            <span className="modal__required">
+              <Asterisk size={20} />
+            </span>
           </label>
+
           <input
             id="maxParticipants"
             value={maxParticipants}
@@ -335,6 +343,9 @@ function CreateEventModal({ onClose, onSuccess }) {
             className="modal__input"
             placeholder="Max number of attendees"
           />
+          {errors.maxParticipants && (
+            <span className="modal__error">{errors.maxParticipants}</span>
+          )}
         </div>
 
         <div className="modal__form-group">
