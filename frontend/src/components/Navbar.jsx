@@ -81,12 +81,20 @@ function Navbar() {
               </Link>
             </li>
             <li>
-              <Link aria-label="Go to events page" to="/events" onClick={closeMenu}>
+              <Link
+                aria-label="Go to events page"
+                to="/events"
+                onClick={closeMenu}
+              >
                 {translation.events}
               </Link>
             </li>
             <li>
-              <Link aria-label="Go to the about page" to="/about" onClick={closeMenu}>
+              <Link
+                aria-label="Go to the about page"
+                to="/about"
+                onClick={closeMenu}
+              >
                 {translation.about}
               </Link>
             </li>
@@ -104,8 +112,12 @@ function Navbar() {
             </button>
             {open && (
               <ul role="menu" className="language-dropdown">
-                <li role="menuitem" onClick={() => handleLanguageChange("EN")}>English</li>
-                <li role="menuitem" onClick={() => handleLanguageChange("SV")}>Svenska</li>
+                <li role="menuitem" onClick={() => handleLanguageChange("EN")}>
+                  English
+                </li>
+                <li role="menuitem" onClick={() => handleLanguageChange("SV")}>
+                  Svenska
+                </li>
               </ul>
             )}
           </div>
@@ -127,6 +139,10 @@ function Navbar() {
           title="Event Created!"
           message="Your event has been published successfully"
           buttonText="View My Event"
+          onClick={() => {
+            setIsSuccessModalOpen(false);
+            navigate(`/events/${createdEventSlug}`);
+          }}
           onClose={() => setIsSuccessModalOpen(false)}
         />
       )}

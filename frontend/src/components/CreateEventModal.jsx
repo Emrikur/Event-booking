@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import ModalWrapper from "./ModalWrapper";
+import SuccessModal from "./SuccessModal";
 import { getCategories } from "../services/sanity";
 
 import { Asterisk } from "lucide-react";
@@ -27,6 +29,10 @@ function CreateEventModal({ onClose, onSuccess }) {
   const [categories, setCategories] = useState([]);
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [createdEventSlug, setCreatedEventSlug] = useState("");
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function fetchCategories() {
@@ -78,6 +84,13 @@ function CreateEventModal({ onClose, onSuccess }) {
     }
   }
 
+  function slugify(title) {
+    return title
+      .toLowerCase()
+      .replace(/ /g, "-")
+      .replace(/[^\w-]+/g, "");
+  }
+
   async function handleSubmit(e) {
     e.preventDefault();
     setIsSubmitting(true);
@@ -111,19 +124,11 @@ function CreateEventModal({ onClose, onSuccess }) {
 
     const eventDateTime = `${date}T${time}:00.000Z`;
 
-    function slugify(title) {
-      console.log("Here is the title ", title);
-      return title
-        .toLowerCase()
-        .replace(/ /g, "-")
-        .replace(/[^\w-]+/g, "");
-    }
-
     const eventData = {
       title,
       slug: {
         _type: "slug",
-        current: `${slugify(title)}`,
+        current: slugify(title),
       },
       eventDateTime,
       category,
@@ -155,6 +160,8 @@ function CreateEventModal({ onClose, onSuccess }) {
 
       const result = await response.json();
 
+      setCreatedEventSlug(slugify(title));
+
       // Clear UI on success
       setTitle("");
       setDate("");
@@ -172,8 +179,7 @@ function CreateEventModal({ onClose, onSuccess }) {
       setHostAvatar("");
       setErrors({});
 
-      onClose();
-      onSuccess();
+      setIsSuccessModalOpen(true);
     } catch (error) {
       console.error("Error creating event:", error);
       setErrors({ submit: "Something went wrong. Please try again." });
@@ -204,12 +210,12 @@ function CreateEventModal({ onClose, onSuccess }) {
 
   return (
     <ModalWrapper
-    role="dialog"
+      role="dialog"
       title="Create Event"
       subtitle="Fill in the details to create a new event"
       onClose={handleCancel}
     >
-      <form role="dialog" aria-modal="true" className="modal__form" onSubmit={handleSubmit}>
+      <form className="modal__form" onSubmit={handleSubmit}>
         <div className="modal__form-group">
           <label htmlFor="title" className="modal__label">
             Title
@@ -469,6 +475,24 @@ function CreateEventModal({ onClose, onSuccess }) {
           </button>
         </div>
       </form>
+
+      {isSuccessModalOpen && (
+        <SuccessModal
+          role="alertdialog"
+          title="Event Created!"
+          message="Your event has been published successfully"
+          buttonText="View My Event"
+          onClick={() => {
+            setIsSuccessModalOpen(false);
+            onClose();
+            navigate(`/events/${createdEventSlug}`);
+          }}
+          onClose={() => {
+            setIsSuccessModalOpen(false);
+            onClose();
+          }}
+        />
+      )}
     </ModalWrapper>
   );
 }

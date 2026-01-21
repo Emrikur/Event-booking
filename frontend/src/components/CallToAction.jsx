@@ -43,7 +43,7 @@ function CallToAction({ fetchCTA }) {
 
       {isModalOpen && (
         <CreateEventModal
-        role="dialog"
+          role="dialog"
           onClose={() => setIsModalOpen(false)}
           onSuccess={() => {
             setIsModalOpen(false);
@@ -54,10 +54,14 @@ function CallToAction({ fetchCTA }) {
 
       {isSuccessModalOpen && (
         <SuccessModal
-        role="alertdialog"
+          role="alertdialog"
           title="Event Created!"
           message="Your event has been published successfully"
           buttonText="View My Event"
+          onClick={() => {
+            setIsSuccessModalOpen(false);
+            navigate(`/events/${createdEventSlug}`);
+          }}
           onClose={() => setIsSuccessModalOpen(false)}
         />
       )}
