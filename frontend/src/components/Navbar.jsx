@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import logo2 from "../assets/eventhub-logo.png";
 import CreateEventModal from "./CreateEventModal";
 import SuccessModal from "./SuccessModal";
@@ -12,8 +12,11 @@ import "../styles/navbarStyles.css";
 function Navbar() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+  const [createdEventSlug, setCreatedEventSlug] = useState("");
   const [open, setOpen] = useState(false);
   const { language, setLanguage, translations } = useContext(LanguageContext);
+
+  const navigate = useNavigate();
 
   const menuRef = useRef(null);
   const hamburgerRef = useRef(null);
@@ -127,8 +130,9 @@ function Navbar() {
       {isModalOpen && (
         <CreateEventModal
           onClose={() => setIsModalOpen(false)}
-          onSuccess={() => {
+          onSuccess={(slug) => {
             setIsModalOpen(false);
+            setCreatedEventSlug(slug);
             setIsSuccessModalOpen(true);
           }}
         />

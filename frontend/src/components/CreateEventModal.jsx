@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import ModalWrapper from "./ModalWrapper";
-import SuccessModal from "./SuccessModal";
 import { getCategories } from "../services/sanity";
 
 import { Asterisk } from "lucide-react";
@@ -29,10 +27,6 @@ function CreateEventModal({ onClose, onSuccess }) {
   const [categories, setCategories] = useState([]);
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [createdEventSlug, setCreatedEventSlug] = useState("");
-  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
-
-  const navigate = useNavigate();
 
   useEffect(() => {
     async function fetchCategories() {
@@ -160,7 +154,7 @@ function CreateEventModal({ onClose, onSuccess }) {
 
       const result = await response.json();
 
-      setCreatedEventSlug(slugify(title));
+      const slug = slugify(title);
 
       // Clear UI on success
       setTitle("");
@@ -179,7 +173,7 @@ function CreateEventModal({ onClose, onSuccess }) {
       setHostAvatar("");
       setErrors({});
 
-      setIsSuccessModalOpen(true);
+      onSuccess(slug);
     } catch (error) {
       console.error("Error creating event:", error);
       setErrors({ submit: "Something went wrong. Please try again." });
@@ -475,24 +469,6 @@ function CreateEventModal({ onClose, onSuccess }) {
           </button>
         </div>
       </form>
-
-      {isSuccessModalOpen && (
-        <SuccessModal
-          role="alertdialog"
-          title="Event Created!"
-          message="Your event has been published successfully"
-          buttonText="View My Event"
-          onClick={() => {
-            setIsSuccessModalOpen(false);
-            onClose();
-            navigate(`/events/${createdEventSlug}`);
-          }}
-          onClose={() => {
-            setIsSuccessModalOpen(false);
-            onClose();
-          }}
-        />
-      )}
     </ModalWrapper>
   );
 }
