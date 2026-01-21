@@ -82,8 +82,6 @@
   transition: all 0.3s ease;
   overflow: hidden;
   height: 100%;
-  max-width: 28rem;
-  margin: 0 auto;
 }
 
 .event-info {
