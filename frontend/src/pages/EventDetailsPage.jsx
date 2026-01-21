@@ -204,7 +204,7 @@ function EventDetailsPage() {
                     !currentEvent.hostBio ? "event-detail__host-bio--empty" : ""
                   }`}
                 >
-                  {currentEvent.hostBio || "No bio available"}
+                  {currentEvent.hostBio || "No host bio available"}
                 </p>
                 {/* <p className="event-detail__host-stats">
                   50+ events hosted
