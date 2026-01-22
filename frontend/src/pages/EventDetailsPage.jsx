@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import { getEventDetails } from "../services/sanity";
 import { urlFor } from "../services/sanity";
 import JoinEventModal from "../components/JoinEventModal";
@@ -26,6 +26,9 @@ import "../styles/EventDetailsPage.css";
 
 function EventDetailsPage() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const isPreview = searchParams.get("preview") === "true";
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const [eventDetails, setEventDetails] = useState([]);
@@ -49,7 +52,7 @@ function EventDetailsPage() {
       setError(false);
 
       try {
-        const data = await getEventDetails(pageSlug);
+        const data = await getEventDetails(isPreview);
 
         if (!data || data.length === 0) {
           setError(true);
@@ -64,7 +67,7 @@ function EventDetailsPage() {
       }
     }
     fetchEventDetails();
-  }, [pageSlug]);
+  }, [pageSlug, isPreview]);
 
   const currentEvent = eventDetails.find(
     (detailCard) => detailCard.slug.current === pageSlug
@@ -72,7 +75,7 @@ function EventDetailsPage() {
 
   async function loadEvents() {
     try {
-      const data = await getEventsSpots(pageSlug);
+      const data = await getEventsSpots(pageSlug, isPreview);
 
       const { spotsLeft } = await getEventAvailableSpots(data._id);
       const eventsWithSpots = {
@@ -90,7 +93,7 @@ function EventDetailsPage() {
     if (currentEvent) {
       loadEvents();
     }
-  }, [pageSlug, currentEvent]);
+  }, [pageSlug, currentEvent, isPreview]);
 
   if (isLoading) {
     return (

@@ -7,10 +7,23 @@ export const client = createClient({
   useCdn: false,
   apiVersion: "2024-01-01",
   token: import.meta.env.VITE_SANITY_READ_TOKEN,
+  perspective: "published",
+});
+
+export const previewClient = createClient({
+  projectId: import.meta.env.VITE_SANITY_PROJECT_ID,
+  dataset: import.meta.env.VITE_SANITY_DATASET,
+  useCdn: false,
+  apiVersion: "2024-01-01",
+  token: import.meta.env.VITE_SANITY_READ_TOKEN,
   perspective: "previewDrafts",
 });
 
 const builder = createImageUrlBuilder(client);
+
+export function getClient(preview = false) {
+  return preview ? previewClient : client;
+}
 
 export function urlFor(source) {
   return builder.image(source);
@@ -105,8 +118,10 @@ export async function getTeamSection() {
   }`);
 }
 
-export async function getEvents() {
-  return await client.fetch(`*[_type == 'event']{
+export async function getEvents(preview = false) {
+  const activeClient = getClient(preview);
+
+  return await activeClient.fetch(`*[_type == 'event']{
     _id,
     title,
     slug,
@@ -135,8 +150,10 @@ export async function getCategories() {
   }`);
 }
 
-export async function getUpcomingEvents(limit = 3) {
-  return await client.fetch(`*[_type == "event" && eventDateTime > now()] | order(eventDateTime asc) [0...${limit}]{
+export async function getUpcomingEvents(limit = 3, preview = false) {
+  const activeClient = getClient(preview);
+
+  return await activeClient.fetch(`*[_type == "event" && eventDateTime > now()] | order(eventDateTime asc) [0...${limit}]{
     _id,
     title,
     slug,
@@ -161,8 +178,10 @@ export async function getUpcomingEvents(limit = 3) {
   }`);
 }
 
-export async function getEventsSpots(slug) {
-  return await client.fetch(
+export async function getEventsSpots(slug, preview = false) {
+  const activeClient = getClient(preview);
+
+  return await activeClient.fetch(
     `*[_type == "event" && slug.current == $slug][0]{
     _id,
     title,
@@ -201,8 +220,10 @@ export async function getValue() {
   }`);
 }
 
-export async function getEventDetails() {
-  return await client.fetch(`*[_type == 'event']{
+export async function getEventDetails(preview = false) {
+  const activeClient = getClient(preview);
+
+  return await activeClient.fetch(`*[_type == 'event']{
     _id,
     title,
     image,

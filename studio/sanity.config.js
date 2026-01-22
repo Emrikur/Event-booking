@@ -17,11 +17,11 @@ export default defineConfig({
   },
 
   document: {
-    productionUrl: async (prev, {document}) => {
-      if (document._type === 'event' && document.slug?.current) {
-        const url = `http://localhost:5173/events/${document.slug.current}`
+    productionUrl: async (prev, context) => {
+      const {document} = context
 
-        return url
+      if (document._type === 'event' && document.slug?.current) {
+        return `http://localhost:5173/events/${document.slug.current}?preview=true`
       }
 
       return prev

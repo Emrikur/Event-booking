@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext, useEffect, useRef } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 
 import { CalendarClock, MapPin, UsersRound, Search } from "lucide-react";
@@ -21,9 +21,16 @@ import "../styles/eventPageStyles.css";
 function EventsComponent() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  const prevPreviewRef = useRef(null);
 
-  const { events, filteredEvents, isLoading, filterEvents, resetFilters } =
-    useContext(EventContext);
+  const {
+    events,
+    filteredEvents,
+    isLoading,
+    filterEvents,
+    resetFilters,
+    fetchEvents,
+  } = useContext(EventContext);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
@@ -37,31 +44,53 @@ function EventsComponent() {
   };
 
   useEffect(() => {
+    const isPreview = searchParams.get("preview") === "true";
+
+    if (prevPreviewRef.current !== isPreview) {
+      fetchEvents(isPreview);
+      prevPreviewRef.current = isPreview;
+    }
+  }, [searchParams]);
+
+  useEffect(() => {
     if (isLoading) return;
     if (!events.length) return;
 
     const searchTerm = searchParams.get("query") || "";
     const category = searchParams.get("category") || "";
+    const isPreview = searchParams.get("preview");
+
+    if (!searchTerm && !category && isPreview) {
+      return;
+    }
 
     if (!searchTerm && !category) {
       resetFilters();
     } else {
       filterEvents(searchTerm, category);
     }
-  }, [searchParams, events, isLoading]);
+  }, [searchParams, events, isLoading, filterEvents, resetFilters]);
 
   const handleCategoryChange = (category) => {
+    const currentParams = new URLSearchParams(searchParams);
+
     if (category === "All events") {
-      navigate("/events");
+      currentParams.delete("category");
     } else {
-      const params = new URLSearchParams();
-      params.set("category", category);
-      navigate(`/events?${params.toString()}`);
+      currentParams.set("category", category);
     }
+
+    const queryString = currentParams.toString();
+    navigate(queryString ? `/events?${queryString}` : "/events");
   };
 
   const handleAllEventsClick = () => {
-    navigate("/events");
+    const currentParams = new URLSearchParams(searchParams);
+    currentParams.delete("query");
+    currentParams.delete("category");
+
+    const queryString = currentParams.toString();
+    navigate(queryString ? `/events?${queryString}` : "/events");
   };
 
   function handleJoinEvent(event, isWaitlist) {
