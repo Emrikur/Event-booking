@@ -170,6 +170,10 @@ function UpcomingEvents() {
           }
           buttonText="View Event Details"
           onClose={() => setIsSuccessModalOpen(false)}
+          onClick={() => {
+            setIsSuccessModalOpen(false);
+            navigate(`/events/${selectedEvent.slug.current}`);
+          }}
         />
       )}
 
