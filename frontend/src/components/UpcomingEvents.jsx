@@ -119,7 +119,8 @@ function UpcomingEvents() {
                 </div>
 
                 <div className="event-card__actions">
-                  <Link aria-label={`View details for ${event.title}`}
+                  <Link
+                    aria-label={`View details for ${event.title}`}
                     to={`/events/${event.slug.current}`}
                     className="event-button event-button--outline"
                   >
@@ -145,7 +146,7 @@ function UpcomingEvents() {
       {/* Join Event Modal */}
       {isModalOpen && selectedEvent && (
         <JoinEventModal
-        role="dialog"
+          role="dialog"
           event={selectedEvent}
           onClose={() => setIsModalOpen(false)}
           onSuccess={() => {
@@ -160,7 +161,7 @@ function UpcomingEvents() {
       {/* Success Modal - Join Event */}
       {isSuccessModalOpen && !selectedEvent.isWaitlist && (
         <SuccessModal
-        role="dialog"
+          role="dialog"
           title="You're All Set!"
           message={
             <>
@@ -180,7 +181,7 @@ function UpcomingEvents() {
       {/* Success Modal - Join Waitlist */}
       {isSuccessModalOpen && selectedEvent.isWaitlist && (
         <SuccessModal
-        role="dialog"
+          role="dialog"
           title="You're on the Waitlist!"
           message={
             <>
