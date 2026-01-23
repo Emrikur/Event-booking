@@ -12,15 +12,15 @@ export default defineType({
       validation: (Rule) => Rule.required().error('Event title is required'),
     }),
     defineField({
-  name: 'slug',
-  title: 'Slug',
-  type: 'slug',
-  options: {
-    source: 'title',
-    maxLength: 96,
-  },
-  validation: Rule => Rule.required(),
-}),
+      name: 'slug',
+      title: 'Slug',
+      type: 'slug',
+      options: {
+        source: 'title',
+        maxLength: 96,
+      },
+      validation: (Rule) => Rule.required(),
+    }),
     defineField({
       name: 'image',
       title: 'Event Image',
@@ -60,7 +60,7 @@ export default defineType({
     defineField({
       name: 'price',
       title: 'Price',
-      type: 'number',
+      type: 'string',
     }),
     defineField({
       name: 'maxParticipants',

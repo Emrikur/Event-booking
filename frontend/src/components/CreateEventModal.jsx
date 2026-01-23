@@ -134,7 +134,7 @@ function CreateEventModal({ onClose, onSuccess }) {
       eventDateTime,
       category,
       location,
-      price: price.trim() ? Number(price) : "Free",
+      price: price.trim() ? price.trim() : "Free",
       maxParticipants: Number(maxParticipants) || null,
       description: description || null,
       whatToBring: whatToBring.trim()
